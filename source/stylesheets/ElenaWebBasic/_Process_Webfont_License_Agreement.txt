@@ -1,0 +1,94 @@
+--------------------------------
+PROCESS TYPE FOUNDRY, LLC
+WEBFONT LICENSE AGREEMENT
+--------------------------------
+This License Agreement ("Agreement" or "License") is a legal contract between you and the Process Type Foundry, LLC ("Process"). When you purchase a license to use the Process font software ("Font" or "Font Software" or "Webfonts"), you are purchasing the right to use that font under the terms and conditions identified in this License. It is important that you read and understand this Agreement because it defines your rights, the acceptable uses of our Webfonts, and the rights Process reserves. If you believe your usage or need is not addressed, or if you are unsure of any meaning of any term or condition, please ask us before you make a purchase.
+
+Once you download and/or use the Process Webfonts, you are confirming you understand and agree to the terms of this Agreement, and that you have the authority to bind the person or entity specified on your sales receipt to the terms of this Agreement. Upon payment in full, the Process Type Foundry grants to you a non-exclusive, non-transferable, revocable license to use our Webfonts under the following terms and conditions.
+
+
+------------
+DEFINITIONS
+------------	
+1a.) "Webfont" is defined as type face font software that has been created, optimized, translated or otherwise modified for use by means of transmitting via the Internet for use in the viewing of text on a website. By way of explanation, not limitation, such uses can be implemented by means of the CSS @font-face rule. Other technology or software implementations used to effect similar results may apply and such uses or methods shall be governed by this License.
+
+1b.) "Primary Domain", "Subdomain", "Domain". A Primary Domain is the host name of a website's home page (for example, not limitation: example.com; example.co.uk; example.org; user.example.com; www.example.com/~user/; etc.). A Subdomain is a subdivision of the Primary Domain (for example, not limitation: shop.example.com; support.example.com; or user.example.com; etc.). Primary Domains together with their associated Subdomains are referred to collectively and defined as "Domains".
+
+1c.) "You", "Your" and the "End User" are defined as and refer to a customer who has purchased a license to use the Webfonts and is responsible for creating, placing and/or managing the content on the licensed Domains. An End User is not defined as a distributor, reseller, dealer, sub-licensee, original equipment manufacturer ("OEM"), server administrator or other wholesale buyer, etc. If you are a designer, part of a creative agency, or otherwise acting in a similar capacity for the benefit of a third party and you will not be in control of the Webfont's hosting environment and the content on the licensed Domains, the purchase of a Webfont license for your client or the end user is required. Process Type Foundry products may not be distributed and/or sold to third parties without prior written consent from Process.
+
+-----------------------------------
+2. PERMITTED USES AND RESTRICTIONS
+-----------------------------------
+2a.) IMPLEMENTATION
+The Webfonts are provided to You for use via the CSS @font-face rule. You agree not to use the Webfonts by any other means and/or methods of storage, transmission or viewing and that You will use the Webfont files, in the format provided to You by Process. Use of the Webfonts in alternative formats not provided by Process is expressly prohibited.
+
+2b.) ALLOWED DOMAINS
+The Process Webfont license is provided in two (2) basic forms: 
+ 
+    2b.i.) A "Single Domain" license permits the Webfonts to be served for the benefit of one (1) Primary Domain and five (5) Subdomains. 
+
+    2b.ii.) An "Up to 10 Domains" license permits the Webfonts to be served for the benefit of a maximum of ten (10) Primary Domains with each Primary Domain allowed to serve an additional five (5) related Subdomains. 
+    
+Review Your sales receipt to understand which license You purchased. Use of the Webfonts on more than the licensed Domains requires a license extension for which an additional fee will be charged. For the purposes of clarity, this License does not permit the Webfonts to be used in such a way as to serve the Webfonts to unlicensed domains. Regardless of whether the Webfonts are hosted on licensed Domains, the Webfonts may not be served for the benefit of unlicensed Domains.
+
+2c.) WEBFONTS FILE PROTECTION
+You agree to take reasonable measures to ensure the Webfonts are available only for the process of styling text for display on Your licensed Domains. At a minimum, and by way of illustration not limitation, reasonable measures include a.) preventing unlicensed third-party access, i.e. hotlinking and b.) disallowing direct download of the Webfonts unrelated to the process of styling text for licensed Domains. 
+
+2d.) THIRD PARTY HOSTS
+At Your option, the Webfonts may be hosted and served by a Process-approved third party.  Under such circumstances you expressly agree the terms and conditions of this License shall govern all uses of the Webfonts irrespective of any competing or contrary terms set forth by any third party hosting the Webfonts. A list of Process-approved hosts can be obtained by contacting Process directly.
+
+2e.) BACK-UP COPIES
+You may make a reasonable number of copies of the Webfonts for back-up purposes only. Any copies must contain the same documentation, copyright, trademark, and other proprietary notices that appear on, in or with the Webfonts. 
+
+2f.) NO MODIFICATIONS, NO EMBEDDING
+Under no circumstances are You permitted to copy, modify, adapt, translate, reverse engineer, decompile, disassemble, alter or attempt to discover the source code of the Webfonts or the designs embodied therein. This includes changing file name of the Webfont. The embedding of Process Webfonts or the designs of the fonts thereof in other software, digital documents, applications or devices or in any other form whatsoever is prohibited. 
+
+2g.) WEB USAGE ONLY
+This license does not cover the use of Process Webfonts on a desktop, laptop, or workstation computer or for any use other than as expressly permitted herein. If You wish to use the Webfonts in a manner not permitted by this license, You must secure a separate license and/or a license extension by contacting Process directly.
+
+------------------
+3. RIGHTS RESERVED
+------------------
+3a.) You expressly acknowledge that the Webfonts, the designs embodied therein, the trade names and/or trademarks and copyrights associated therewith are each the exclusive property of Process. All rights not expressly granted under this License are reserved to Process Type Foundry.
+
+3b.) You agree that the Webfonts and the design of the Fonts embodied therein are the exclusive property of Process and the Webfonts' structure, organization and code are the valuable trade secrets of Process. You acknowledge that the Webfonts are, among other means, protected under United States trademark and/or copyright law, by the trademark and/or copyright and design laws of other nations, and by international treaties. You are not permitted to regenerate or translate the Webfonts into other formats and the creation of any derivative works based upon the Webfonts or the designs embodied therein are expressly prohibited.
+
+-----------------------------
+4. WARRANTIES AND LIMITATIONS
+-----------------------------
+4a.) Process represents and warrants that the Webfonts will perform substantially in accordance with the representations made herein. To make a warranty claim, You must notify the source from which You obtained the Webfonts together with a copy of Your sales receipt. If the Webfonts do not perform substantially in accordance with the representations, the entire and exclusive liability and remedy shall be limited to the replacement of the Webfonts or the refund of the license fee You paid for the Webfonts, either as an authorized officer of Process may elect. Process and its suppliers do not and cannot warrant the performance or results You may obtain by using the Webfonts. 
+
+4b.) PROCESS EXPRESSLY DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. PROCESS DOES NOT WARRANT THAT THE OPERATION OF THE WEBFONTS WILL BE UNIMPEDED, UNINTERRUPTED OR ERROR-FREE, OR THAT THE WEBFONTS ARE WITHOUT DEFECTS. WITHOUT LIMITING THE FOREGOING UNDER NO CIRCUMSTANCES SHALL PROCESS BE LIABLE TO YOU OR ANY OTHER PARTY, WHETHER IN CONTRACT OR TORT (INCLUDING NEGLIGENCE) OR OTHERWISE, FOR ANY SPECIAL, CONSEQUENTIAL, OR INCIDENTAL DAMAGES, INCLUDING LOST PROFITS, LOST SAVING, LOSS OF DATA, SAVINGS OR BUSINESS INTERRUPTION AS A RESULT OF THE USE OF OR THE INABILITY TO USE THE WEBFONTS EVEN IF NOTIFIED IN ADVANCE OF SUCH POSSIBILITY. 
+
+4c.) Other law, Non-Business Users Only. Some jurisdictions do not allow the exclusion or limitation of incidental, consequential or special damages, or implied warranties. Any implied warranty or other right created by law is only effective for the ninety (90) day warranty period. There are no warranties or conditions of any kind after the ninety (90) day warranty period. To the extent permissible by law, You agree that all implied warranties are not to be effective for more than thirty (30) days. The terms and conditions of this License are contractual in nature. By downloading, installing and using the Webfonts, You acknowledge that You have read, understood, and agreed to be bound by the terms and conditions of this License Agreement.
+
+--------------
+5. TERMINATION
+--------------
+Any breach of the terms of this License shall be cause for immediate termination without the obligation of notice or opportunity to cure. Process shall be entitled to seek any all remedies under law or equity, without limitation, including injunctive relief without the obligation of posting security or bond. You agree to immediately discontinue using or return or the Webfont Software to Process and certify that no copy remains in Your possession or control.
+
+-----------------
+6. CHOICE OF LAW
+-----------------
+You expressly agree that this Agreement shall be governed by the laws of the State of Minnesota, USA, as they apply to contracts wholly performed therein and without respect to its conflict of laws provisions or the conflict of laws provisions of any other jurisdiction. You expressly submit to the jurisdiction of the state and federal courts in the forum selected by Process for the purposes of resolving any dispute arising under this Agreement and You expressly waive all defenses arising out of the selection of the jurisdiction and forum elected by Process for the resolution of any dispute and agree to service of process by mail. You hereby expressly agree that the application of the United Nations Convention of Contracts for the International Sale of Goods is expressly excluded. This Agreement may only be modified in writing, signed by an authorized officer of Process.
+
+-----------------------
+7. NO OTHER AGREEMENTS
+-----------------------
+This Agreement represents the complete and exclusive statement of the agreement between You and Process and it supersedes any proposal or prior agreement, oral or written, and any other communications relating to the subject matter of this Agreement. No variation of the terms of this Agreement or any different terms will be enforceable against Process in the absence of an express written amendment or consent, including a written express waiver of the affected terms of this Agreement. If any provision of this Agreement is declared by a court of competent jurisdiction to be invalid, void or unenforceable, the remaining provisions of this Agreement shall continue in full force and effect, and the invalid provision shall be replaced by Process with a provision that effects the intent of the invalid provision.
+
+-----------------
+8. MISCELLANEOUS
+-----------------
+8a.) This License may be amended by the written agreement of the parties. Process expressly reserves the right to amend or modify future versions of this License Agreement at any time and without prior notifications.
+
+8b.) The numberings of the various sections are for convenience only and shall not affect or control the interpretation and enforcement of this Agreement.
+
+------------
+9. THANK YOU
+------------
+Eric and Nicole thank you for reading this far and taking the time to understand this License Agreement! Your support makes this foundry possible.
+
+(c) 2010 Process Type Foundry
+http://www.processtypefoundry.com
+info@processtypefoundry.com

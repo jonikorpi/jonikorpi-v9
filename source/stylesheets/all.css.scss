@@ -1,0 +1,161 @@
+@charset "utf-8";
+@import "bourbon";
+@import "fonts";
+
+@-ms-viewport {width: device-width;}
+@viewport {width: device-width;}
+
+//
+// Normalization & resets for annoyances
+
+@import "normalize";
+
+*,
+h1,
+fieldset,
+figure {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1em;
+  font-family: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+textarea { resize: vertical; }
+
+//
+// Em conversion functions
+// pixels to ems & baselines to ems
+
+$font-size: 16;
+$line-height: 24;
+
+@function em($pixels, $context-font-size: $font-size) {
+  @return ($pixels / $context-font-size) * 1em;
+}
+
+@function lines($lines, $context-font-size: $font-size,  $context-line-height: $line-height) {
+  @return $lines * ($context-line-height / $context-font-size) * 1em;
+}
+
+@function rem($factor, $context-font-size: $font-size) {
+  @return ($factor * $context-font-size) / $context-font-size * 1em;
+}
+
+//
+// Variables
+
+$max-width: lines(40);
+
+//
+// Typography
+
+@mixin text-font      { font-family: Elena, serif; }
+@mixin heading-font  	{ font-family: Elena, sans-serif; }
+@mixin monospace-font { font-family: Menlo, Consolas, monospace, monospace; }
+
+//
+// Colors
+
+$hue-main: 45;
+
+// quarters
+$hue-25: $hue-main + (360 * 0.25);
+$hue-50: $hue-main + (360 * 0.5);
+$hue-75: $hue-main + (360 * 0.75);
+
+// golden ratio ^n
+$hue-979: $hue-main + (360 * 0.979);
+$hue-965: $hue-main + (360 * 0.965);
+$hue-944: $hue-main + (360 * 0.944);
+$hue-910: $hue-main + (360 * 0.910);
+$hue-854: $hue-main + (360 * 0.854);
+$hue-764: $hue-main + (360 * 0.764);
+$hue-618: $hue-main + (360 * 0.618);
+$hue-382: $hue-main + (360 * 0.382);
+$hue-236: $hue-main + (360 * 0.236);
+$hue-136: $hue-main + (360 * 0.146);
+$hue-090: $hue-main + (360 * 0.090);
+$hue-056: $hue-main + (360 * 0.056);
+$hue-034: $hue-main + (360 * 0.034);
+$hue-021: $hue-main + (360 * 0.021);
+
+// sqrt(2)
+$hue-586: $hue-main + (360 * 0.586);
+$hue-414: $hue-main + (360 * 0.414);
+
+$background: hsl($hue-main, 38.2%, 5.6%);
+$highlight:  hsl($hue-main, 23.6%, 9%);
+$border:     hsl($hue-main, 14.6%, 14.6%);
+
+$aside:     hsl($hue-main, 5.6%, 50%);
+$body:      hsl($hue-main, 9%, 61.8%);
+$emphasis:  hsl($hue-main, 14.6%, 76.4%);
+
+$link: hsl($hue-618, 85.4%, 61.8%);
+
+//
+// Media queries
+
+$xxs:      "screen and (max-width: 317px)";
+$xs:       "screen and (min-width: 318px)";
+$s:        "screen and (min-width: 478px)";
+
+$m:        "screen and (min-width: 560px)";
+
+$l:        "screen and (min-width: 780px)";
+$xl:       "screen and (min-width: 960px)";
+$xxl:      "screen and (min-width: 1100px)";
+$xxxl:     "screen and (min-width: 1200px)";
+$xxxxl:    "screen and (min-width: 1400px)";
+$xxxxxl:   "screen and (min-width: 1700px)";
+$xxxxxxl:  "screen and (min-width: 2000px)";
+
+
+//
+// Basic styles
+
+html {
+  background: $background;
+}
+
+body {
+  @include text-font;
+  font-size: em($font-size, 16);
+  line-height: $line-height/$font-size;
+  color: $body;
+  -webkit-tap-highlight-color: transparentize($link, 0.5);
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+a {
+  color: $link;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $emphasis;
+  }
+
+  &:active {
+    color: $aside;
+  }
+}
+
+h1, h2, h3, h4, h5, h6,
+strong, b {
+  @include heading-font;
+  color: $emphasis;
+}
+
+code {
+  @include monospace-font;
+}
+
+::selection      { background: $link; color: $emphasis; }
+-moz-::selection { background: $link; color: $emphasis; }
+
+/////////////////////////////////////////////////////////
