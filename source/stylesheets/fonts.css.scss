@@ -3,7 +3,8 @@
   font-weight: normal;
   font-style: normal;
   src:
-    url('ElenaWebBasic/ElenaWebBasicRegular.woff') format('woff')
+    url('ElenaWebBasic/ElenaWebBasicRegular.woff') format('woff'),
+    url('ElenaWebBasic/ElenaWebBasicRegular.woff2') format('woff2')
   ;
 }
 
@@ -12,7 +13,8 @@
   font-weight: normal;
   font-style: italic;
   src:
-    url('ElenaWebBasic/ElenaWebBasicRegularItalic.woff') format('woff')
+    url('ElenaWebBasic/ElenaWebBasicRegularItalic.woff') format('woff'),
+    url('ElenaWebBasic/ElenaWebBasicRegularItalic.woff2') format('woff2')
   ;
 }
 
@@ -21,7 +23,8 @@
   font-weight: bold;
   font-style: normal;
   src:
-    url('ElenaWebBasic/ElenaWebBasicBold.woff') format('woff')
+    url('ElenaWebBasic/ElenaWebBasicBold.woff') format('woff'),
+    url('ElenaWebBasic/ElenaWebBasicBold.woff2') format('woff2')
   ;
 }
 
@@ -30,6 +33,7 @@
   font-weight: bold;
   font-style: italic;
   src:
-    url('ElenaWebBasic/ElenaWebBasicBoldItalic.woff') format('woff')
+    url('ElenaWebBasic/ElenaWebBasicBoldItalic.woff') format('woff'),
+    url('ElenaWebBasic/ElenaWebBasicBold.woff2') format('woff2')
   ;
 }
