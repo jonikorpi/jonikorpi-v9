@@ -2,48 +2,55 @@
 title: Welcome to Middleman
 ---
 
-.home
+.site-header
   %h1 Joni Korpi
-  %small A web designer currently working on zoomable UIs, game design, VR and AR.
+  %small
+    A Finnish designer, currently working on
+    zoomable UIs on the web.
 
-  %h2 About me
-  %ul
-    %li
-      Personal profile (OkCupid-style writing, profiles)
+.cards
+  - 12.times do
+    .card
+      .card-content
+        %h1 Card title
+        %p Card content
+      %a.card-link{href: "#"}
 
-  %h2 Current work
-  %ul
-    %li
-      This site (stuff about ZUIs, non-scrollable-document designs)
-    %li
-      Atom UI theme (https://atom.io/packages/jonikorpi-atom-theme-ui)
-    %li
-      Work at Kisko Labs
 
-  %h2 Responsive layout systems
-  %ul
-    %li
-      %a{href: "/frameless/"} Frameless
-    %li
-      %a{href: "/golden-grid-system/"} Golden Grid System
-    %li
-      %a{href: "/less-framework/"} Less Framework
-
-  %h2 Early work
-  %ul
-    %li
-      %a{href: "/leaving-old-IE-behind/"} Leaving Old Internet Explorer Behind
-      %p
-        Using media queries to make a clean break from legacy browsers.
-    %li
-      %a{href: "/a-smoother-page-load/"} A Smoother Page Load
-      %p
-        An unexpected opportunity to control how the page loads, using Typekit.
-    %li
-      %a{href: "/files/adaptive-static-design-netmag-211.pdf"} Adaptive static design (PDF)
-      %p
-        My very first printed article, published in
-        = succeed "." do
-          %a{href: "http://www.netmagazine.com/shop/magazines/february-2011-211"} .net Magazine #211
-    %li
-      Little Picture was my blog about the little details in design, started in 2010. It’s currently discontinued and offline while I move it to a better archiving location.
+-#
+-#   %h2 Current work
+-#   %ul
+-#     %li
+-#       This site (stuff about ZUIs, non-scrollable-document designs)
+-#     %li
+-#       Atom UI theme (https://atom.io/packages/jonikorpi-atom-theme-ui)
+-#     %li
+-#       Work at Kisko Labs
+-#
+-#   %h2 Responsive layout systems
+-#   %ul
+-#     %li
+-#       %a{href: "/frameless/"} Frameless
+-#     %li
+-#       %a{href: "/golden-grid-system/"} Golden Grid System
+-#     %li
+-#       %a{href: "/less-framework/"} Less Framework
+-#
+-#   %h2 Early work
+-#   %ul
+-#     %li
+-#       %a{href: "/leaving-old-IE-behind/"} Leaving Old Internet Explorer Behind
+-#       %p
+-#         Using media queries to make a clean break from legacy browsers.
+-#     %li
+-#       %a{href: "/a-smoother-page-load/"} A Smoother Page Load
+-#       %p
+-#         An unexpected opportunity to control how the page loads, using Typekit.
+-#     %li
+-#       %a{href: "/files/adaptive-static-design-netmag-211.pdf"} Adaptive static design (PDF)
+-#       %p
+-#         My very first printed article, published in
+-#         = succeed "." do
+-#           %a{href: "http://www.netmagazine.com/shop/magazines/february-2011-211"} .net Magazine #211
+-#     %li
+-#       Little Picture was my blog about the little details in design, started in 2010. It’s currently discontinued and offline while I move it to a better archiving location.

@@ -15,6 +15,7 @@ html * {
   font-family: inherit;
   line-height: inherit;
   vertical-align: baseline;
+  box-sizing: border-box;
 }
 
 textarea { resize: vertical; }
@@ -24,7 +25,7 @@ textarea { resize: vertical; }
 // pixels to ems & baselines to ems
 
 $font-size: 16;
-$line-height: 24;
+$line-height: 22;
 
 @function em($pixels, $context-font-size: $font-size) {
   @return ($pixels / $context-font-size) * 1em;
@@ -46,8 +47,9 @@ $max-width: lines(40);
 //
 // Typography
 
+@import "fonts";
+
 @mixin text-font      { font-family: Elena, serif; }
-@mixin heading-font  	{ font-family: Elena, sans-serif; }
 @mixin monospace-font { font-family: Menlo, Consolas, monospace, monospace; }
 
 //
@@ -88,6 +90,7 @@ $aside:     hsl($hue-main, 5.6%, 50%);
 $body:      hsl($hue-main, 9%, 61.8%);
 $emphasis:  hsl($hue-main, 14.6%, 76.4%);
 
+$purple: hsl($hue-618, 61.8%, 23.6%);
 $link: hsl($hue-618, 85.4%, 61.8%);
 
 //
@@ -107,9 +110,24 @@ $xxxxl:    "screen and (min-width: 1400px)";
 $xxxxxl:   "screen and (min-width: 1700px)";
 $xxxxxxl:  "screen and (min-width: 2000px)";
 
+//
+// Mixins
+
+@mixin card ($ratio, $w-size:1, $h-size:1) {
+  width:  100vw * $ratio * $w-size;
+  height: 100vh * $ratio * $h-size;
+  font-size: 2vmin * $ratio;
+}
+
 
 //
 // Basic styles
+
+html,
+body {
+  height: 100%;
+  // overflow: hidden;
+}
 
 html {
   background: $background;
@@ -121,8 +139,6 @@ body {
   line-height: $line-height/$font-size;
   color: $body;
   -webkit-tap-highlight-color: transparentize($link, 0.5);
-  max-width: $max-width;
-  margin: 0 auto;
 }
 
 a {
@@ -141,7 +157,6 @@ a {
 
 h1, h2, h3, h4, h5, h6,
 strong, b {
-  @include heading-font;
   color: $emphasis;
 }
 
@@ -154,6 +169,52 @@ code {
 
 /////////////////////////////////////////////////////////
 
-.home {
+h1 {
+  font-size: em(42);
+  line-height: lines(2, 42);
+}
 
+.site-canvas {
+  width: 100vw;
+  height: 100vh;
+  background: $highlight;
+}
+
+.site-header {
+  @include card(1/4, 4);
+  font-size: 3vmin;
+  text-align: center;
+
+  h1 {
+    padding: lines(1.333, 42) 0 0;
+  }
+}
+
+.card {
+  @include card(1/4);
+  text-align: center;
+  float: left;
+  position: relative;
+}
+
+.card-content {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background: $background;
+  padding: lines(3);
+}
+
+.card-link {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border: 1px solid $highlight;
+  z-index: 100;
+
+  &:hover,
+  &:focus {
+    background: transparentize($purple, 0.854);
+    cursor: zoom-in;
+    border-color: $link;
+  }
 }
