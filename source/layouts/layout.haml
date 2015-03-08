@@ -45,7 +45,8 @@
     -# %meta{name: "format-detection", content: "telephone=no"}
 
   %body{class: "#{page_classes}"}
-    = yield
+    .site-canvas
+      = yield
 
     = javascript_include_tag "all"
     - if build?
