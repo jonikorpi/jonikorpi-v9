@@ -126,7 +126,7 @@ $xxxxxxl:  "screen and (min-width: 2000px)";
 html,
 body {
   height: 100%;
-  // overflow: hidden;
+  overflow: hidden;
 }
 
 html {
@@ -178,6 +178,12 @@ h1 {
   width: 100vw;
   height: 100vh;
   background: $highlight;
+  transform: translate3d(0,0,0);
+  transition: all 0.333s ease-out;
+}
+
+.initial-zoomable {
+  overflow: hidden;
 }
 
 .site-header {
@@ -195,6 +201,7 @@ h1 {
   text-align: center;
   float: left;
   position: relative;
+  transform: translate3d(0,0,0);
 }
 
 .card-content {
@@ -210,6 +217,10 @@ h1 {
   left: 0; top: 0; right: 0; bottom: 0;
   border: 1px solid $highlight;
   z-index: 100;
+
+  .current-zoomable > & {
+    display: none;
+  }
 
   &:hover,
   &:focus {
