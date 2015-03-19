@@ -15,7 +15,6 @@ $ ->
   targetCanvas = $(".target-canvas")
   initialZoomable = $(".initial-zoomable")
   zoomableAnchor = $(".zoomable-anchor")
-  zoomableContentClass = ".card-content"
 
   baseTransitionTime = 0.333
   transitionEasing = "ease-out"
@@ -26,13 +25,6 @@ $ ->
   zoomToFit = (target, duration = baseTransitionTime, setHash = true) ->
 
     console.log "------------------------------------------------"
-
-    # Pop .current-zoomable back into canvas, if it's outside
-    targetCanvasContent = targetCanvas.find(zoomableContentClass)
-    if targetCanvasContent.length > 0
-      $(".current-zoomable").children(zoomableContentClass).replaceWith( targetCanvasContent )
-      console.log "#{targetCanvasContent} was appended back to #{$(".current-zoomable")}"
-    targetCanvas.hide()
 
     # Fetch previous transform variables, if they exist
     if canvas.data("scale")
@@ -123,18 +115,25 @@ $ ->
     console.log "all #{transitionTime}s #{transitionEasing}"
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
-    # Set .current-zoomable
-    unless $(".current-zoomable")[0] == target
-      $(".current-zoomable").removeClass("current-zoomable")
-      target.addClass("current-zoomable")
+    # Pop .current-zoomable back into canvas, if it's outside
+    targetCanvasContent = targetCanvas.children()
+    if targetCanvasContent.length > 0
+      $(".current-zoomable").replaceWith( targetCanvasContent[0] )
+      console.log "#{targetCanvasContent[0]} was appended back to #{$(".current-zoomable")}"
+    targetCanvas.hide()
 
     # Pop target out of the canvas and show it at 1:1 scale
     unless initialZoomable[0] == target[0]
-      target.children(zoomableContentClass).clone().appendTo(targetCanvas)
-      console.log "#{target.find(zoomableContentClass)} is being appended to #{targetCanvas}"
+      target.clone().appendTo(targetCanvas)
+      console.log "#{target.children()} is being appended to #{targetCanvas}"
       canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
         targetCanvas.show()
         canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+
+    # Set new .current-zoomable
+    unless $(".current-zoomable")[0] == target
+      $(".current-zoomable").removeClass("current-zoomable")
+      target.addClass("current-zoomable")
 
     # Save transform variables for next transform
     canvas.data("scale", scale)
@@ -166,11 +165,10 @@ $ ->
   # Zoom out button
 
   $("#zoom-out").on "click", (event) ->
-    if initialZoomable.hasClass("current-zoomable")
-      zoomToFit( initialZoomable )
-    else
-      if $(".current-zoomable").parent().closest(".zoomable").length > 0
-        zoomToFit( $(".current-zoomable").parent().closest(".zoomable") )
+    unless initialZoomable.hasClass("current-zoomable")
+      parentZoomables = $(".current-zoomable").parent().closest(".zoomable")
+      if parentZoomables.length > 0
+        zoomToFit( parentZoomables[0] )
       else
         zoomToFit( initialZoomable )
 

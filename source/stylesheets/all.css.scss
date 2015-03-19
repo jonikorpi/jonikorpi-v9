@@ -219,6 +219,12 @@ h1 {
   float: left;
   position: relative;
   transform: translate3d(0,0,0);
+
+  .target-canvas & {
+    width: 100vw;
+    height: 100vh;
+    font-size: 2vmin;
+  }
 }
 
 .card-content {
@@ -236,6 +242,7 @@ h1 {
   border: 1px solid $highlight;
   z-index: 100;
 
+  .target-canvas &,
   .current-zoomable > & {
     display: none;
   }
