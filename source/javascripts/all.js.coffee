@@ -68,12 +68,12 @@ $ ->
     # Calculate current viewport, canvas and target positions
     viewportWidth  = viewport.width()
     viewportHeight = viewport.height()
-    canvasWidth    = canvas[0].getBoundingClientRect().width
-    canvasHeight   = canvas[0].getBoundingClientRect().height
-    targetWidth    = target[0].getBoundingClientRect().width  / currentScale
-    targetHeight   = target[0].getBoundingClientRect().height / currentScale
-    targetLeft     = target[0].getBoundingClientRect().left
-    targetTop      = target[0].getBoundingClientRect().top
+    canvasWidth    = canvas.width()       # / currentScale
+    canvasHeight   = canvas.height()      # / currentScale
+    targetWidth    = target.width()       # / currentScale
+    targetHeight   = target.height()      # / currentScale
+    targetLeft     = target.position().left # / currentScale
+    targetTop      = target.position().top  # / currentScale
 
     # Calculate new scale, canvas position and transition time
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
@@ -81,8 +81,13 @@ $ ->
     # Calculate left/top positions
     targetOffsetX  = 0#(viewportWidth  - (targetWidth)  ) * 0.5
     targetOffsetY  = 0#(viewportHeight - (targetHeight) ) * 0.5
-    x = round( (targetLeft / currentScale) * -1 + currentX + targetOffsetX, 2 )
-    y = round( (targetTop  / currentScale) * -1 + currentY + targetOffsetY, 2 )
+    if initialZoomable[0] == target[0]
+      console.log "initialZoomable is target."
+      x = 0
+      y = 0
+    else
+      x = round( (targetLeft / currentScale) * -1, 2 )
+      y = round( (targetTop  / currentScale) * -1, 2 )
     z = 0
     transitionTime = duration
 
@@ -100,11 +105,24 @@ $ ->
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     console.log target
-    console.log "Fitting #{targetWidth}/#{targetHeight} into #{viewportWidth}/#{viewportHeight}"
-    console.log "Current transform: [#{currentScale}, #{currentX}px, #{currentY}px]"
-    console.log "New transform: [#{scale}, #{x}px, #{y}px]"
-    console.log "Offsetting by [#{targetOffsetX}, #{targetOffsetY}]"
-    console.log "During #{transitionTime}s with #{transitionEasing}"
+    console.log "viewportWidth  : #{viewportWidth}  "
+    console.log "viewportHeight : #{viewportHeight} "
+    console.log "canvasWidth    : #{canvasWidth}    "
+    console.log "canvasHeight   : #{canvasHeight}   "
+    console.log "targetWidth    : #{targetWidth}    "
+    console.log "targetHeight   : #{targetHeight}   "
+    console.log "targetLeft     : #{targetLeft}     "
+    console.log "targetTop      : #{targetTop}"
+    console.log "scale          : #{scale}"
+    console.log "transitionTime : #{transitionTime}"
+    console.log "z              : #{z}"
+    console.log "y              : #{y}"
+    console.log "x              : #{x}"
+    console.log "targetOffsetY  : #{targetOffsetY} "
+    console.log "targetOffsetX  : #{targetOffsetX} "
+    console.log "all #{transitionTime}s #{transitionEasing}"
+    console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
+
 
     # Set .current-zoomable
     unless $(".current-zoomable")[0] == target
