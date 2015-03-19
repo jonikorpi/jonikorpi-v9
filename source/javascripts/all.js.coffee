@@ -49,22 +49,22 @@ $ ->
     canvasHeight   = canvas[0].getBoundingClientRect().height
     targetWidth    = target[0].getBoundingClientRect().width  / currentScale
     targetHeight   = target[0].getBoundingClientRect().height / currentScale
-    targetLeft     = target[0].getBoundingClientRect().left   / currentScale
-    targetTop      = target[0].getBoundingClientRect().top    / currentScale
+    targetLeft     = target.offset().left
+    targetTop      = target.offset().top
 
     # Calculate new scale, canvas position and transition time
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
 
     # Calculate left/top positions
-    targetOffsetX  = 0#(targetWidth  * 2 / currentScale)
-    targetOffsetY  = 0#(targetHeight * 2 / currentScale)
+    targetOffsetX  = viewportWidth  / currentScale * 0.5 - targetWidth  * 0.5
+    targetOffsetY  = viewportHeight / currentScale * 0.5 - targetHeight * 0.5
     if initialZoomable[0] == target[0]
       console.log "initialZoomable is target."
       x = 0
       y = 0
     else
-      x = round( (targetLeft * currentScale) * -1 + targetOffsetX, 2 )
-      y = round( (targetTop  * currentScale) * -1 + targetOffsetY, 2 )
+      x = round( (targetLeft / currentScale) * -1 + targetOffsetX + currentX, 2 )
+      y = round( (targetTop  / currentScale) * -1 + targetOffsetY + currentY, 2 )
     z = 0
     transitionTime = duration
 

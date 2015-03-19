@@ -187,16 +187,11 @@ h1 {
   width: 100vw;
   height: 100vh;
   background: $highlight;
+  position: relative;
   // transform: translate3d(0,0,0);
-  transform-origin: left top;
+  // transform-origin: left top;
   // transition: all #{$baseTransitionTime}s ease-out;
 }
-
-// .target-canvas {
-//   position: absolute;
-//   left: 0; top: 0; right: 0; bottom: 0;
-//   display: none;
-// }
 
 .ui-canvas {
   position: absolute;
@@ -219,7 +214,7 @@ h1 {
   display: table;
 
   .card & {
-    @include size( (1/4)*(1/4), 4 );
+    @include size( (2/4)*(1/4), 2 );
   }
 }
 
@@ -260,7 +255,7 @@ h1 {
   font-size: 2em;
   max-width: 30em;
   margin: 0 auto;
-  padding: 5em;
+  padding: 1em;
 }
 
 .card-link {
@@ -269,6 +264,11 @@ h1 {
   border: 1px solid transparent;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
+  display: none;
+
+  .current-zoomable & {
+    display: block;
+  }
 
   .current-zoomable > & {
     display: none;
