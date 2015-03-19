@@ -2,27 +2,33 @@
 title: Welcome to Middleman
 ---
 
-.initial-zoomable
+.initial-zoomable.current-zoomable
 
-  .site-header
-    %h1 Joni Korpi
-    %small
-      A Finnish designer, currently working on
-      zoomable UIs on the web.
+  .card-header
+    .card-header-wrapper
+      %h1 Joni Korpi
+      %small
+        A Finnish designer, currently working on
+        zoomable UIs on the web.
 
   .cards
     - 12.times do |index|
       .card.zoomable{id: "card-#{index}"}
-        .card-content
-          .card-title
-            %h1 Card title
-            %p Card content
-          -# - 4.times do |indexCascade|
-          -#   .card.zoomable{id: "card-#{index}-#{indexCascade}"}
-          -#     .card-content
-          -#       .card-title
-          -#         %h1 Card title
-          -#         %p Card content
+        .zoomable-content
+          - 3.times do |indexCascade|
+            .card.zoomable{id: "card-#{index}-#{indexCascade}"}
+              .zoomable-content
+                .fake-paragraphs= lorem.paragraphs 10
+              %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
+          .card-header
+            .card-header-wrapper
+              %h1 Card title
+              %p Card content
+          - 3.times do |indexCascade|
+            .card.zoomable{id: "card-#{index}-#{indexCascade}"}
+              .zoomable-content
+                .fake-paragraphs= lorem.paragraphs 10
+              %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
         %a.card-link.zoomable-anchor{href: "/card-#{index}"}
 
 
