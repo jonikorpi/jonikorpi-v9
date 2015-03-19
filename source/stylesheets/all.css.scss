@@ -178,6 +178,8 @@ h1 {
   overflow: hidden;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
+  perspective: 1000;
+  transform: translate3d(0,0,0);
 }
 
 .site-canvas {
