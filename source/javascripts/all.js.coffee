@@ -28,11 +28,11 @@ $ ->
     console.log "------------------------------------------------"
 
     # Pop .current-zoomable back into canvas, if it's outside
-    # targetCanvasContent = targetCanvas.find(zoomableContentClass)
-    # if targetCanvasContent.length > 0
-    #   targetCanvasContent.appendTo(".current-zoomable")
-    #   targetCanvas.hide()
-    #   console.log "#{targetCanvasContent} was appended back to #{$(".current-zoomable")}"
+    targetCanvasContent = targetCanvas.find(zoomableContentClass)
+    if targetCanvasContent.length > 0
+      $(".current-zoomable").children(zoomableContentClass).replaceWith( targetCanvasContent )
+      console.log "#{targetCanvasContent} was appended back to #{$(".current-zoomable")}"
+    targetCanvas.hide()
 
     # Fetch previous transform variables, if they exist
     if canvas.data("scale")
@@ -123,16 +123,18 @@ $ ->
     console.log "all #{transitionTime}s #{transitionEasing}"
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
-
     # Set .current-zoomable
     unless $(".current-zoomable")[0] == target
       $(".current-zoomable").removeClass("current-zoomable")
       target.addClass("current-zoomable")
 
     # Pop target out of the canvas and show it at 1:1 scale
-    # target.find(zoomableContentClass).appendTo(targetCanvas)
-    # targetCanvas.show()
-    # console.log "#{target.find(zoomableContentClass)} was appended to #{targetCanvas}"
+    unless initialZoomable[0] == target[0]
+      target.children(zoomableContentClass).clone().appendTo(targetCanvas)
+      console.log "#{target.find(zoomableContentClass)} is being appended to #{targetCanvas}"
+      canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+        targetCanvas.show()
+        canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
 
     # Save transform variables for next transform
     canvas.data("scale", scale)
