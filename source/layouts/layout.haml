@@ -45,10 +45,12 @@
     -# %meta{name: "format-detection", content: "telephone=no"}
 
   %body{class: "#{page_classes}"}
-    .site-canvas
-      = yield
-    .target-canvas
-    %a#zoom-out{href: "#zoom-out"} Zoom out
+    .site-viewport
+      .site-canvas
+        = yield
+      .target-canvas
+      .ui-canvas
+        %a#zoom-out{href: "#zoom-out"} Zoom out
 
     = javascript_include_tag "all"
     - if build?

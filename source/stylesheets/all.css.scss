@@ -174,11 +174,18 @@ h1 {
   line-height: lines(2, 42);
 }
 
+.site-viewport {
+  overflow: hidden;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+
 .site-canvas {
   width: 100vw;
   height: 100vh;
   background: $highlight;
   transform: translate3d(0,0,0);
+  transform-origin: left top;
   transition: all 0.333s ease-out;
 }
 
@@ -186,6 +193,11 @@ h1 {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   display: none;
+}
+
+.ui-canvas {
+  position: absolute;
+  left: 0; bottom: 0;
 }
 
 .initial-zoomable {
