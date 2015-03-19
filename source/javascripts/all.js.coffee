@@ -12,8 +12,10 @@ $ ->
 
   viewport = $("body")
   canvas = $(".site-canvas")
+  targetCanvas = $(".target-canvas")
   initialZoomable = $(".initial-zoomable")
   zoomableAnchor = $(".zoomable-anchor")
+  zoomableContentClass = ".card-content"
 
   baseTransitionTime = 0.333
   transitionEasing = "ease-out"
@@ -22,6 +24,16 @@ $ ->
   # Zoom-to-fit function
 
   zoomToFit = (target, duration = baseTransitionTime, setHash = true) ->
+
+    console.log "------------------------------------------------"
+
+    # Pop .current-zoomable back into canvas, if it's outside
+    # targetCanvasContent = targetCanvas.find(zoomableContentClass)
+    # if targetCanvasContent.length > 0
+    #   targetCanvasContent.appendTo(".current-zoomable")
+    #   targetCanvas.hide()
+    #   console.log "#{targetCanvasContent} was appended back to #{$(".current-zoomable")}"
+
     # Fetch previous transform variables, if they exist
     if canvas.data("scale")
       currentScale = canvas.data("scale")
@@ -87,7 +99,6 @@ $ ->
       "-ms-transform":     "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
-    console.log "------------------------------------------------"
     console.log target
     console.log "Fitting #{targetWidth}/#{targetHeight} into #{viewportWidth}/#{viewportHeight}"
     console.log "Current transform: [#{currentScale}, #{currentX}px, #{currentY}px]"
@@ -99,6 +110,11 @@ $ ->
     unless $(".current-zoomable")[0] == target
       $(".current-zoomable").removeClass("current-zoomable")
       target.addClass("current-zoomable")
+
+    # Pop target out of the canvas and show it at 1:1 scale
+    # target.find(zoomableContentClass).appendTo(targetCanvas)
+    # targetCanvas.show()
+    # console.log "#{target.find(zoomableContentClass)} was appended to #{targetCanvas}"
 
     # Save transform variables for next transform
     canvas.data("scale", scale)

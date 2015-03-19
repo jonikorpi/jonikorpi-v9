@@ -47,6 +47,7 @@
   %body{class: "#{page_classes}"}
     .site-canvas
       = yield
+    .target-canvas
     %a#zoom-out{href: "#zoom-out"} Zoom out
 
     = javascript_include_tag "all"
