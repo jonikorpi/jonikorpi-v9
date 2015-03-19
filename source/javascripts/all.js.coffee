@@ -42,44 +42,29 @@ $ ->
     else
       currentY = 0
 
-    # Pause any currently running transitions by giving canvas its own current transform values
-    # currentCanvasStyles = window.getComputedStyle(canvas[0])
-    # realCurrentTransform = currentCanvasStyles.getPropertyValue("-webkit-transform") || currentCanvasStyles.getPropertyValue("-moz-transform") || currentCanvasStyles.getPropertyValue("-o-transform") || currentCanvasStyles.getPropertyValue("-ms-transform") || currentCanvasStyles.getPropertyValue("transform")
-    # canvas.css
-    #   "-webkit-transition": "none"
-    #   "-moz-transition":    "none"
-    #   "-o-transition":      "none"
-    #   "-ms-transition":     "none"
-    #   "transition":         "none"
-    #   "-webkit-transform": realCurrentTransform
-    #   "-moz-transform":    realCurrentTransform
-    #   "-o-transform":      realCurrentTransform
-    #   "-ms-transform":     realCurrentTransform
-    #   "transform":         realCurrentTransform
-
     # Calculate current viewport, canvas and target positions
     viewportWidth  = viewport.width()
     viewportHeight = viewport.height()
-    canvasWidth    = canvas.width()       # / currentScale
-    canvasHeight   = canvas.height()      # / currentScale
-    targetWidth    = target.width()       # / currentScale
-    targetHeight   = target.height()      # / currentScale
-    targetLeft     = target.position().left # / currentScale
-    targetTop      = target.position().top  # / currentScale
+    canvasWidth    = canvas[0].getBoundingClientRect().width
+    canvasHeight   = canvas[0].getBoundingClientRect().height
+    targetWidth    = target[0].getBoundingClientRect().width  / currentScale
+    targetHeight   = target[0].getBoundingClientRect().height / currentScale
+    targetLeft     = target[0].getBoundingClientRect().left   / currentScale
+    targetTop      = target[0].getBoundingClientRect().top    / currentScale
 
     # Calculate new scale, canvas position and transition time
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
 
     # Calculate left/top positions
-    targetOffsetX  = (targetWidth  * 1.5 / currentScale)
-    targetOffsetY  = (targetHeight * 1.5 / currentScale)
+    targetOffsetX  = 0#(targetWidth  * 2 / currentScale)
+    targetOffsetY  = 0#(targetHeight * 2 / currentScale)
     if initialZoomable[0] == target[0]
       console.log "initialZoomable is target."
       x = 0
       y = 0
     else
-      x = round( (targetLeft / currentScale) * -1 + targetOffsetX, 2 )
-      y = round( (targetTop  / currentScale) * -1 + targetOffsetY, 2 )
+      x = round( (targetLeft * currentScale) * -1 + targetOffsetX, 2 )
+      y = round( (targetTop  * currentScale) * -1 + targetOffsetY, 2 )
     z = 0
     transitionTime = duration
 
@@ -97,7 +82,8 @@ $ ->
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     # Replace 3D transforms with 2D ones after transition finishes
-    canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+    canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
+      canvas.off "otransitionend transitionend webkitTransitionEnd"
       canvas.css
         "-webkit-transition": "none"
         "-moz-transition":    "none"
@@ -108,8 +94,10 @@ $ ->
         "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
         "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
         "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+      console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
 
     console.log target
+    console.log "currentScale   : #{currentScale}"
     console.log "viewportWidth  : #{viewportWidth}  "
     console.log "viewportHeight : #{viewportHeight} "
     console.log "canvasWidth    : #{canvasWidth}    "
@@ -158,18 +146,18 @@ $ ->
     canvas.data("y", y)
 
     # If zoomable has an ID, set it as the URL hash
-    if setHash
-      targetID = target.attr("id")
-      if targetID
-        history.pushState("", document.title, targetID)
-        # window.location.hash = targetID
-        console.log "Setting hash to #{targetID}"
-      else
-        history.pushState("", document.title, "/")
-        # window.location.hash = ""
-        console.log "Clearing hash"
-    else
-      console.log "Not setting a hash"
+    # if setHash
+    #   targetID = target.attr("id")
+    #   if targetID
+    #     history.pushState("", document.title, targetID)
+    #     # window.location.hash = targetID
+    #     console.log "Setting hash to #{targetID}"
+    #   else
+    #     history.pushState("", document.title, "/")
+    #     # window.location.hash = ""
+    #     console.log "Clearing hash"
+    # else
+    #   console.log "Not setting a hash"
 
   #
   # Anchors on zoomables
@@ -184,9 +172,13 @@ $ ->
   $("#zoom-out").on "click", (event) ->
     unless initialZoomable.hasClass("current-zoomable")
       parentZoomables = $(".current-zoomable").parent().closest(".zoomable")
+      console.log "------------------------------------------------"
       if parentZoomables.length > 0
-        zoomToFit( parentZoomables[0] )
+        console.log "Zooming out to:"
+        console.log parentZoomables[0]
+        zoomToFit( $(parentZoomables[0]) )
       else
+        console.log "Zooming out to initialZoomable"
         zoomToFit( initialZoomable )
 
   #
