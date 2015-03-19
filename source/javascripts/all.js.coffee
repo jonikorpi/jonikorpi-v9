@@ -14,7 +14,7 @@ $ ->
   canvas = $(".site-canvas")
   targetCanvas = $(".target-canvas")
   initialZoomable = $(".initial-zoomable")
-  zoomableAnchor = $(".zoomable-anchor")
+  zoomableAnchor = ".zoomable-anchor"
 
   baseTransitionTime = 0.333
   transitionEasing = "ease-out"
@@ -71,15 +71,15 @@ $ ->
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
 
     # Calculate left/top positions
-    targetOffsetX  = 0#(viewportWidth  - (targetWidth)  ) * 0.5
-    targetOffsetY  = 0#(viewportHeight - (targetHeight) ) * 0.5
+    targetOffsetX  = (targetWidth  * 1.5 / currentScale)
+    targetOffsetY  = (targetHeight * 1.5 / currentScale)
     if initialZoomable[0] == target[0]
       console.log "initialZoomable is target."
       x = 0
       y = 0
     else
-      x = round( (targetLeft / currentScale) * -1, 2 )
-      y = round( (targetTop  / currentScale) * -1, 2 )
+      x = round( (targetLeft / currentScale) * -1 + targetOffsetX, 2 )
+      y = round( (targetTop  / currentScale) * -1 + targetOffsetY, 2 )
     z = 0
     transitionTime = duration
 
@@ -157,7 +157,7 @@ $ ->
   #
   # Anchors on zoomables
 
-  zoomableAnchor.on "click", (event) ->
+  $("body").on "click", zoomableAnchor, (event) ->
     event.preventDefault()
     zoomToFit( $(this).closest(".zoomable") )
 
@@ -197,8 +197,8 @@ $ ->
   # Init
 
   # Initial zoom
-  initialHash = window.location.hash.substr(1)
-  if initialHash
-    zoomToFit( $("##{initialHash}"), 0, false )
-  else
-    zoomToFit( initialZoomable )
+  # initialHash = window.location.hash.substr(1)
+  # if initialHash
+  #   zoomToFit( $("##{initialHash}"), 0, false )
+  # else
+  #   zoomToFit( initialZoomable )

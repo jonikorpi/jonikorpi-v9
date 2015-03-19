@@ -185,7 +185,7 @@ h1 {
   height: 100vh;
   background: $highlight;
   transform: translate3d(0,0,0);
-  transform-origin: left top;
+  // transform-origin: left top;
   transition: all 0.333s ease-out;
 }
 
