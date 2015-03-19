@@ -134,6 +134,10 @@ $ ->
     unless $(".current-zoomable")[0] == target
       $(".current-zoomable").removeClass("current-zoomable")
       target.addClass("current-zoomable")
+      if target.hasClass("initial-zoomable")
+        $("html").addClass("initial-zoom")
+      else
+        $("html").removeClass("initial-zoom")
 
     # Save transform variables for next transform
     canvas.data("scale", scale)
