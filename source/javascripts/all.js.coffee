@@ -16,7 +16,7 @@ $ ->
   initialZoomable = $(".initial-zoomable")
   zoomableAnchor = ".zoomable-anchor"
 
-  baseTransitionTime = 0.333
+  baseTransitionTime = 0.382
   transitionEasing = "ease-out"
 
   #
@@ -96,6 +96,19 @@ $ ->
       "-ms-transform":     "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
+    # Replace 3D transforms with 2D ones after transition finishes
+    canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+      canvas.css
+        "-webkit-transition": "none"
+        "-moz-transition":    "none"
+        "-o-transition":      "none"
+        "-ms-transition":     "none"
+        "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+
     console.log target
     console.log "viewportWidth  : #{viewportWidth}  "
     console.log "viewportHeight : #{viewportHeight} "
@@ -116,19 +129,19 @@ $ ->
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     # Pop .current-zoomable back into canvas, if it's outside
-    targetCanvasContent = targetCanvas.children()
-    if targetCanvasContent.length > 0
-      $(".current-zoomable").replaceWith( targetCanvasContent[0] )
-      console.log "#{targetCanvasContent[0]} was appended back to #{$(".current-zoomable")}"
-    targetCanvas.hide()
+    # targetCanvasContent = targetCanvas.children()
+    # if targetCanvasContent.length > 0
+    #   $(".current-zoomable").replaceWith( targetCanvasContent[0] )
+    #   console.log "#{targetCanvasContent[0]} was appended back to #{$(".current-zoomable")}"
+    # targetCanvas.hide()
 
     # Pop target out of the canvas and show it at 1:1 scale
-    unless initialZoomable[0] == target[0]
-      target.clone().appendTo(targetCanvas)
-      console.log "#{target.children()} is being appended to #{targetCanvas}"
-      canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
-        targetCanvas.show()
-        canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+    # unless initialZoomable[0] == target[0]
+    #   target.clone().appendTo(targetCanvas)
+    #   console.log "#{target.children()} is being appended to #{targetCanvas}"
+    #   canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+    #     targetCanvas.show()
+    #     canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
 
     # Set new .current-zoomable
     unless $(".current-zoomable")[0] == target

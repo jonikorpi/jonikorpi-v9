@@ -14,8 +14,15 @@ title: Welcome to Middleman
     - 12.times do |index|
       .card.zoomable{id: "card-#{index}"}
         .card-content
-          %h1 Card title
-          %p Card content
+          .card-title
+            %h1 Card title
+            %p Card content
+          -# - 4.times do |indexCascade|
+          -#   .card.zoomable{id: "card-#{index}-#{indexCascade}"}
+          -#     .card-content
+          -#       .card-title
+          -#         %h1 Card title
+          -#         %p Card content
         %a.card-link.zoomable-anchor{href: "/card-#{index}"}
 
 
