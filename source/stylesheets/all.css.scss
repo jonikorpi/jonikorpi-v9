@@ -43,6 +43,7 @@ $line-height: 22;
 // Variables
 
 $max-width: lines(40);
+$baseTransitionTime: 0.414s;
 
 //
 // Typography
@@ -178,24 +179,24 @@ h1 {
   overflow: hidden;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  perspective: 1000;
-  transform: translate3d(0,0,0);
+  // perspective: 1000;
+  // transform: translate3d(0,0,0);
 }
 
 .site-canvas {
   width: 100vw;
   height: 100vh;
   background: $highlight;
-  transform: translate3d(0,0,0);
+  // transform: translate3d(0,0,0);
   // transform-origin: left top;
-  transition: all 0.333s ease-out;
+  // transition: all $baseTransitionTime ease-out;
 }
 
-.target-canvas {
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  display: none;
-}
+// .target-canvas {
+//   position: absolute;
+//   left: 0; top: 0; right: 0; bottom: 0;
+//   display: none;
+// }
 
 .ui-canvas {
   position: absolute;
@@ -226,7 +227,10 @@ h1 {
   @include card(1/4);
   float: left;
   position: relative;
-  transform: translate3d(0,0,0);
+
+  .card {
+    @include card(1/8);
+  }
 
   .target-canvas & {
     width: 100vw;
@@ -240,7 +244,6 @@ h1 {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: $background;
-  padding: lines(3);
   text-align: center;
 }
 
