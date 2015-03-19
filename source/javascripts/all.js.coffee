@@ -143,10 +143,12 @@ $ ->
     if setHash
       targetID = target.attr("id")
       if targetID
-        window.location.hash = targetID
+        history.pushState("", document.title, targetID)
+        # window.location.hash = targetID
         console.log "Setting hash to #{targetID}"
       else
-        window.location.hash = ""
+        history.pushState("", document.title, "/")
+        # window.location.hash = ""
         console.log "Clearing hash"
     else
       console.log "Not setting a hash"
