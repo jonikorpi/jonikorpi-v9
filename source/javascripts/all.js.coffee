@@ -10,14 +10,17 @@ $ ->
   #
   # Config
 
-  viewport = $("body")
-  canvas = $(".site-canvas")
-  targetCanvas = $(".target-canvas")
-  initialZoomable = $(".initial-zoomable")
-  zoomableAnchor = ".zoomable-anchor"
-
-  baseTransitionTime = 0.382
-  transitionEasing = "ease-out"
+  window.Engine =
+    viewport: $(".site-viewport")
+    canvas: $(".site-canvas")
+    targetCanvas: $(".target-canvas")
+    initialZoomable: $(".initial-zoomable")
+    zoomableAnchor: ".zoomable-anchor"
+    baseTransitionTime: 0.382
+    transitionEasing: "ease-out"
+    currentScale: 1
+    currentX: 0
+    currentY: 0
 
   #
   # Set hash and history API functions
@@ -37,8 +40,8 @@ $ ->
   # Pop .current-zoomable back into canvas, if it's outside
 
   returnTarget = (target) ->
-    targetCanvas.hide()
-    targetCanvasContent = targetCanvas.children(".zoomable")
+    window.Engine.targetCanvas.hide()
+    targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
     if targetCanvasContent.length > 0
       $(".target-placeholder").replaceWith( targetCanvasContent[0] )
       console.log "#{targetCanvasContent[0]} was appended back to replace #{$(".current-zoomable")}"
@@ -59,44 +62,28 @@ $ ->
   # Pop target out of the canvas and show it at 1:1 scale
 
   cloneTarget = (target) ->
-    unless initialZoomable[0] == target[0]
-      console.log "#{target} is being appended to #{targetCanvas}"
-      canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
-        targetCanvas.show()
-        target.clone().appendTo(targetCanvas)
+    unless window.Engine.initialZoomable[0] == target[0]
+      console.log "#{target} is being appended to #{window.Engine.targetCanvas}"
+      window.Engine.canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+        window.Engine.targetCanvas.show()
+        target.clone().appendTo(window.Engine.targetCanvas)
         target.replaceWith("<div class='zoomable target-placeholder'></div>")
-        canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+        window.Engine.canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
 
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = baseTransitionTime) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime) ->
 
     console.log "------------------------------------------------"
 
-    # Fetch previous transform variables, if they exist
-    if canvas.data("scale")
-      currentScale = canvas.data("scale")
-    else
-      currentScale = 1
-
-    if canvas.data("x")
-      currentX = canvas.data("x")
-    else
-      currentX = 0
-
-    if canvas.data("y")
-      currentY = canvas.data("y")
-    else
-      currentY = 0
-
     # Calculate current viewport, canvas and target positions
-    viewportWidth  = viewport.width()
-    viewportHeight = viewport.height()
-    canvasWidth    = canvas[0].getBoundingClientRect().width
-    canvasHeight   = canvas[0].getBoundingClientRect().height
-    targetWidth    = target[0].getBoundingClientRect().width  / currentScale
-    targetHeight   = target[0].getBoundingClientRect().height / currentScale
+    viewportWidth  = window.Engine.viewport.width()
+    viewportHeight = window.Engine.viewport.height()
+    canvasWidth    = window.Engine.canvas[0].getBoundingClientRect().width
+    canvasHeight   = window.Engine.canvas[0].getBoundingClientRect().height
+    targetWidth    = target[0].getBoundingClientRect().width  / window.Engine.currentScale
+    targetHeight   = target[0].getBoundingClientRect().height / window.Engine.currentScale
     targetLeft     = target.offset().left
     targetTop      = target.offset().top
 
@@ -104,28 +91,28 @@ $ ->
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
 
     # Calculate left/top positions
-    targetOffsetX  = viewportWidth  / currentScale * 0.5 - targetWidth  * 0.5
-    targetOffsetY  = viewportHeight / currentScale * 0.5 - targetHeight * 0.5
+    targetOffsetX  = viewportWidth  / window.Engine.currentScale * 0.5 - targetWidth  * 0.5
+    targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
 
-    if initialZoomable[0] == target[0]
+    if window.Engine.initialZoomable[0] == target[0]
       console.log "initialZoomable is target."
       x = 0
       y = 0
       scale = 1
     else
-      x = round( (targetLeft / currentScale) * -1 + targetOffsetX + currentX, 5 )
-      y = round( (targetTop  / currentScale) * -1 + targetOffsetY + currentY, 5 )
+      x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 5 )
+      y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 5 )
 
     z = 0
     transitionTime = duration
 
     # Set new scale and canvas position
-    canvas.css
-      "-webkit-transition": "all #{transitionTime}s #{transitionEasing}"
-      "-moz-transition":    "all #{transitionTime}s #{transitionEasing}"
-      "-o-transition":      "all #{transitionTime}s #{transitionEasing}"
-      "-ms-transition":     "all #{transitionTime}s #{transitionEasing}"
-      "transition":         "all #{transitionTime}s #{transitionEasing}"
+    window.Engine.canvas.css
+      "-webkit-transition": "all #{transitionTime}s #{window.Engine.transitionEasing}"
+      "-moz-transition":    "all #{transitionTime}s #{window.Engine.transitionEasing}"
+      "-o-transition":      "all #{transitionTime}s #{window.Engine.transitionEasing}"
+      "-ms-transition":     "all #{transitionTime}s #{window.Engine.transitionEasing}"
+      "transition":         "all #{transitionTime}s #{window.Engine.transitionEasing}"
       "-webkit-transform": "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
       "-moz-transform":    "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
       "-o-transform":      "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
@@ -133,9 +120,9 @@ $ ->
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     # Replace 3D transforms with 2D ones after transition finishes
-    canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
-      canvas.off "otransitionend transitionend webkitTransitionEnd"
-      canvas.css
+    window.Engine.canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
+      window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
+      window.Engine.canvas.css
         "-webkit-transition": "none"
         "-moz-transition":    "none"
         "-o-transition":      "none"
@@ -148,7 +135,7 @@ $ ->
       console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
 
     console.log target
-    console.log "currentScale   : #{currentScale}"
+    console.log "currentScale   : #{window.Engine.currentScale}"
     console.log "viewportWidth  : #{viewportWidth}  "
     console.log "viewportHeight : #{viewportHeight} "
     console.log "canvasWidth    : #{canvasWidth}    "
@@ -158,24 +145,24 @@ $ ->
     console.log "targetLeft     : #{targetLeft}     "
     console.log "targetTop      : #{targetTop}"
     console.log "scale          : #{scale}"
-    console.log "transitionTime : #{transitionTime}"
+    console.log "transitionTime : #{window.Engine.transitionTime}"
     console.log "z              : #{z}"
     console.log "y              : #{y}"
     console.log "x              : #{x}"
     console.log "targetOffsetY  : #{targetOffsetY} "
     console.log "targetOffsetX  : #{targetOffsetX} "
-    console.log "all #{transitionTime}s #{transitionEasing}"
+    console.log "all #{transitionTime}s #{window.Engine.transitionEasing}"
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     # Save transform variables for next transform
-    canvas.data("scale", scale)
-    canvas.data("x", x)
-    canvas.data("y", y)
+    window.Engine.currentScale = scale
+    window.Engine.currentX = x
+    window.Engine.currentY = y
 
   #
   # Anchors on zoomables
 
-  $("body").on "click", zoomableAnchor, (event) ->
+  $("body").on "click", window.Engine.zoomableAnchor, (event) ->
     event.preventDefault()
     target = $(this).closest(".zoomable")
     zoomToFit(target)
@@ -188,7 +175,7 @@ $ ->
   # Zoom out button
 
   $("#zoom-out").on "click", (event) ->
-    unless initialZoomable.hasClass("current-zoomable")
+    unless window.Engine.initialZoomable.hasClass("current-zoomable")
       parentZoomables = $(".target-placeholder").parent().closest(".zoomable")
       console.log "------------------------------------------------"
       if parentZoomables.length > 0
@@ -197,7 +184,7 @@ $ ->
         target = $(parentZoomables[0])
       else
         console.log "Zooming out to initialZoomable"
-        target = initialZoomable
+        target = window.Engine.initialZoomable
       zoomToFit(target)
       setHash(target)
       returnTarget(target)
