@@ -84,7 +84,7 @@ $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
 $background: hsl($hue-618, 38.2%, 5.6%);
-$highlight:  hsl($hue-618, 23.6%, 9%);
+$highlight:  hsl($hue-618, 23.6%, 14.6%);
 $border:     hsl($hue-618, 23.6%, 23.6%);
 
 $aside:     hsl($hue-main, 5.6%, 50%);
@@ -187,10 +187,15 @@ h1 {
   // transform: translate3d(0,0,0);
 }
 
+.site-viewport,
+.target-canvas {
+  background-color: $highlight;
+  background: radial-gradient(ellipse, $highlight 61.8%, $background);
+}
+
 .site-canvas {
   width: 100vw;
   height: 100vh;
-  background: $highlight;
   position: relative;
   // transform: translate3d(0,0,0);
   // transform-origin: left top;
@@ -200,6 +205,7 @@ h1 {
 .target-canvas {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
+  display: none;
 
   & > .zoomable {
     overflow: auto;
