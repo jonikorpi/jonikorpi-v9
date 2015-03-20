@@ -22,7 +22,9 @@ title: Welcome to Middleman
           - 12.times do |indexCascade|
             .card.zoomable{id: "card-#{index}-#{indexCascade}"}
               .zoomable-content
-                .fake-paragraphs= lorem.paragraphs 10
+                .fake-paragraphs
+                  - 20.times do
+                    %p= lorem.paragraph
               %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
         %a.card-link.zoomable-anchor{href: "/card-#{index}"}
 

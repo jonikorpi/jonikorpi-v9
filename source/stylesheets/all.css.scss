@@ -197,6 +197,25 @@ h1 {
   // transition: all #{$baseTransitionTime}s ease-out;
 }
 
+.target-canvas {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+
+  & > .zoomable {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    @include size(1);
+
+    .card-header {
+      @include size(1/4, 4);
+    }
+
+    .zoomable {
+      @include size(1/4);
+    }
+  }
+}
+
 .ui-canvas {
   position: absolute;
   left: 0; bottom: 0;
@@ -226,16 +245,16 @@ h1 {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 4em;
 }
 
-.card {
+.zoomable {
   @include size(1/4);
   float: left;
   position: relative;
   overflow: hidden;
 
-  .card {
+  .zoomable {
     @include size( (1/4) * (1/4) );
   }
 }
@@ -243,15 +262,8 @@ h1 {
 .zoomable-content {
   // width: 100vw;
   // height: 100vw;
-  height: 100%;
-  overflow: hidden;
   // transform-origin: left top;
   // position: absolute;
-
-  .current-zoomable > & {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
 }
 
 .fake-paragraphs {
