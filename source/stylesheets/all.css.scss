@@ -112,20 +112,6 @@ $xxxxxl:   "screen and (min-width: 1700px)";
 $xxxxxxl:  "screen and (min-width: 2000px)";
 
 //
-// Mixins
-
-@mixin size ($ratio, $w-size:1, $h-size:1) {
-  width:  100vw * $ratio * $w-size;
-  height: 100vh * $ratio * $h-size;
-  font-size: 3vmin * $ratio;
-
-  // .zoomable-content {
-  //   transform: scale( $ratio );
-  // }
-}
-
-
-//
 // Basic styles
 
 html,
@@ -179,6 +165,16 @@ h1 {
   line-height: lines(2, 42);
 }
 
+@mixin size ($ratio, $w-size:1, $h-size:1) {
+  width:  100vw * $ratio * $w-size;
+  height: 100vh * $ratio * $h-size;
+  // font-size: 3vmin * $ratio;
+
+  & > .zoomable-content {
+    transform: scale( $ratio );
+  }
+}
+
 .site-viewport {
   overflow: hidden;
   position: absolute;
@@ -211,14 +207,6 @@ h1 {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     @include size(1);
-
-    .card-header {
-      @include size(1/4, 4);
-    }
-
-    .zoomable {
-      @include size(1/4);
-    }
   }
 }
 
@@ -238,38 +226,38 @@ h1 {
 }
 
 .card-header {
-  @include size(1/4, 4);
+  @include size(1/3, 3);
   float: left;
   display: table;
 
-  .card & {
-    @include size( (1/4) * (1/4), 4 );
-  }
+  // .zoomable & {
+  //   @include size( (1/4), 4 );
+  // }
 }
 
 .card-header-wrapper {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 4em;
+  // font-size: 4em;
 }
 
 .zoomable {
-  @include size(1/4);
+  @include size(1/3);
   float: left;
   position: relative;
   overflow: hidden;
 
-  .zoomable {
-    @include size( (1/4) * (1/4) );
-  }
+  // .zoomable {
+  //   @include size( (1/4) * (1/4) );
+  // }
 }
 
 .zoomable-content {
-  // width: 100vw;
-  // height: 100vw;
-  // transform-origin: left top;
-  // position: absolute;
+  width: 100vw;
+  height: 100vw;
+  transform-origin: left top;
+  position: absolute;
 }
 
 .fake-paragraphs {

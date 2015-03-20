@@ -12,14 +12,14 @@ title: Welcome to Middleman
         zoomable UIs on the web.
 
   .cards
-    - 12.times do |index|
+    - 6.times do |index|
       .card.zoomable{id: "card-#{index}"}
         .zoomable-content
           .card-header
             .card-header-wrapper
               %h1 Card title
               %p Card content
-          - 12.times do |indexCascade|
+          - 6.times do |indexCascade|
             .card.zoomable{id: "card-#{index}-#{indexCascade}"}
               .zoomable-content
                 .fake-paragraphs
