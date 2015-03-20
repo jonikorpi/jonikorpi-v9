@@ -85,7 +85,7 @@ $hue-414: $hue-main + (360 * 0.414);
 
 $background: hsl($hue-618, 38.2%, 5.6%);
 $highlight:  hsl($hue-618, 23.6%, 9%);
-$border:     hsl($hue-main, 14.6%, 14.6%);
+$border:     hsl($hue-618, 23.6%, 23.6%);
 
 $aside:     hsl($hue-main, 5.6%, 50%);
 $body:      hsl($hue-main, 9%, 61.8%);
@@ -117,7 +117,11 @@ $xxxxxxl:  "screen and (min-width: 2000px)";
 @mixin size ($ratio, $w-size:1, $h-size:1) {
   width:  100vw * $ratio * $w-size;
   height: 100vh * $ratio * $h-size;
-  font-size: 2vmin * $ratio;
+  font-size: 3vmin * $ratio;
+
+  // .zoomable-content {
+  //   transform: scale( $ratio );
+  // }
 }
 
 
@@ -214,7 +218,7 @@ h1 {
   display: table;
 
   .card & {
-    @include size( (2/4)*(1/4), 2 );
+    @include size( (1/4) * (1/4), 4 );
   }
 }
 
@@ -222,28 +226,27 @@ h1 {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 6em;
+  font-size: 1.5em;
 }
 
 .card {
   @include size(1/4);
   float: left;
   position: relative;
+  overflow: hidden;
 
   .card {
-    @include size( (1/4)*(1/4) );
-  }
-
-  .target-canvas & {
-    width: 100vw;
-    height: 100vh;
-    font-size: 2vmin;
+    @include size( (1/4) * (1/4) );
   }
 }
 
 .zoomable-content {
+  // width: 100vw;
+  // height: 100vw;
   height: 100%;
   overflow: hidden;
+  // transform-origin: left top;
+  // position: absolute;
 
   .current-zoomable > & {
     overflow: auto;
@@ -252,7 +255,6 @@ h1 {
 }
 
 .fake-paragraphs {
-  font-size: 2em;
   max-width: 30em;
   margin: 0 auto;
   padding: 1em;
@@ -264,20 +266,24 @@ h1 {
   border: 1px solid transparent;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
+  // background-color: transparentize($purple, 0.91);
   display: none;
 
   .current-zoomable & {
     display: block;
   }
 
-  .current-zoomable > & {
+  .current-zoomable > &,
+  .current-zoomable .zoomable .zoomable & {
     display: none;
+    // background-color: none;
   }
 
   &:hover,
   &:focus {
-    background: transparentize($purple, 0.618);
+    // background-color: transparentize($purple, 0.618);
     cursor: zoom-in;
     border-color: $link;
+    z-index: 1001;
   }
 }

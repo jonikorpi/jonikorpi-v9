@@ -15,19 +15,14 @@ title: Welcome to Middleman
     - 12.times do |index|
       .card.zoomable{id: "card-#{index}"}
         .zoomable-content
-          - 4.times do |indexCascade|
-            .card.zoomable{id: "card-#{index}-#{indexCascade}"}
-              .zoomable-content
-                .fake-paragraphs= lorem.paragraphs 3
-              %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
           .card-header
             .card-header-wrapper
               %h1 Card title
               %p Card content
-          - 4.times do |indexCascade|
+          - 12.times do |indexCascade|
             .card.zoomable{id: "card-#{index}-#{indexCascade}"}
               .zoomable-content
-                .fake-paragraphs= lorem.paragraphs 3
+                .fake-paragraphs= lorem.paragraphs 10
               %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
         %a.card-link.zoomable-anchor{href: "/card-#{index}"}
 

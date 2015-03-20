@@ -58,13 +58,16 @@ $ ->
     # Calculate left/top positions
     targetOffsetX  = viewportWidth  / currentScale * 0.5 - targetWidth  * 0.5
     targetOffsetY  = viewportHeight / currentScale * 0.5 - targetHeight * 0.5
+
     if initialZoomable[0] == target[0]
       console.log "initialZoomable is target."
       x = 0
       y = 0
+      scale = 1
     else
       x = round( (targetLeft / currentScale) * -1 + targetOffsetX + currentX, 2 )
       y = round( (targetTop  / currentScale) * -1 + targetOffsetY + currentY, 2 )
+
     z = 0
     transitionTime = duration
 
