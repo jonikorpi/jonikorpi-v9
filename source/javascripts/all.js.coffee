@@ -20,9 +20,57 @@ $ ->
   transitionEasing = "ease-out"
 
   #
+  # Set hash and history API functions
+
+  setHash = (target) ->
+    # targetID = target.attr("id")
+    # if targetID
+    #   history.pushState("", document.title, targetID)
+    #   # window.location.hash = targetID
+    #   console.log "Setting hash to #{targetID}"
+    # else
+    #   history.pushState("", document.title, "/")
+    #   # window.location.hash = ""
+    #   console.log "Clearing hash"
+
+  #
+  # Pop .current-zoomable back into canvas, if it's outside
+
+  returnTarget = (target) ->
+    targetCanvas.hide()
+    targetCanvasContent = targetCanvas.children(".zoomable")
+    if targetCanvasContent.length > 0
+      $(".target-placeholder").replaceWith( targetCanvasContent[0] )
+      console.log "#{targetCanvasContent[0]} was appended back to replace #{$(".current-zoomable")}"
+
+  #
+  # Set new .current-zoomable
+
+  setCurrentZoomable = (target) ->
+    unless $(".current-zoomable")[0] == target
+      $(".current-zoomable").removeClass("current-zoomable")
+      target.addClass("current-zoomable")
+      if target.hasClass("initial-zoomable")
+        $("html").addClass("initial-zoom")
+      else
+        $("html").removeClass("initial-zoom")
+
+  #
+  # Pop target out of the canvas and show it at 1:1 scale
+
+  cloneTarget = (target) ->
+    unless initialZoomable[0] == target[0]
+      console.log "#{target} is being appended to #{targetCanvas}"
+      canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
+        targetCanvas.show()
+        target.clone().appendTo(targetCanvas)
+        target.replaceWith("<div class='zoomable target-placeholder'></div>")
+        canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+
+  #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = baseTransitionTime, setHash = true) ->
+  zoomToFit = (target, duration = baseTransitionTime) ->
 
     console.log "------------------------------------------------"
 
@@ -65,8 +113,8 @@ $ ->
       y = 0
       scale = 1
     else
-      x = round( (targetLeft / currentScale) * -1 + targetOffsetX + currentX, 2 )
-      y = round( (targetTop  / currentScale) * -1 + targetOffsetY + currentY, 2 )
+      x = round( (targetLeft / currentScale) * -1 + targetOffsetX + currentX, 5 )
+      y = round( (targetTop  / currentScale) * -1 + targetOffsetY + currentY, 5 )
 
     z = 0
     transitionTime = duration
@@ -119,70 +167,42 @@ $ ->
     console.log "all #{transitionTime}s #{transitionEasing}"
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
-    # Pop .current-zoomable back into canvas, if it's outside
-    # targetCanvasContent = targetCanvas.children()
-    # if targetCanvasContent.length > 0
-    #   $(".current-zoomable").replaceWith( targetCanvasContent[0] )
-    #   console.log "#{targetCanvasContent[0]} was appended back to #{$(".current-zoomable")}"
-    # targetCanvas.hide()
-
-    # Pop target out of the canvas and show it at 1:1 scale
-    # unless initialZoomable[0] == target[0]
-    #   target.clone().appendTo(targetCanvas)
-    #   console.log "#{target.children()} is being appended to #{targetCanvas}"
-    #   canvas.one "transitionend webkitTransitionEnd oTransitionEnd", (event) ->
-    #     targetCanvas.show()
-    #     canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
-
-    # Set new .current-zoomable
-    unless $(".current-zoomable")[0] == target
-      $(".current-zoomable").removeClass("current-zoomable")
-      target.addClass("current-zoomable")
-      if target.hasClass("initial-zoomable")
-        $("html").addClass("initial-zoom")
-      else
-        $("html").removeClass("initial-zoom")
-
     # Save transform variables for next transform
     canvas.data("scale", scale)
     canvas.data("x", x)
     canvas.data("y", y)
-
-    # If zoomable has an ID, set it as the URL hash
-    # if setHash
-    #   targetID = target.attr("id")
-    #   if targetID
-    #     history.pushState("", document.title, targetID)
-    #     # window.location.hash = targetID
-    #     console.log "Setting hash to #{targetID}"
-    #   else
-    #     history.pushState("", document.title, "/")
-    #     # window.location.hash = ""
-    #     console.log "Clearing hash"
-    # else
-    #   console.log "Not setting a hash"
 
   #
   # Anchors on zoomables
 
   $("body").on "click", zoomableAnchor, (event) ->
     event.preventDefault()
-    zoomToFit( $(this).closest(".zoomable") )
+    target = $(this).closest(".zoomable")
+    zoomToFit(target)
+    setHash(target)
+    returnTarget(target)
+    setCurrentZoomable(target)
+    cloneTarget(target)
 
   #
   # Zoom out button
 
   $("#zoom-out").on "click", (event) ->
     unless initialZoomable.hasClass("current-zoomable")
-      parentZoomables = $(".current-zoomable").parent().closest(".zoomable")
+      parentZoomables = $(".target-placeholder").parent().closest(".zoomable")
       console.log "------------------------------------------------"
       if parentZoomables.length > 0
         console.log "Zooming out to:"
         console.log parentZoomables[0]
-        zoomToFit( $(parentZoomables[0]) )
+        target = $(parentZoomables[0])
       else
         console.log "Zooming out to initialZoomable"
-        zoomToFit( initialZoomable )
+        target = initialZoomable
+      zoomToFit(target)
+      setHash(target)
+      returnTarget(target)
+      setCurrentZoomable(target)
+      cloneTarget(target)
 
   #
   # Zoom out with ESC
@@ -201,9 +221,11 @@ $ ->
     , 618)
 
   $(window).bind "resizeEnd", ->
-    console.log "------------------------------------------------"
-    console.log "Transforming again due to window resizing!"
-    zoomToFit( $(".current-zoomable") )
+    targetPlaceholder = $(".target-placeholder")
+    if targetPlaceholder.length > 0
+      zoomToFit( targetPlaceholder )
+      console.log "------------------------------------------------"
+      console.log "Transforming again due to window resizing!"
 
   #
   # Init
