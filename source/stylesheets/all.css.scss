@@ -272,22 +272,20 @@ h1 {
   border: 1px solid transparent;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
-  // background-color: transparentize($purple, 0.91);
   display: none;
 
-  .current-zoomable & {
+  .target-canvas &,
+  .initial-zoomable & {
     display: block;
   }
 
-  .current-zoomable > &,
-  .current-zoomable .zoomable .zoomable & {
+  .zoomable .zoomable .zoomable &,
+  .target-canvas > .zoomable > & {
     display: none;
-    // background-color: none;
   }
 
   &:hover,
   &:focus {
-    // background-color: transparentize($purple, 0.618);
     cursor: zoom-in;
     border-color: $link;
     z-index: 1001;

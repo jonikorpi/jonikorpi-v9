@@ -11,6 +11,7 @@ $ ->
   # Config
 
   window.Engine =
+    htmlTag: $("html")
     viewport: $(".site-viewport")
     canvas: $(".site-canvas")
     targetCanvas: $(".target-canvas")
@@ -48,7 +49,7 @@ $ ->
       targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
 
       if window.Engine.initialZoomable[0] == target[0]
-        console.log "initialZoomable is target."
+        console.log "initialZoomable is target. Ignoring x/y/scale."
         x = 0
         y = 0
         scale = 1
@@ -79,7 +80,11 @@ $ ->
       targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
       if targetCanvasContent.length > 0
         $(".target-placeholder").replaceWith( targetCanvasContent[0] )
-        console.log "#{targetCanvasContent[0]} was appended back to replace #{$(".current-zoomable")}"
+        console.log targetCanvasContent[0]
+        console.log "… was appended back."
+
+      #
+      # Set new .current-zoomable
 
       #
       # After transition ends
@@ -87,33 +92,29 @@ $ ->
       window.Engine.canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
 
         # Replace 3D transforms with 2D ones after transition finishes
-        window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
-        window.Engine.canvas.css
-          "-webkit-transition": "none"
-          "-moz-transition":    "none"
-          "-o-transition":      "none"
-          "-ms-transition":     "none"
-          "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-        console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
-
-        # Set new .current-zoomable
-        $(".current-zoomable").removeClass("current-zoomable")
-        target.addClass("current-zoomable")
-        if target.hasClass("initial-zoomable")
-          $("html").addClass("initial-zoom")
-        else
-          $("html").removeClass("initial-zoom")
+        # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
+        # window.Engine.canvas.css
+        #   "-webkit-transition": "none"
+        #   "-moz-transition":    "none"
+        #   "-o-transition":      "none"
+        #   "-ms-transition":     "none"
+        #   "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+        # console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
 
         # Pop target out of the canvas and show it at 1:1 scale
         unless window.Engine.initialZoomable[0] == target[0]
-          console.log "#{target} is being appended to #{window.Engine.targetCanvas}"
+          console.log "Target is being appended to:"
+          console.log window.Engine.targetCanvas
           window.Engine.targetCanvas.show()
           target.clone().appendTo(window.Engine.targetCanvas)
           target.replaceWith("<div class='zoomable target-placeholder'></div>")
+          window.Engine.htmlTag.removeClass("initial-zoom")
+        else
+          window.Engine.htmlTag.addClass("initial-zoom")
 
         window.Engine.canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
         window.Engine.canvas.dequeue()
@@ -168,7 +169,7 @@ $ ->
   # Zoom out
 
   zoomOut = ->
-    unless window.Engine.initialZoomable.hasClass("current-zoomable")
+    unless window.Engine.htmlTag.hasClass("initial-zoom")
       parentZoomables = $(".target-placeholder").parent().closest(".zoomable")
       console.log "------------------------------------------------"
       if parentZoomables.length > 0
