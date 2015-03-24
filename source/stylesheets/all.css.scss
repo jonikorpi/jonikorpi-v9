@@ -266,20 +266,15 @@ h1 {
   padding: 1em;
 }
 
-.card-link {
+.zoomable-anchor {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   border: 1px solid transparent;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
-  display: none;
+  display: block;
 
-  .target-canvas &,
-  .initial-zoomable & {
-    display: block;
-  }
-
-  .zoomable .zoomable .zoomable &,
+  .current-zoomable > &,
   .target-canvas > .zoomable > & {
     display: none;
   }
