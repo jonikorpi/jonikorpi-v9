@@ -24,14 +24,50 @@ $ ->
     currentY: 0
 
   #
+  # Handle zooms
+
+  handleZoom = (targetID) ->
+    if targetID == "refocus"
+      # Target the same element
+      console.log "TARGET THE SAME ELEMENT"
+      targetPlaceholder = $(".target-placeholder")
+      if targetPlaceholder.length > 0
+        zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}") )
+      else
+        unless window.Engine.htmlTag.hasClass("initial-zoom")
+          zoomToFit( window.Engine.initialZoomable )
+        else
+          window.Engine.canvas.dequeue()
+
+    else if targetID == "out"
+      # Target parent zoomable
+      console.log "TARGET PARENT ZOOMABLE"
+      parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
+      if parentZoomables.length > 0
+        zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}") )
+      else
+        unless window.Engine.htmlTag.hasClass("initial-zoom")
+          zoomToFit( window.Engine.initialZoomable )
+        else
+          window.Engine.canvas.dequeue()
+
+    else if window.Engine.canvas.find("##{targetID}").length > 0
+      # Target by ID
+      console.log "TARGET BY ID: #{targetID}"
+      zoomToFit( window.Engine.canvas.find("##{targetID}") )
+
+    else
+      # Target home
+      console.log "TARGET HOME"
+      unless window.Engine.htmlTag.hasClass("initial-zoom")
+        zoomToFit( window.Engine.initialZoomable )
+      else
+        window.Engine.canvas.dequeue()
+
+  #
   # Zoom-to-fit function
 
-  zoomToFit = (targetID, duration = window.Engine.baseTransitionTime) ->
-
-    if targetID
-      target = window.Engine.canvas.find("##{targetID}")
-    else
-      target = window.Engine.initialZoomable
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime) ->
 
     console.log "------------------------------------------------"
 
@@ -102,7 +138,6 @@ $ ->
 
     #
     # Debug logs
-    console.log window.Engine.canvas.queue("fx")
     console.log target
     console.log "currentScale   : #{window.Engine.currentScale}"
     console.log "viewportWidth  : #{viewportWidth}  "
@@ -174,23 +209,16 @@ $ ->
 
   $("body").on "click", window.Engine.zoomableAnchor, (event) ->
     event.preventDefault()
-    target = $(this).closest(".zoomable").data("id")
+    targetID = $(this).closest(".zoomable").data("id")
     window.Engine.canvas.queue ->
-      zoomToFit(target)
+      handleZoom(targetID)
 
   #
   # Zoom out
 
   zoomOut = ->
-    unless window.Engine.htmlTag.hasClass("initial-zoom")
-      parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
-      if parentZoomables.length > 0
-        console.log parentZoomables[0]
-        target = parentZoomables.data("id")
-      else
-        target = window.Engine.initialZoomable.data("id")
-      window.Engine.canvas.queue ->
-        zoomToFit(target)
+    window.Engine.canvas.queue ->
+      handleZoom( "out" )
 
   #
   # Zoom out button
@@ -215,11 +243,8 @@ $ ->
     , 618)
 
   $(window).bind "resizeEnd", ->
-    targetPlaceholder = $(".target-placeholder")
-    if targetPlaceholder.length > 0
-      window.Engine.canvas.queue ->
-        zoomToFit( targetPlaceholder.data("id") )
-      console.log "TRANSFORMING AGAIN due to window resizing!"
+    window.Engine.canvas.queue ->
+      handleZoom( "refocus" )
 
   #
   # Init
