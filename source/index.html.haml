@@ -2,7 +2,7 @@
 title: Welcome to Middleman
 ---
 
-.initial-zoomable
+.initial-zoomable#home{"data-id" => "home"}
 
   .card-header
     .card-header-wrapper
@@ -13,20 +13,20 @@ title: Welcome to Middleman
 
   .cards
     - 6.times do |index|
-      .card.zoomable{id: "card-#{index}"}
+      .card.zoomable{id: "card-#{index}", "data-id" => "card-#{index}"}
         .zoomable-content
           .card-header
             .card-header-wrapper
               %h1 Card title
               %p Card content
           - 6.times do |indexCascade|
-            .card.zoomable{id: "card-#{index}-#{indexCascade}"}
+            .card.zoomable{id: "card-#{index}-#{indexCascade}", "data-id" => "card-#{index}-#{indexCascade}"}
               .zoomable-content
                 .fake-paragraphs
                   - 20.times do
                     %p= lorem.paragraph
-              %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}"}
-        %a.card-link.zoomable-anchor{href: "/card-#{index}"}
+              %a.card-link.zoomable-anchor{href: "/card-#{index}-#{indexCascade}", "data-id" => "card-#{index}-#{indexCascade}"}
+        %a.card-link.zoomable-anchor{href: "/card-#{index}", "data-id" => "card-#{index}"}
 
 
 -#
