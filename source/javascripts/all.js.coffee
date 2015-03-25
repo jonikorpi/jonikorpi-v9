@@ -26,6 +26,9 @@ $ ->
   #
   # Handle zooms
 
+  handleBackgroundZoom = (targetID) ->
+    zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), 0, true )
+
   handleZoom = (targetID) ->
     console.log "Handling #{targetID}"
 
@@ -69,20 +72,20 @@ $ ->
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = window.Engine.baseTransitionTime) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime, backgroundZoom = false) ->
 
     console.log "------------------------------------------------"
 
     #
     # Pop .current-zoomable back into canvas, if it's outside
-
-    window.Engine.targetCanvas.hide()
-    targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
-    if targetCanvasContent.length > 0
-      # window.Engine.canvas.find(".target-placeholder").replaceWith( targetCanvasContent[0] )
-      # console.log targetCanvasContent[0]
-      # console.log "… was appended back."
-      window.Engine.targetCanvas.html("")
+    unless backgroundZoom
+      window.Engine.targetCanvas.hide()
+      targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
+      if targetCanvasContent.length > 0
+        # window.Engine.canvas.find(".target-placeholder").replaceWith( targetCanvasContent[0] )
+        # console.log targetCanvasContent[0]
+        # console.log "… was appended back."
+        window.Engine.targetCanvas.html("")
 
     # Calculate current viewport, canvas and target positions
     viewportWidth  = window.Engine.viewport.width()
@@ -127,16 +130,16 @@ $ ->
 
     #
     # Set hash and history API functions
-
-    targetID = target.data("id")
-    if targetID
-      history.pushState("", document.title, targetID)
-      # window.location.hash = targetID
-      console.log "Setting hash to #{targetID}"
-    else
-      history.pushState("", document.title, "/")
-      # window.location.hash = ""
-      console.log "Clearing hash"
+    unless backgroundZoom
+      targetID = target.data("id")
+      if targetID
+        history.pushState("", document.title, targetID)
+        # window.location.hash = targetID
+        console.log "Setting hash to #{targetID}"
+      else
+        history.pushState("", document.title, "/")
+        # window.location.hash = ""
+        console.log "Clearing hash"
 
     #
     # Debug logs
@@ -181,30 +184,33 @@ $ ->
     #
     # After transition ends
 
-    window.Engine.canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
-
-      # Replace 3D transforms with 2D ones after transition finishes
-      # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
-      # window.Engine.canvas.css
-      #   "-webkit-transition": "none"
-      #   "-moz-transition":    "none"
-      #   "-o-transition":      "none"
-      #   "-ms-transition":     "none"
-      #   "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
-      #   "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
-      #   "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
-      #   "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
-      #   "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-      # console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
-
-      # Pop target out of the canvas and show it at 1:1 scale
-      unless window.Engine.initialZoomable[0] == target[0]
-        window.Engine.targetCanvas.show()
-        target.clone().appendTo(window.Engine.targetCanvas)
-
-      console.log window.Engine.targetCanvas
-      window.Engine.canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+    if backgroundZoom
       window.Engine.canvas.dequeue()
+    else
+      window.Engine.canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
+
+        # Replace 3D transforms with 2D ones after transition finishes
+        # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
+        # window.Engine.canvas.css
+        #   "-webkit-transition": "none"
+        #   "-moz-transition":    "none"
+        #   "-o-transition":      "none"
+        #   "-ms-transition":     "none"
+        #   "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+        #   "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+        # console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
+
+        # Pop target out of the canvas and show it at 1:1 scale
+        unless window.Engine.initialZoomable[0] == target[0]
+          window.Engine.targetCanvas.show()
+          target.clone().appendTo(window.Engine.targetCanvas)
+
+        console.log window.Engine.targetCanvas
+        window.Engine.canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+        window.Engine.canvas.dequeue()
 
   #
   # Anchors on zoomables
@@ -249,11 +255,8 @@ $ ->
       handleZoom( "refocus" )
 
   #
-  # Init
+  # Initial zoom (when not loading the root page)
 
-  # Initial zoom
-  # initialHash = window.location.hash.substr(1)
-  # if initialHash
-  #   zoomToFit( $("##{initialHash}"), 0, false )
-  # else
-  #   zoomToFit( initialZoomable )
+  unless window.Engine.htmlTag.hasClass("initial-zoom")
+    window.Engine.canvas.queue ->
+      handleBackgroundZoom( window.Engine.targetCanvas.children(".zoomable").data("id") )

@@ -48,7 +48,7 @@
     .site-viewport
       .target-canvas
         - unless data.page.root
-          = partial "card", :locals => {url: data.page.url} do
+          = partial "card", :locals => {url: current_page.url} do
             = yield
       .site-canvas
         = partial "home"
