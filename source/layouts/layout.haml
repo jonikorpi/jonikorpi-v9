@@ -1,5 +1,5 @@
 !!! 5
-%html.initial-zoom{lang: "en"}
+%html{lang: "en", class: "#{page_classes} #{data.page.root ? 'initial-zoom' : ''}"}
   %head
     %meta{charset: "utf-8"}
     %title
@@ -44,11 +44,14 @@
     -# %meta{content: "@jonikorpi",   property: "twitter:site"}
     -# %meta{name: "format-detection", content: "telephone=no"}
 
-  %body{class: "#{page_classes}"}
+  %body
     .site-viewport
-      .site-canvas
-        = yield
       .target-canvas
+        - unless data.page.root
+          = partial "card", :locals => {url: data.page.url} do
+            = yield
+      .site-canvas
+        = partial "home"
       .ui-canvas
         %button#zoom-out Zoom out
 

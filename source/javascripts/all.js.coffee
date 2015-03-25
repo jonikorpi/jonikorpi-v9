@@ -27,6 +27,8 @@ $ ->
   # Handle zooms
 
   handleZoom = (targetID) ->
+    console.log "Handling #{targetID}"
+
     if targetID == "refocus"
       # Target the same element
       console.log "TARGET THE SAME ELEMENT"
@@ -51,10 +53,10 @@ $ ->
         else
           window.Engine.canvas.dequeue()
 
-    else if window.Engine.canvas.find("##{targetID}").length > 0
+    else if window.Engine.canvas.find("[data-id='#{targetID}']").length > 0
       # Target by ID
       console.log "TARGET BY ID: #{targetID}"
-      zoomToFit( window.Engine.canvas.find("##{targetID}") )
+      zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']") )
 
     else
       # Target home
@@ -126,15 +128,15 @@ $ ->
     #
     # Set hash and history API functions
 
-    # targetID = target.attr("id")
-    # if targetID
-    #   history.pushState("", document.title, targetID)
-    #   # window.location.hash = targetID
-    #   console.log "Setting hash to #{targetID}"
-    # else
-    #   history.pushState("", document.title, "/")
-    #   # window.location.hash = ""
-    #   console.log "Clearing hash"
+    targetID = target.data("id")
+    if targetID
+      history.pushState("", document.title, targetID)
+      # window.location.hash = targetID
+      console.log "Setting hash to #{targetID}"
+    else
+      history.pushState("", document.title, "/")
+      # window.location.hash = ""
+      console.log "Clearing hash"
 
     #
     # Debug logs
@@ -209,9 +211,9 @@ $ ->
 
   $("body").on "click", window.Engine.zoomableAnchor, (event) ->
     event.preventDefault()
-    targetID = $(this).closest(".zoomable").data("id")
+    targetID = $(this).attr("href")
     window.Engine.canvas.queue ->
-      handleZoom(targetID)
+      handleZoom( targetID )
 
   #
   # Zoom out
