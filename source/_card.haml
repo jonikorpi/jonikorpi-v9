@@ -1,0 +1,4 @@
+.card.zoomable{id: url, "data-id" => url}
+  .zoomable-content
+    = yield
+  %a.card-link.zoomable-anchor{href: "#{url}"}
