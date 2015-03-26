@@ -1,9 +1,8 @@
 !!! 5
-%html{lang: "en", class: "#{page_classes} #{data.page.root ? 'initial-zoom' : ''}"}
+%html{lang: "en", class: "#{page_classes} #{data.page.root ? 'initial-zoom' : ''}", "data-current-zoomable" => current_page.url}
   %head
     %meta{charset: "utf-8"}
-    %title
-      = data.page.title
+    %title= data.page.title
 
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -48,7 +47,7 @@
     .site-viewport
       .target-canvas
         - unless data.page.root
-          = partial "card", :locals => {url: current_page.url} do
+          = partial "card", :locals => {url: current_page.url, title: current_page.data.title} do
             = yield
       .site-canvas
         = partial "home"
