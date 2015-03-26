@@ -249,7 +249,7 @@ html,
 }
 
 .card-header {
-  @include size(1/3, 3);
+  @include size(1/5, 5, 2);
   float: left;
   display: table;
 
@@ -281,6 +281,7 @@ html,
   height: 100vw;
   transform-origin: left top;
   position: absolute;
+  text-align: center;
 }
 
 .fake-paragraphs {
