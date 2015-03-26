@@ -123,17 +123,15 @@ $ ->
     transitionTime = duration
 
     # Set new scale and canvas position
-    window.Engine.canvas.css
-      "-webkit-transition": "all #{transitionTime}s #{window.Engine.transitionEasing}"
-      "-moz-transition":    "all #{transitionTime}s #{window.Engine.transitionEasing}"
-      "-o-transition":      "all #{transitionTime}s #{window.Engine.transitionEasing}"
-      "-ms-transition":     "all #{transitionTime}s #{window.Engine.transitionEasing}"
-      "transition":         "all #{transitionTime}s #{window.Engine.transitionEasing}"
-      "-webkit-transform": "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
-      "-moz-transform":    "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
-      "-o-transform":      "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
-      "-ms-transform":     "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
-      "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
+    cs = window.Engine.canvas[0];
+
+    cs.style.webkitTransition =
+    cs.style.msTransition =
+    cs.style.transition = "all #{transitionTime}s #{window.Engine.transitionEasing}"
+
+    cs.style.webkitTransform =
+    cs.style.msTransform =
+    cs.style.transform = "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     #
     # Debug logs
