@@ -45,11 +45,11 @@
 
   %body
     .site-viewport
-      .target-canvas
+      %main.target-canvas
         - unless data.page.root
           = partial "card", :locals => {url: current_page.url, title: current_page.data.title} do
             = yield
-      .site-canvas
+      %nav.site-canvas
         = partial "home"
       .ui-canvas
         %button#zoom-out Zoom out
