@@ -39,51 +39,59 @@ $ ->
   #
   # Handle zooms
 
-  handleStatelessZoom = (targetID) ->
-    zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), window.Engine.baseTransitionTime, false, true )
+  queueZoom = (targetID, zoomType = "normal") ->
 
-  handleBackgroundZoom = (targetID) ->
-    zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), 0, true )
+    console.log "QUEUING #{targetID}"
+    console.log "QUEUE LENGTH: #{window.Engine.canvas.queue("fx").length}"
 
-  handleZoom = (targetID) ->
-    console.log "Handling #{targetID}"
-
-    if targetID == "refocus"
-      # Target the same element
-      console.log "TARGET THE SAME ELEMENT"
-      targetPlaceholder = $(".target-placeholder")
-      if targetPlaceholder.length > 0
-        zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}") )
-      else
-        unless window.Engine.htmlTag.hasClass("initial-zoom")
-          zoomToFit( window.Engine.initialZoomable )
-        else
-          window.Engine.canvas.dequeue()
-
-    else if targetID == "out"
-      # Target parent zoomable
-      console.log "TARGET PARENT ZOOMABLE"
-      parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
-      if parentZoomables.length > 0
-        zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}") )
-      else
-        unless window.Engine.htmlTag.hasClass("initial-zoom")
-          zoomToFit( window.Engine.initialZoomable )
-        else
-          window.Engine.canvas.dequeue()
-
-    else if window.Engine.canvas.find("[data-id='#{targetID}']").length > 0
-      # Target by ID
-      console.log "TARGET BY ID: #{targetID}"
-      zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']") )
-
+    if window.Engine.canvas.queue("fx").length > 0
+      transitionTime = window.Engine.baseTransitionTime * 0.618
     else
-      # Target home
-      console.log "TARGET HOME"
-      unless window.Engine.htmlTag.hasClass("initial-zoom")
-        zoomToFit( window.Engine.initialZoomable )
-      else
-        window.Engine.canvas.dequeue()
+      transitionTime = window.Engine.baseTransitionTime
+
+    window.Engine.canvas.queue ->
+      switch zoomType
+
+        when "stateless"
+          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), transitionTime, false, true )
+
+        when "background"
+          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), 0, true )
+
+        when "refocus"
+          console.log "TARGET THE SAME ELEMENT"
+          targetPlaceholder = $(".target-placeholder")
+          if targetPlaceholder.length > 0
+            zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}"), transitionTime )
+          else
+            unless window.Engine.htmlTag.hasClass("initial-zoom")
+              zoomToFit( window.Engine.initialZoomable, transitionTime )
+            else
+              console.log "NO NEED TO REFOCUS"
+              window.Engine.canvas.dequeue()
+
+        when "out"
+          console.log "TARGET PARENT ZOOMABLE"
+          parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
+          if parentZoomables.length > 0
+            zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}"), transitionTime )
+          else
+            unless window.Engine.htmlTag.hasClass("initial-zoom")
+              zoomToFit( window.Engine.initialZoomable, transitionTime )
+            else
+              window.Engine.canvas.dequeue()
+
+        when "normal"
+          if window.Engine.canvas.find("[data-id='#{targetID}']").length > 0
+            console.log "TARGET BY ID: #{targetID}"
+            zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), transitionTime )
+          else
+            console.log "TARGET HOME"
+            unless window.Engine.htmlTag.hasClass("initial-zoom")
+              zoomToFit( window.Engine.initialZoomable, transitionTime )
+            else
+              console.log "NO NEED TO ZOOM"
+              window.Engine.canvas.dequeue()
 
   #
   # Zoom-to-fit function
@@ -129,8 +137,8 @@ $ ->
     else
       x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 5 )
       y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 5 )
-
     z = 0
+
     transitionTime = duration
 
     # Set new scale and canvas position
@@ -234,21 +242,18 @@ $ ->
   $("body").on "click", window.Engine.zoomableAnchor, (event) ->
     event.preventDefault()
     targetID = $(this).attr("href")
-    window.Engine.canvas.queue ->
-      handleZoom( targetID )
+    queueZoom( targetID )
 
   $("body").on "click", window.Engine.zoomableLink, (event) ->
     event.preventDefault()
     targetID = $(this).attr("href")
-    window.Engine.canvas.queue ->
-      handleZoom( targetID )
+    queueZoom( targetID )
 
   #
   # Zoom out
 
   zoomOut = ->
-    window.Engine.canvas.queue ->
-      handleZoom( "out" )
+    queueZoom( null, "out" )
 
   #
   # Zoom out button
@@ -273,8 +278,7 @@ $ ->
     , 618)
 
   $(window).bind "resizeEnd", ->
-    window.Engine.canvas.queue ->
-      handleZoom( "refocus" )
+    queueZoom( null, "refocus" )
 
   #
   # Support history state changes
@@ -285,12 +289,10 @@ $ ->
     console.log "POPSTATE"
     if event.originalEvent.state && event.originalEvent.state.targetID
       console.log "POPSTATE TARGETID: #{event.originalEvent.state.targetID}"
-      window.Engine.canvas.queue ->
-        handleStatelessZoom( event.originalEvent.state.targetID )
+      queueZoom( event.originalEvent.state.targetID, "stateless" )
 
   #
   # Initial zoom (when not loading the root page)
 
   unless window.Engine.currentZoomableId == "/"
-    window.Engine.canvas.queue ->
-      handleBackgroundZoom( window.Engine.currentZoomableId )
+    queueZoom( window.Engine.currentZoomableId, "background" )
