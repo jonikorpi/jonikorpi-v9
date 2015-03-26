@@ -17,6 +17,7 @@ $ ->
     targetCanvas: $(".target-canvas")
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
+    zoomableLink: ".zoomable-content a[href^='/']"
     baseTransitionTime: 0.382
     transitionEasing: "ease-out"
     currentScale: 1
@@ -218,6 +219,14 @@ $ ->
   $("body").on "click", window.Engine.zoomableAnchor, (event) ->
     event.preventDefault()
     targetID = $(this).attr("href")
+    window.Engine.canvas.queue ->
+      handleZoom( targetID )
+
+  $("body").on "click", window.Engine.zoomableLink, (event) ->
+    event.preventDefault()
+    targetID = $(this).attr("href")
+    window.Engine.canvas.queue ->
+      handleZoom( )
     window.Engine.canvas.queue ->
       handleZoom( targetID )
 
