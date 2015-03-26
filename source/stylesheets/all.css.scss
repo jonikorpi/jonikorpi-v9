@@ -230,7 +230,19 @@ h1 {
 }
 
 #zoom-out {
+  display: none;
+
+  .awesome & {
+    display: block;
+  }
+
   .initial-zoom & {
+    display: none;
+  }
+}
+
+.home-link {
+  .awesome & {
     display: none;
   }
 }

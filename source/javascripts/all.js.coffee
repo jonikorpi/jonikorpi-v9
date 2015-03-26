@@ -12,6 +12,8 @@ $ ->
   if !feature.viewportUnits || !feature.historyAPI || !feature.css3Dtransforms
     console.log("Browser doesn't support one of the features needed, stopping…")
     return
+  else
+    $("html").addClass("awesome")
 
   round = (value, decimals) ->
     Number Math.round(value + "e" + decimals) + "e-" + decimals
