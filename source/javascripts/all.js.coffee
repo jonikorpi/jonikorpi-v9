@@ -180,12 +180,13 @@ $ ->
     # Set history API stuff
 
     unless statelessZoom
-      if targetID
+      if targetID == window.Engine.initialZoomable.data("id")
+        history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
+        console.log "Clearing hash"
+      else
         history.pushState({ "targetID" : targetID }, target.data("title"), targetID)
         console.log "Setting hash to #{targetID} with #{target.data("title")}"
-      else
-        history.pushState({ "targetID" : "/" }, $("html head title").text(), "/")
-        console.log "Clearing hash"
+    document.title = target.data("title")
 
     #
     # After transition ends
