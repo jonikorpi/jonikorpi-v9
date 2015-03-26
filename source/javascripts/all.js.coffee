@@ -4,6 +4,15 @@ $ ->
   #
   # Javascript srsly
 
+  # Feature tests
+  console.log("Viewport Units supported? " + feature.viewportUnits)
+  console.log("History API supported? " + feature.historyAPI)
+  console.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
+
+  if !feature.viewportUnits || !feature.historyAPI || !feature.css3Dtransforms
+    console.log("Browser doesn't support one of the features needed, stopping…")
+    return
+
   round = (value, decimals) ->
     Number Math.round(value + "e" + decimals) + "e-" + decimals
 
