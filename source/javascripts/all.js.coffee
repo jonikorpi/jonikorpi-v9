@@ -29,8 +29,8 @@ $ ->
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-content a[href^='/']"
-    baseTransitionTime: 0.618
-    transitionEasing: "cubic-bezier(0.5, -0.236, 0.618, 1.0)"
+    baseTransitionTime: 0.414
+    transitionEasing: "cubic-bezier(0.5, -0.146, 0.382, 1.0)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -141,7 +141,11 @@ $ ->
       y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 5 )
     z = 0
 
-    transitionTime = duration
+    # Set transition duration and weigh it by how far we're transiting
+    scaleChange = window.Engine.currentScale + scale
+    biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
+    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 15
+    transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
     canvas = window.Engine.canvas[0];
