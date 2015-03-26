@@ -30,7 +30,7 @@ $ ->
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-content a[href^='/']"
     baseTransitionTime: 0.618
-    transitionEasing: "cubic-bezier(0.382, -0.146, 0.618, 1.236)"
+    transitionEasing: "cubic-bezier(0.5, -0.236, 0.618, 1.0)"
     currentScale: 1
     currentX: 0
     currentY: 0
