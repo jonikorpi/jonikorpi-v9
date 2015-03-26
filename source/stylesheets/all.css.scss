@@ -117,7 +117,6 @@ $xxxxxxl:  "screen and (min-width: 2000px)";
 html,
 body {
   height: 100%;
-  overflow: hidden;
 }
 
 html {
@@ -130,6 +129,8 @@ body {
   line-height: $line-height/$font-size;
   color: $body;
   -webkit-tap-highlight-color: transparentize($link, 0.5);
+  position: relative;
+  perspective: 1000;
 }
 
 a {
@@ -175,18 +176,17 @@ h1 {
   }
 }
 
-.site-viewport {
-  overflow: hidden;
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  perspective: 1000;
-  // transform: translate3d(0,0,0);
-}
-
-.site-viewport,
+html,
 .target-canvas {
   background-color: $highlight;
   background: radial-gradient(ellipse, $highlight 61.8%, $background);
+}
+
+.site-viewport {
+  position: absolute;
+  left: 0; top: 0; right: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .site-canvas {
@@ -200,8 +200,7 @@ h1 {
 }
 
 .target-canvas {
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
+  position: relative;
   z-index: 20;
 
   .index & {
@@ -209,10 +208,10 @@ h1 {
   }
 
   & > .zoomable {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
+    float: none;
+    min-height: 100vh;
 
     & > .zoomable-content {
       position: static;
@@ -224,7 +223,7 @@ h1 {
 }
 
 .ui-canvas {
-  position: absolute;
+  position: fixed;
   left: 0; bottom: 0;
   z-index: 30;
 }
@@ -287,9 +286,9 @@ h1 {
 }
 
 .fake-paragraphs {
-  max-width: 30em;
+  max-width: 34em;
   margin: 0 auto;
-  padding: 1em;
+  padding: lines(3) lines(2);
 }
 
 .zoomable-anchor {

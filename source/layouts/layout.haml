@@ -44,16 +44,16 @@
     -# %meta{name: "format-detection", content: "telephone=no"}
 
   %body
+    %main.target-canvas
+      - unless data.page.root
+        = partial "card", :locals => {url: current_page.url, title: current_page.data.title} do
+          = yield
     .site-viewport
-      %main.target-canvas
-        - unless data.page.root
-          = partial "card", :locals => {url: current_page.url, title: current_page.data.title} do
-            = yield
       %nav.site-canvas
         = partial "home"
-      .ui-canvas
-        %button#zoom-out Zoom out
-        %a.home-link{href: "/"} Home
+    .ui-canvas
+      %button#zoom-out Zoom out
+      %a.home-link{href: "/"} Home
 
     = javascript_include_tag "all"
     - if build?

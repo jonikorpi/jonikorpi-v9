@@ -23,7 +23,7 @@ $ ->
 
   window.Engine =
     htmlTag: $("html")
-    viewport: $(".site-viewport")
+    viewport: $("body")
     canvas: $(".site-canvas")
     targetCanvas: $(".target-canvas")
     initialZoomable: $(".initial-zoomable")
