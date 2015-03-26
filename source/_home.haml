@@ -1,4 +1,4 @@
-.initial-zoomable
+.initial-zoomable{"data-id" => "/"}
 
   .card-header
     .card-header-wrapper
@@ -9,7 +9,7 @@
 
   .category-cards
     - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root }.each do |card|
-      = partial "card", :locals => {url: card.url} do
+      = partial "card", :locals => {url: card.url, title: card.data.title} do
         = card.render({:layout => false})
 
 

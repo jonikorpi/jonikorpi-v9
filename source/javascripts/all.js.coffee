@@ -23,9 +23,13 @@ $ ->
     currentScale: 1
     currentX: 0
     currentY: 0
+    currentZoomableId: $("html").data("current-zoomable")
 
   #
   # Handle zooms
+
+  handleStatelessZoom = (targetID) ->
+    zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), window.Engine.baseTransitionTime, false, true )
 
   handleBackgroundZoom = (targetID) ->
     zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), 0, true )
@@ -73,9 +77,11 @@ $ ->
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = window.Engine.baseTransitionTime, backgroundZoom = false) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime, backgroundZoom = false, statelessZoom = false) ->
 
     console.log "------------------------------------------------"
+
+    targetID = target.data("id")
 
     #
     # Pop .current-zoomable back into canvas, if it's outside
@@ -130,19 +136,6 @@ $ ->
       "transform":         "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     #
-    # Set hash and history API functions
-    unless backgroundZoom
-      targetID = target.data("id")
-      if targetID
-        history.pushState("", document.title, targetID)
-        # window.location.hash = targetID
-        console.log "Setting hash to #{targetID}"
-      else
-        history.pushState("", document.title, "/")
-        # window.location.hash = ""
-        console.log "Clearing hash"
-
-    #
     # Debug logs
     console.log target
     console.log "currentScale   : #{window.Engine.currentScale}"
@@ -176,11 +169,23 @@ $ ->
     target.addClass("current-zoomable")
 
     #
-    # Save transform variables for next transform
+    # Save variables for next transform
 
     window.Engine.currentScale = scale
     window.Engine.currentX = x
     window.Engine.currentY = y
+    window.Engine.currentZoomableId = targetID
+
+    #
+    # Set history API stuff
+
+    unless statelessZoom
+      if targetID
+        history.pushState({ "targetID" : targetID }, target.data("title"), targetID)
+        console.log "Setting hash to #{targetID} with #{target.data("title")}"
+      else
+        history.pushState({ "targetID" : "/" }, $("html head title").text(), "/")
+        console.log "Clearing hash"
 
     #
     # After transition ends
@@ -226,8 +231,6 @@ $ ->
     event.preventDefault()
     targetID = $(this).attr("href")
     window.Engine.canvas.queue ->
-      handleZoom( )
-    window.Engine.canvas.queue ->
       handleZoom( targetID )
 
   #
@@ -264,8 +267,20 @@ $ ->
       handleZoom( "refocus" )
 
   #
+  # Support history state changes
+
+  history.replaceState({ "targetID" : window.Engine.currentZoomableId }, document.title, window.Engine.currentZoomableId)
+
+  $(window).on "popstate", (event) ->
+    console.log "POPSTATE"
+    if event.originalEvent.state && event.originalEvent.state.targetID
+      console.log "POPSTATE TARGETID: #{event.originalEvent.state.targetID}"
+      window.Engine.canvas.queue ->
+        handleStatelessZoom( event.originalEvent.state.targetID )
+
+  #
   # Initial zoom (when not loading the root page)
 
-  unless window.Engine.htmlTag.hasClass("initial-zoom")
+  unless window.Engine.currentZoomableId == "/"
     window.Engine.canvas.queue ->
-      handleBackgroundZoom( window.Engine.targetCanvas.children(".zoomable").data("id") )
+      handleBackgroundZoom( window.Engine.currentZoomableId )
