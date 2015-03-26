@@ -105,23 +105,25 @@ $ ->
     #
     # Pop .current-zoomable back into canvas, if it's outside
     unless backgroundZoom
-      window.Engine.targetCanvas.hide()
+      window.Engine.targetCanvas[0].style.display = "none"
       targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
       if targetCanvasContent.length > 0
         # window.Engine.canvas.find(".target-placeholder").replaceWith( targetCanvasContent[0] )
         # console.log targetCanvasContent[0]
         # console.log "… was appended back."
-        window.Engine.targetCanvas.html("")
+        window.Engine.targetCanvas[0].innerHTML = ""
 
     # Calculate current viewport, canvas and target positions
-    viewportWidth  = window.Engine.viewport.width()
-    viewportHeight = window.Engine.viewport.height()
-    canvasWidth    = window.Engine.canvas[0].getBoundingClientRect().width
-    canvasHeight   = window.Engine.canvas[0].getBoundingClientRect().height
-    targetWidth    = target[0].getBoundingClientRect().width  / window.Engine.currentScale
-    targetHeight   = target[0].getBoundingClientRect().height / window.Engine.currentScale
-    targetLeft     = target.offset().left
-    targetTop      = target.offset().top
+    viewportWidth  = window.Engine.viewport[0].offsetWidth
+    viewportHeight = window.Engine.viewport[0].offsetHeight
+    canvasRect     = window.Engine.canvas[0].getBoundingClientRect()
+    canvasWidth    = canvasRect.width
+    canvasHeight   = canvasRect.height
+    targetRect     = target[0].getBoundingClientRect()
+    targetWidth    = targetRect.width  / window.Engine.currentScale
+    targetHeight   = targetRect.height / window.Engine.currentScale
+    targetLeft     = targetRect.left # + document.body.scrollLeft
+    targetTop      = targetRect.top # + document.body.scrollTop
 
     # Calculate new scale, canvas position and transition time
     scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
@@ -211,7 +213,7 @@ $ ->
     if backgroundZoom
       window.Engine.canvas.dequeue()
     else
-      window.Engine.canvas.one "otransitionend transitionend webkitTransitionEnd", (event) ->
+      window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
 
         # Replace 3D transforms with 2D ones after transition finishes
         # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
@@ -229,11 +231,11 @@ $ ->
 
         # Pop target out of the canvas and show it at 1:1 scale
         unless window.Engine.initialZoomable[0] == target[0]
-          window.Engine.targetCanvas.show()
+          window.Engine.targetCanvas[0].style.display = "block"
           target.clone().appendTo(window.Engine.targetCanvas)
 
         console.log window.Engine.targetCanvas
-        window.Engine.canvas.off "transitionend webkitTransitionEnd oTransitionEnd"
+        window.Engine.canvas.off "transitionend webkitTransitionEnd"
         window.Engine.canvas.dequeue()
 
   #
