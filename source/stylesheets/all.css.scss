@@ -43,7 +43,7 @@ $line-height: 22;
 // Variables
 
 $max-width: lines(40);
-$baseTransitionTime: 0.382;
+$baseTransitionTime: 0.618;
 
 //
 // Typography
@@ -179,7 +179,7 @@ h1 {
 html,
 .target-canvas {
   background-color: $highlight;
-  background: radial-gradient(ellipse, $highlight 61.8%, $background);
+  // background: radial-gradient(ellipse, $highlight 61.8%, $background);
 }
 
 .site-viewport {
@@ -194,8 +194,6 @@ html,
   height: 100vh;
   position: relative;
   transform: translate3d(0,0,0);
-  // transform-origin: left top;
-  // transition: all #{$baseTransitionTime}s ease-out;
   z-index: 10;
 }
 

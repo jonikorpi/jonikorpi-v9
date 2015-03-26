@@ -29,8 +29,8 @@ $ ->
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-content a[href^='/']"
-    baseTransitionTime: 0.382
-    transitionEasing: "ease-out"
+    baseTransitionTime: 0.618
+    transitionEasing: "cubic-bezier(0.5, -0.146, 0.382, 1.236)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -44,10 +44,10 @@ $ ->
     console.log "QUEUING #{targetID}"
     console.log "QUEUE LENGTH: #{window.Engine.canvas.queue("fx").length}"
 
-    if window.Engine.canvas.queue("fx").length > 0
-      transitionTime = window.Engine.baseTransitionTime * 0.618
-    else
-      transitionTime = window.Engine.baseTransitionTime
+    # if window.Engine.canvas.queue("fx").length > 0
+    #   transitionTime = window.Engine.baseTransitionTime * 0.764
+    # else
+    transitionTime = window.Engine.baseTransitionTime
 
     window.Engine.canvas.queue ->
       switch zoomType
@@ -249,6 +249,7 @@ $ ->
   $("body").on "click", window.Engine.zoomableLink, (event) ->
     event.preventDefault()
     targetID = $(this).attr("href")
+    queueZoom( null, "out" )
     queueZoom( targetID )
 
   #
