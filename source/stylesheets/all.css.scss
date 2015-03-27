@@ -256,6 +256,10 @@ html,
     @include size(1/2, 2);
   }
 
+  &:only-child {
+    @include size(1);
+  }
+
   &:nth-last-child(2):first-child,
   &:nth-last-child(2):first-child ~ & {
     @include size(2/3);

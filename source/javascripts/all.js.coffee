@@ -30,7 +30,7 @@ $ ->
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-content a[href^='/']"
     baseTransitionTime: 0.414
-    transitionEasing: "cubic-bezier(0.5, -0.146, 0.382, 1.0)"
+    transitionEasing: "cubic-bezier(0.236, 0, 0.146, 1.236)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -136,7 +136,7 @@ $ ->
     # Set transition duration and weigh it by how far we're transiting
     scaleChange = Math.abs(window.Engine.currentScale - scale)
     biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 100
+    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 10
     transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
