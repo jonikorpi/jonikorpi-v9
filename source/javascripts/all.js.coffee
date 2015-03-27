@@ -28,9 +28,9 @@ $ ->
     targetCanvas: $(".target-canvas")
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
-    zoomableLink: ".zoomable-content a[href^='/']"
+    zoomableLink: ".zoomable-link"
     baseTransitionTime: 0.414
-    transitionEasing: "cubic-bezier(0.236, 0, 0.146, 1.236)"
+    transitionEasing: "cubic-bezier(0.618, -0.236, 0.382, 1.0)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -41,8 +41,7 @@ $ ->
 
   queueZoom = (targetID = null, zoomType = "normal") ->
     console.log "------------------------------------------------"
-    console.log "QUEUING #{targetID}"
-    console.log "QUEUE LENGTH: #{window.Engine.canvas.queue("fx").length}"
+    console.log "QUEUING (#{window.Engine.canvas.queue("fx").length}) #{targetID}"
 
     if window.Engine.canvas.queue("fx").length > 0
       transitionTime = window.Engine.baseTransitionTime * 0.854
@@ -73,6 +72,9 @@ $ ->
           if parentZoomables.length > 0
             console.log "OUT"
             zoomToFit( window.Engine.canvas.find("[data-id='#{parentZoomables.data("id")}']")[0], transitionTime )
+          else if currentZoomable[0] == window.Engine.initialZoomable[0]
+            console.log "NO NEED TO ZOOM OUT"
+            window.Engine.canvas.dequeue()
           else
             console.log "OUT TO HOME"
             zoomToFit( window.Engine.initialZoomable[0], transitionTime )
@@ -96,7 +98,9 @@ $ ->
 
     #
     # Pop .current-zoomable back into canvas, if it's outside
+
     unless backgroundZoom
+      console.log "HIDING TARGET CANVAS"
       window.Engine.targetCanvas[0].style.display = "none"
       targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
       if targetCanvasContent.length > 0
@@ -207,9 +211,11 @@ $ ->
     # After transition ends
 
     if backgroundZoom
+      console.log "NOT WAITING FOR TRANSITION TO END"
       window.Engine.canvas.dequeue()
     else
       window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
+        console.log "TRANSITIONEND"
 
         # Replace 3D transforms with 2D ones after transition finishes
         # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
@@ -227,10 +233,10 @@ $ ->
 
         # Pop target out of the canvas and show it at 1:1 scale
         unless window.Engine.initialZoomable[0] == target
+          console.log "SHOWING TARGET CANVAS"
           window.Engine.targetCanvas[0].style.display = "block"
           $target.clone().appendTo(window.Engine.targetCanvas)
 
-        console.log window.Engine.targetCanvas
         window.Engine.canvas.off "transitionend webkitTransitionEnd"
         window.Engine.canvas.dequeue()
 
@@ -245,7 +251,7 @@ $ ->
   $("body").on "click", window.Engine.zoomableLink, (event) ->
     event.preventDefault()
     targetID = $(this).attr("href")
-    queueZoom( null, "out" )
+    # queueZoom( null, "out" )
     queueZoom( targetID )
 
   #
