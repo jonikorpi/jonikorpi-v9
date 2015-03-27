@@ -53,19 +53,19 @@ $ ->
       switch zoomType
 
         when "stateless"
-          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), transitionTime, false, true )
+          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], transitionTime, false, true )
 
         when "background"
-          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), 0, true )
+          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], 0, true )
 
         when "refocus"
           console.log "TARGET THE SAME ELEMENT"
           targetPlaceholder = $(".target-placeholder")
           if targetPlaceholder.length > 0
-            zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}"), transitionTime )
+            zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}")[0], transitionTime )
           else
             unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable, transitionTime )
+              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
             else
               console.log "NO NEED TO REFOCUS"
               window.Engine.canvas.dequeue()
@@ -74,21 +74,21 @@ $ ->
           console.log "TARGET PARENT ZOOMABLE"
           parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
           if parentZoomables.length > 0
-            zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}"), transitionTime )
+            zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}")[0], transitionTime )
           else
             unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable, transitionTime )
+              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
             else
               window.Engine.canvas.dequeue()
 
         when "normal"
           if window.Engine.canvas.find("[data-id='#{targetID}']").length > 0
             console.log "TARGET BY ID: #{targetID}"
-            zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']"), transitionTime )
+            zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], transitionTime )
           else
             console.log "TARGET HOME"
             unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable, transitionTime )
+              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
             else
               console.log "NO NEED TO ZOOM"
               window.Engine.canvas.dequeue()
@@ -100,7 +100,8 @@ $ ->
 
     console.log "------------------------------------------------"
 
-    targetID = target.data("id")
+    $target = $(target)
+    targetID = $target.data("id")
 
     #
     # Pop .current-zoomable back into canvas, if it's outside
@@ -119,7 +120,7 @@ $ ->
     canvasRect     = window.Engine.canvas[0].getBoundingClientRect()
     canvasWidth    = canvasRect.width
     canvasHeight   = canvasRect.height
-    targetRect     = target[0].getBoundingClientRect()
+    targetRect     = target.getBoundingClientRect()
     targetWidth    = targetRect.width  / window.Engine.currentScale
     targetHeight   = targetRect.height / window.Engine.currentScale
     targetLeft     = targetRect.left # + document.body.scrollLeft
@@ -132,7 +133,7 @@ $ ->
     targetOffsetX  = viewportWidth  / window.Engine.currentScale * 0.5 - targetWidth  * 0.5
     targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
 
-    if window.Engine.initialZoomable[0] == target[0]
+    if window.Engine.initialZoomable[0] == target
       x = 0
       y = 0
       scale = 1
@@ -142,9 +143,9 @@ $ ->
     z = 0
 
     # Set transition duration and weigh it by how far we're transiting
-    scaleChange = window.Engine.currentScale + scale
+    scaleChange = Math.abs(window.Engine.currentScale - scale)
     biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 15
+    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 100
     transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
@@ -160,7 +161,7 @@ $ ->
 
     #
     # Debug logs
-    console.log target
+    console.log $target
     console.log "currentScale   : #{window.Engine.currentScale}"
     console.log "viewportWidth  : #{viewportWidth}  "
     console.log "viewportHeight : #{viewportHeight} "
@@ -183,13 +184,13 @@ $ ->
     #
     # Set some classes to help with CSS
 
-    if window.Engine.initialZoomable[0] == target[0]
+    if window.Engine.initialZoomable[0] == target
       window.Engine.htmlTag.addClass("initial-zoom")
     else
       window.Engine.htmlTag.removeClass("initial-zoom")
 
     $(".current-zoomable").removeClass("current-zoomable")
-    target.addClass("current-zoomable")
+    $target.addClass("current-zoomable")
 
     #
     # Save variables for next transform
@@ -207,9 +208,9 @@ $ ->
         history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
         console.log "Clearing hash"
       else
-        history.pushState({ "targetID" : targetID }, target.data("title"), targetID)
-        console.log "Setting hash to #{targetID} with #{target.data("title")}"
-    document.title = target.data("title")
+        history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
+        console.log "Setting hash to #{targetID} with #{$target.data("title")}"
+    document.title = $target.data("title")
 
     #
     # After transition ends
@@ -234,9 +235,9 @@ $ ->
         # console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
 
         # Pop target out of the canvas and show it at 1:1 scale
-        unless window.Engine.initialZoomable[0] == target[0]
+        unless window.Engine.initialZoomable[0] == target
           window.Engine.targetCanvas[0].style.display = "block"
-          target.clone().appendTo(window.Engine.targetCanvas)
+          $target.clone().appendTo(window.Engine.targetCanvas)
 
         console.log window.Engine.targetCanvas
         window.Engine.canvas.off "transitionend webkitTransitionEnd"

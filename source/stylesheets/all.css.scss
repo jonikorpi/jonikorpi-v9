@@ -252,10 +252,6 @@ html,
   @include size(1/5, 5, 2);
   float: left;
   display: table;
-
-  // .zoomable & {
-  //   @include size( (1/4), 4 );
-  // }
 }
 
 .card-header-wrapper {
@@ -270,10 +266,6 @@ html,
   float: left;
   position: relative;
   overflow: hidden;
-
-  // .zoomable {
-  //   @include size( (1/4) * (1/4) );
-  // }
 }
 
 .zoomable-content {

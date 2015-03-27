@@ -8,10 +8,9 @@
         zoomable UIs on the web.
 
   .category-cards
-    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root }.each do |card|
-      = partial "card", :locals => {url: card.url, title: card.data.title} do
+    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && card.data.top }.each do |card|
+      = partial "card", :locals => {card: card} do
         = card.render({:layout => false})
-
 
 -#   %h2 Current work
 -#   %ul

@@ -1,4 +1,10 @@
-%article.card.zoomable{id: url, "data-id" => url, "data-title" => title}
+%article.card.zoomable{id: card.url, "data-id" => card.url, "data-title" => card.data.title}
+
   .zoomable-content
     = yield
-  %a.card-link.zoomable-anchor{href: "#{url}"}
+
+    - card.children.select { |card| card.ext == ".html"}.each do |childCard|
+      = partial "card", :locals => {card: childCard} do
+        = childCard.render({:layout => false})
+
+  %a.card-link.zoomable-anchor{href: "#{card.url}"}
