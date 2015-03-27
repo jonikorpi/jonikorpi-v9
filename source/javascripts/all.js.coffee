@@ -34,7 +34,7 @@ $ ->
     currentScale: 1
     currentX: 0
     currentY: 0
-    currentZoomableId: $("html").data("current-zoomable")
+    currentZoomableID: $("html").data("current-zoomable")
 
   #
   # Handle zooms
@@ -60,21 +60,18 @@ $ ->
 
         when "refocus"
           console.log "TARGET THE SAME ELEMENT"
-          targetPlaceholder = $(".target-placeholder")
-          if targetPlaceholder.length > 0
-            zoomToFit( window.Engine.canvas.find("##{targetPlaceholder.data("id")}")[0], transitionTime )
-          else
-            unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
-            else
+          currentZoomable = window.Engine.canvas.find("[data-id='#{window.Engine.currentZoomableID}']")[0]
+          if currentZoomable == window.Engine.initialZoomable[0]
               console.log "NO NEED TO REFOCUS"
               window.Engine.canvas.dequeue()
+          else
+            zoomToFit( currentZoomable, transitionTime * 0.618, true )
 
         when "out"
           console.log "TARGET PARENT ZOOMABLE"
           parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
           if parentZoomables.length > 0
-            zoomToFit( window.Engine.canvas.find("##{parentZoomables.data("id")}")[0], transitionTime )
+            zoomToFit( window.Engine.canvas.find("[data-id='#{parentZoomables.data("id")}']")[0], transitionTime )
           else
             unless window.Engine.htmlTag.hasClass("initial-zoom")
               zoomToFit( window.Engine.initialZoomable[0], transitionTime )
@@ -198,7 +195,7 @@ $ ->
     window.Engine.currentScale = scale
     window.Engine.currentX = x
     window.Engine.currentY = y
-    window.Engine.currentZoomableId = targetID
+    window.Engine.currentZoomableID = targetID
 
     #
     # Set history API stuff
@@ -291,7 +288,7 @@ $ ->
   #
   # Support history state changes
 
-  history.replaceState({ "targetID" : window.Engine.currentZoomableId }, document.title, window.Engine.currentZoomableId)
+  history.replaceState({ "targetID" : window.Engine.currentZoomableID }, document.title, window.Engine.currentZoomableID)
 
   $(window).on "popstate", (event) ->
     console.log "POPSTATE"
@@ -302,5 +299,5 @@ $ ->
   #
   # Initial zoom (when not loading the root page)
 
-  unless window.Engine.currentZoomableId == "/"
-    queueZoom( window.Engine.currentZoomableId, "background" )
+  unless window.Engine.currentZoomableID == "/"
+    queueZoom( window.Engine.currentZoomableID, "background" )
