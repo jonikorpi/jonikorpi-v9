@@ -288,11 +288,11 @@ html,
   border: 1px solid transparent;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
-  display: block;
+  display: none;
 
-  .current-zoomable > &,
-  .target-canvas > .zoomable > & {
-    display: none;
+  .current-zoomable .zoomable > &,
+  .target-canvas > .zoomable .zoomable > & {
+    display: block;
   }
 
   &:hover,

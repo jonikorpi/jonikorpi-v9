@@ -39,8 +39,8 @@ $ ->
   #
   # Handle zooms
 
-  queueZoom = (targetID, zoomType = "normal") ->
-
+  queueZoom = (targetID = null, zoomType = "normal") ->
+    console.log "------------------------------------------------"
     console.log "QUEUING #{targetID}"
     console.log "QUEUE LENGTH: #{window.Engine.canvas.queue("fx").length}"
 
@@ -50,45 +50,39 @@ $ ->
     transitionTime = window.Engine.baseTransitionTime
 
     window.Engine.canvas.queue ->
+      currentZoomable = window.Engine.canvas.find("[data-id='#{window.Engine.currentZoomableID}']")
+      parentZoomables = currentZoomable.parent().closest(".zoomable")
+      if targetID
+        targetZoomable = window.Engine.canvas.find("[data-id='#{targetID}']")
+
       switch zoomType
-
         when "stateless"
-          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], transitionTime, false, true )
-
+          console.log "STATELESS"
+          zoomToFit( targetZoomable[0], transitionTime, false, true )
         when "background"
-          zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], 0, true )
-
+          console.log "BACKGROUND"
+          zoomToFit( targetZoomable[0], 0, true )
         when "refocus"
-          console.log "TARGET THE SAME ELEMENT"
-          currentZoomable = window.Engine.canvas.find("[data-id='#{window.Engine.currentZoomableID}']")[0]
-          if currentZoomable == window.Engine.initialZoomable[0]
-              console.log "NO NEED TO REFOCUS"
-              window.Engine.canvas.dequeue()
+          if currentZoomable[0] == window.Engine.initialZoomable[0]
+            console.log "NO NEED TO REFOCUS"
+            window.Engine.canvas.dequeue()
           else
-            zoomToFit( currentZoomable, transitionTime * 0.618, true )
-
+            console.log "REFOCUS"
+            zoomToFit( currentZoomable[0], transitionTime * 0.618, true )
         when "out"
-          console.log "TARGET PARENT ZOOMABLE"
-          parentZoomables = window.Engine.canvas.find(".current-zoomable").parent().closest(".zoomable")
           if parentZoomables.length > 0
+            console.log "OUT"
             zoomToFit( window.Engine.canvas.find("[data-id='#{parentZoomables.data("id")}']")[0], transitionTime )
           else
-            unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
-            else
-              window.Engine.canvas.dequeue()
-
+            console.log "OUT TO HOME"
+            zoomToFit( window.Engine.initialZoomable[0], transitionTime )
         when "normal"
-          if window.Engine.canvas.find("[data-id='#{targetID}']").length > 0
+          if targetID && targetZoomable.length > 0
             console.log "TARGET BY ID: #{targetID}"
-            zoomToFit( window.Engine.canvas.find("[data-id='#{targetID}']")[0], transitionTime )
+            zoomToFit( targetZoomable[0], transitionTime )
           else
             console.log "TARGET HOME"
-            unless window.Engine.htmlTag.hasClass("initial-zoom")
-              zoomToFit( window.Engine.initialZoomable[0], transitionTime )
-            else
-              console.log "NO NEED TO ZOOM"
-              window.Engine.canvas.dequeue()
+            zoomToFit( window.Engine.initialZoomable[0], transitionTime )
 
   #
   # Zoom-to-fit function
