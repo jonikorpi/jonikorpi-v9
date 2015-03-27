@@ -1,50 +1,12 @@
 .initial-zoomable{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
 
-  .card-header
+  .card-header.sizeable
     .card-header-wrapper
       %h1 Joni Korpi
       %small
         A Finnish designer, currently working on
         zoomable UIs on the web.
 
-  .category-cards
-    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && card.data.top }.each do |card|
-      = partial "card", :locals => {card: card} do
-        = card.render({:layout => false})
-
--#   %h2 Current work
--#   %ul
--#     %li
--#       This site (stuff about ZUIs, non-scrollable-document designs)
--#     %li
--#       Atom UI theme (https://atom.io/packages/jonikorpi-atom-theme-ui)
--#     %li
--#       Work at Kisko Labs
--#
--#   %h2 Responsive layout systems
--#   %ul
--#     %li
--#       %a{href: "/frameless/"} Frameless
--#     %li
--#       %a{href: "/golden-grid-system/"} Golden Grid System
--#     %li
--#       %a{href: "/less-framework/"} Less Framework
--#
--#   %h2 Early work
--#   %ul
--#     %li
--#       %a{href: "/leaving-old-IE-behind/"} Leaving Old Internet Explorer Behind
--#       %p
--#         Using media queries to make a clean break from legacy browsers.
--#     %li
--#       %a{href: "/a-smoother-page-load/"} A Smoother Page Load
--#       %p
--#         An unexpected opportunity to control how the page loads, using Typekit.
--#     %li
--#       %a{href: "/files/adaptive-static-design-netmag-211.pdf"} Adaptive static design (PDF)
--#       %p
--#         My very first printed article, published in
--#         = succeed "." do
--#           %a{href: "http://www.netmagazine.com/shop/magazines/february-2011-211"} .net Magazine #211
--#     %li
--#       Little Picture was my blog about the little details in design, started in 2010. It’s currently discontinued and offline while I move it to a better archiving location.
+  - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && card.data.top }.sort_by { |card| card.data.weight }.each do |card|
+    = partial "card", :locals => {card: card} do
+      = card.render({:layout => false})

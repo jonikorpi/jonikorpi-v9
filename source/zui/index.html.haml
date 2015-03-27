@@ -1,6 +1,15 @@
 ---
 title: ZUI
 top: true
+weight: 1
 ---
 
-zui content
+.card-header.sizeable
+  .card-header-wrapper
+    %h1 zui content
+
+- 7.times do
+  %article.card.zoomable.sizeable
+    .zoomable-content
+      %h1 stuff
+    %a.card-link.zoomable-anchor{href: "#"}

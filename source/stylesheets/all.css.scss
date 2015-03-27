@@ -248,22 +248,131 @@ html,
   overflow: hidden;
 }
 
-.card-header {
-  @include size(1/5, 5, 2);
+.sizeable {
   float: left;
-  display: table;
+  @include size(1/2);
+
+  &.card-header {
+    @include size(1/2, 2);
+  }
+
+  &:nth-last-child(2):first-child,
+  &:nth-last-child(2):first-child ~ & {
+    @include size(2/3);
+    float: none;
+    margin-left: 16.666%;
+
+    &.card-header {
+      @include size(1/3, 3);
+      margin-left: 0;
+    }
+  }
+
+  &:nth-last-child(3):first-child,
+  &:nth-last-child(3):first-child ~ & {
+
+  }
+
+  &:nth-last-child(4):first-child,
+  &:nth-last-child(4):first-child ~ & {
+    &.card-header {
+      @include size(1/3, 3, 1);
+      margin-left: 0;
+    }
+
+    &.zoomable {
+      @include size(2/3);
+    }
+
+    &.zoomable + .zoomable {
+      @include size(1/3);
+    }
+  }
+
+  &:nth-last-child(5):first-child,
+  &:nth-last-child(5):first-child ~ & {
+    &.card-header {
+      @include size(1/4, 4);
+      margin-left: 0;
+    }
+
+    &.zoomable {
+      @include size(3/4);
+    }
+
+    &.zoomable + .zoomable {
+      @include size(1/4);
+    }
+  }
+
+  &:nth-last-child(6):first-child,
+  &:nth-last-child(6):first-child ~ & {
+    &.card-header {
+      @include size(1/6, 6);
+      margin-left: 0;
+    }
+
+    &.zoomable,
+    &.zoomable + .zoomable {
+      @include size(1/2);
+    }
+
+    &.zoomable + .zoomable + .zoomable {
+      @include size(1/3);
+    }
+  }
+
+  &:nth-last-child(7):first-child,
+  &:nth-last-child(7):first-child ~ & {
+    &.card-header {
+      @include size(1/4, 4);
+      margin-left: 0;
+    }
+
+    &.zoomable,
+    &.zoomable + .zoomable {
+      @include size(1/2);
+    }
+
+    &.zoomable + .zoomable + .zoomable {
+      @include size(1/4);
+    }
+  }
+
+  &:nth-last-child(8):first-child,
+  &:nth-last-child(8):first-child ~ & {
+    &.card-header {
+      @include size(1/12, 12, 1);
+      margin-left: 0;
+      font-size: 0.75em;
+    }
+
+    &.zoomable {
+      @include size(2/3);
+    }
+
+    &.zoomable + .zoomable,
+    &.zoomable + .zoomable + .zoomable {
+      @include size(1/3);
+    }
+
+    &.zoomable + .zoomable + .zoomable + .zoomable {
+      @include size(1/4);
+    }
+  }
 }
 
 .card-header-wrapper {
   display: table-cell;
   vertical-align: middle;
-  text-align: center;
-  // font-size: 4em;
+  padding: 0 lines(2);
+}
+
+.card-header {
+  display: table;
 }
 
 .zoomable {
-  @include size(1/5);
-  float: left;
   position: relative;
   overflow: hidden;
 }
@@ -273,19 +382,18 @@ html,
   height: 100vw;
   transform-origin: left top;
   position: absolute;
-  text-align: center;
 }
 
 .fake-paragraphs {
-  max-width: 34em;
-  margin: 0 auto;
-  padding: lines(3) lines(2);
+  p + p {
+    margin-top: lines(1);
+  }
 }
 
 .zoomable-anchor {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: 1px solid transparent;
+  border: 2px solid $background;
   z-index: 1000;
   transition: background-color #{$baseTransitionTime}s ease-out;
   display: none;
