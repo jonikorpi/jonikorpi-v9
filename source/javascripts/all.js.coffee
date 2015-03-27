@@ -44,10 +44,10 @@ $ ->
     console.log "QUEUING #{targetID}"
     console.log "QUEUE LENGTH: #{window.Engine.canvas.queue("fx").length}"
 
-    # if window.Engine.canvas.queue("fx").length > 0
-    #   transitionTime = window.Engine.baseTransitionTime * 0.764
-    # else
-    transitionTime = window.Engine.baseTransitionTime
+    if window.Engine.canvas.queue("fx").length > 0
+      transitionTime = window.Engine.baseTransitionTime * 0.854
+    else
+      transitionTime = window.Engine.baseTransitionTime
 
     window.Engine.canvas.queue ->
       currentZoomable = window.Engine.canvas.find("[data-id='#{window.Engine.currentZoomableID}']")
