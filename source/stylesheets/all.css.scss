@@ -88,7 +88,8 @@ $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
 $background: hsl($hue-618, 38.2%, 5.6%);
-$highlight:  hsl($hue-618, 23.6%, 14.6%);
+$highlight:  hsl($hue-618, 23.6%, 9%);
+$offset:     hsl($hue-618, 23.6%, 14.6%);
 $border:     hsl($hue-618, 23.6%, 23.6%);
 
 $aside:     hsl($hue-main, 5.6%, 50%);
@@ -182,8 +183,8 @@ h1 {
 
 html,
 .target-canvas {
-  background-color: $highlight;
-  // background: radial-gradient(ellipse, $highlight 61.8%, $background);
+  background-color: $background;
+  // background: radial-gradient(ellipse, $offset 76.4%, $background);
 }
 
 .site-viewport {
@@ -288,6 +289,10 @@ html,
 .sizeable {
   float: left;
   @include size(1/2);
+
+  .visited-zoomable {
+
+  }
 
   &.card-header {
     @include size(1/2, 2);
@@ -434,14 +439,24 @@ html,
 .zoomable-anchor {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: 2px solid $background;
   z-index: 1000;
-  transition: background-color #{$baseTransitionTime}s ease-out;
+  transition: all $baseTransitionTime*0.236 ease-out;
   display: none;
+  background: $background;
+  opacity: 0.146;
+
+  .current-zoomable .zoomable .zoomable &,
+  .target-canvas > .zoomable .zoomable .zoomable & {
+    display: none;
+  }
 
   .current-zoomable .zoomable > &,
   .target-canvas > .zoomable .zoomable > & {
     display: block;
+  }
+
+  .visited-zoomable > & {
+    opacity: 0.5;
   }
 
   &:hover,
@@ -449,5 +464,6 @@ html,
     cursor: zoom-in;
     border-color: $link;
     z-index: 1001;
+    opacity: 0;
   }
 }

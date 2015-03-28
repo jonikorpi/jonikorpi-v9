@@ -214,6 +214,7 @@ $ ->
     if backgroundZoom
       console.log "NOT WAITING FOR TRANSITION TO END"
       window.Engine.canvas.dequeue()
+      $target.addClass("visited-zoomable")
     else
       window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
         console.log "TRANSITIONEND"
@@ -239,6 +240,7 @@ $ ->
           $target.clone().appendTo(window.Engine.targetCanvas)
 
         window.Engine.canvas.off "transitionend webkitTransitionEnd"
+        $target.addClass("visited-zoomable")
         window.Engine.canvas.dequeue()
 
   #
