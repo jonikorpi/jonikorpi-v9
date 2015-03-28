@@ -43,7 +43,11 @@ $line-height: 22;
 // Variables
 
 $max-width: lines(40);
-$baseTransitionTime: 0.414;
+$baseTransitionTime: 0.414s;
+$zoom-out-size: lines(0.618);
+
+$ease-bounce-out: cubic-bezier(0.618,  0.0,   0.382, 1.382);
+$ease-bounce-in:  cubic-bezier(0.618, -0.382, 0.382, 1.0);
 
 //
 // Typography
@@ -222,19 +226,52 @@ html,
 
 .ui-canvas {
   position: fixed;
-  left: 0; bottom: 0;
+  left: 0; top: 0;
   z-index: 30;
+  height: 0;
+  width: 0;
+  transform: translate3d(0,0,0);
 }
 
 #zoom-out {
+  position: absolute;
+  left: 0; top: 0;
   display: none;
+  transition: all $baseTransitionTime*2 $ease-bounce-out;
+  transform: translate(-50%, -50%) rotate(-45deg) translate(0, 33.333%);
+  transform-origin: center center;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  color: $emphasis;
+  background: $purple;
+  width: $zoom-out-size * 15;
+  padding: $zoom-out-size * 2.375 0 $zoom-out-size * 0.625;
+  text-align: center;
+  white-space: nowrap;
+
+  &:hover {
+    background: lighten($purple, 9%);
+  }
+
+  &:after {
+    content: "ESC";
+    border: 1px solid lighten($purple, 38.2%);
+    font-weight: bold;
+    font-size: $zoom-out-size * 0.854;
+    line-height: 1;
+    padding: 0.392em 0.382em 0.372em;
+    border-radius: 0.236em;
+    display: inline-block;
+  }
 
   .awesome & {
     display: block;
   }
 
   .initial-zoom & {
-    display: none;
+    transition: all $baseTransitionTime*2 $ease-bounce-in;
+    transform: translate(-50%, -50%) rotate(-45deg) translate(0, -150%);
   }
 }
 

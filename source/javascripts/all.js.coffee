@@ -29,8 +29,9 @@ $ ->
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-link"
+    zoomOutButton: $("#zoom-out")
     baseTransitionTime: 0.414
-    transitionEasing: "cubic-bezier(0.618, -0.236, 0.382, 1.0)"
+    transitionEasing: "cubic-bezier(0.236, 0, 0.146, 1.236)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -67,7 +68,7 @@ $ ->
             window.Engine.canvas.dequeue()
           else
             console.log "REFOCUS"
-            zoomToFit( currentZoomable[0], transitionTime * 0.618, true )
+            zoomToFit( currentZoomable[0], transitionTime * 0.854, true )
         when "out"
           if parentZoomables.length > 0
             console.log "OUT"
@@ -140,7 +141,7 @@ $ ->
     # Set transition duration and weigh it by how far we're transiting
     scaleChange = Math.abs(window.Engine.currentScale - scale)
     biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 10
+    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 50
     transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
