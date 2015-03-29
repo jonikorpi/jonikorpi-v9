@@ -2,21 +2,21 @@
 title: Less Framework
 ---
 
-%h1 Less Framework
-%p An early adaptive web design grid system (2010–2011).
+%header.padded-section.header-section
+  %h1 Less Framework
+  %p An early adaptive web design grid system (2010–2011).
 
-%img{src: "http://lessframework.com/assets/imac.png"}
-%img{src: "http://lessframework.com/assets/macbook.png"}
-%img{src: "http://lessframework.com/assets/ipad-landscape.png"}
-%img{src: "http://lessframework.com/assets/ipad-portrait.png"}
-%img{src: "http://lessframework.com/assets/iphone-landscape.png"}
-%img{src: "http://lessframework.com/assets/iphone-portrait.png"}
+%section.padded-section
+  -# %img{src: "http://lessframework.com/assets/imac.png"}
+  -# %img{src: "http://lessframework.com/assets/macbook.png"}
+  -# %img{src: "http://lessframework.com/assets/ipad-landscape.png"}
+  -# %img{src: "http://lessframework.com/assets/ipad-portrait.png"}
+  %img{src: "http://lessframework.com/assets/iphone-landscape.png"}
+  %img{src: "http://lessframework.com/assets/iphone-portrait.png"}
 
-.markdown-content
+%section.markdown-content.padded-section
   :markdown
     I called Less Framework "a CSS grid system for for designing _adaptive_ websites". It was basically a fixed-width grid that adapted to a couple of then popular screen widths by shedding some of its columns. It also had matching typographic presets to go with it, built with [a modular scale based on the golden ratio](http://www.modularscale.com/?1&em&1.618&web&text).
-
-    ***
 
     Contrary to how most CSS frameworks work, Less Framework simply provided a set of code comments and visual templates, instead of having predefined classes to control the layout with. This is how I still work today and definitely a method I advocate. Predefined layout code makes too many assumptions, getting in the way whenever I try to do anything different.
 
