@@ -87,14 +87,14 @@ $hue-021: $hue-main + (360 * 0.021);
 $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
-$background: hsl($hue-618, 38.2%, 5.6%);
-$highlight:  hsl($hue-618, 23.6%, 9%);
-$offset:     hsl($hue-618, 23.6%, 14.6%);
-$border:     hsl($hue-618, 23.6%, 23.6%);
+$background: hsl($hue-618, 38.2%, 9%);
+$highlight:  hsl($hue-618, 23.6%, 14.6%);
+$offset:     hsl($hue-618, 23.6%, 23.6%);
+$border:     hsl($hue-618, 23.6%, 38.2%);
 
-$aside:     hsl($hue-main, 5.6%, 50%);
-$body:      hsl($hue-main, 9%, 61.8%);
-$emphasis:  hsl($hue-main, 14.6%, 76.4%);
+$aside:     hsl($hue-main, 14.6%, 50%);
+$body:      hsl($hue-main, 14.6%, 61.8%);
+$emphasis:  hsl($hue-main, 38.2%, 85.4%);
 
 $purple: hsl($hue-618, 61.8%, 23.6%);
 $link:   hsl($hue-618, 85.4%, 61.8%);
@@ -159,6 +159,8 @@ strong, b {
 
 code {
   @include monospace-font;
+  font-size: em(13);
+  line-height: lines(1, 13);
 }
 
 ::selection      { background: $link; color: $emphasis; }
@@ -455,9 +457,9 @@ html,
     display: block;
   }
 
-  .visited-zoomable > & {
-    opacity: 0.5;
-  }
+  // .visited-zoomable > & {
+  //   opacity: 0.618;
+  // }
 
   &:hover,
   &:focus {
@@ -465,5 +467,110 @@ html,
     border-color: $link;
     z-index: 1001;
     opacity: 0;
+  }
+}
+
+//
+// Markdown content
+
+.markdown-content {
+  h1, h2, h3, h4, h5, h6,
+  p, ul, ol, blockquote,
+  pre {
+    margin-top: lines(1);
+    max-width: lines(30);
+  }
+
+  a {
+    color: inherit;
+    border-bottom: 1px solid $aside;
+
+    &:hover {
+      color: $link;
+      border-bottom-color: currentcolor;
+    }
+
+    &:active {
+      color: shade($link, 23.6%);
+      border-bottom-color: currentcolor;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+
+  }
+
+  h1 {
+
+  }
+
+  h2 {
+
+  }
+
+  h3 {  }
+  h4 {  }
+
+  h5 {
+
+  }
+
+  h6 {  }
+
+  ul, ol {
+    padding-left: 1.15em;
+
+    ul, ol { margin: 0; padding: 0; }
+  }
+
+  li li {
+    margin-left: 1.15em;
+  }
+
+  li p:first-child {
+    margin-top: 0;
+  }
+
+  pre {
+    background: $highlight;
+    overflow: auto;
+
+    code {
+      padding: lines(1, 13);
+      display: block;
+    }
+  }
+
+  blockquote {
+    position: relative;
+
+    &:before {
+      content: "";
+      display: block;
+      border-left: em(2) solid $purple;
+      position: absolute;
+      left: lines(-1); top: em(4); bottom: em(5);
+    }
+
+    p {
+      max-width: none;
+    }
+  }
+
+  hr {
+    color: $aside;
+    text-align: center;
+    margin: lines(0.5) auto;
+    letter-spacing: em(2);
+    font-size: 2em;
+    position: relative;
+    border: none;
+
+    &:after {
+      content: "***";
+      display: block;
+      position: relative;
+      top: lines(0.15);
+    }
   }
 }
