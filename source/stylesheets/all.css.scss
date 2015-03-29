@@ -418,7 +418,20 @@ html,
 .card-header-wrapper {
   display: table-cell;
   vertical-align: middle;
-  padding: 0 lines(2);
+  padding: 0 lines(3);
+  text-align: center;
+  font-style: italic;
+
+  h1 {
+    font-weight: bold;
+    font-size: em(42);
+    line-height: lines(2, 42);
+  }
+
+  p {
+    font-size: em(26);
+    line-height: lines(1.5, 26);
+  }
 }
 
 .card-header {
@@ -450,7 +463,7 @@ html,
   transition: all $baseTransitionTime*0.236 ease-out;
   display: none;
   background: $background;
-  opacity: 0.146;
+  opacity: 0.382;
 
   .current-zoomable .zoomable .zoomable &,
   .target-canvas > .zoomable .zoomable .zoomable & {
@@ -495,6 +508,8 @@ html,
 }
 
 .header-section {
+  text-align: center;
+
   h1 {
     font-size: em(110);
     line-height: lines(5, 110);
@@ -507,6 +522,10 @@ html,
   }
 }
 
+.centered-section {
+  text-align: center;
+}
+
 //
 // Markdown content
 
@@ -514,7 +533,7 @@ html,
   h1, h2, h3, h4, h5, h6,
   p, ul, ol, blockquote,
   hr, pre {
-    margin: lines(1) 0;
+    margin: lines(1) auto;
     max-width: $max-content-width;
   }
 
@@ -531,8 +550,6 @@ html,
     }
 
     &[href^="/"] {
-      color: $yellow-link;
-
       &:after {
         content: "→";
       }

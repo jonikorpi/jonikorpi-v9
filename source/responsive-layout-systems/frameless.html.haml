@@ -4,4 +4,30 @@ title: Frameless
 
 %header.header-section.padded-section
   %h1 Frameless
-  %p A recipe for building an infinitely adapting fixed-width grid.
+  %p A recipe for building an infinitely adapting fixed-width grid (2011).
+
+%section.padded-section.markdown-content
+  :markdown
+    Frameless is the spiritual successor to [Less Framework](/responsive-layout-systems/less-framework/). It's an adaptive fixed-width grid system, but it doesn't have any predefined column configurations. The idea is to set a column and gutter size, and use as many columns as fit on the screen and you happen to need.
+
+    Although I published Frameless with a couple of templates, which are still [available on GitHub](https://github.com/jonikorpi/Frameless), like my other grid systems, Frameless is just a set of instructions. It doesn't contain any code that you need to use. The recipe is as follows.
+
+    # 1. Make a regular fixed-width grid.
+
+    Use whatever criteria it is that you usually use to create fixed-width grids: pick a column width, a gutter width etc. Don’t worry about the amount of columns just yet.
+
+    # 2. Make it repeat infinitely.
+
+    Give the grid and infinite number of columns, so that no matter how wide you make your screen, more and more columns come into view.
+
+    # 3. Center it in the viewport.
+
+    Align your grid horizontally to the middle of your screen. For a grid with an even number of columns, align the center point of your screen in the middle of the gutter between your two centermost columns. For an odd-numbered grid, align it in the middle of your centermost column.
+
+    # 4. That’s it, really.
+
+    Start using the grid. Whenever you need more columns and they fit on the screen, use them. But don't try to spread your design to always fill up every column available on the screen. Adapt column by column, not pixel by pixel.
+
+    # Reception
+
+    Frameless received an adequate amount of attention when published, but not as much as my previous grid systems. Most of the sites designed using it have since vanished or been redesigned.
