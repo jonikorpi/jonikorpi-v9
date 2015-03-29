@@ -4,7 +4,7 @@ title: Less Framework
 
 %header.padded-section.header-section
   %h1 Less Framework
-  %p An early adaptive web design grid system (2010–2011).
+  %p An early adaptive CSS grid system (2010–2011).
 
 %section.padded-section
   -# %img{src: "http://lessframework.com/assets/imac.png"}
@@ -18,6 +18,10 @@ title: Less Framework
   :markdown
     I called Less Framework "a CSS grid system for for designing _adaptive_ websites". It was basically a fixed-width grid that adapted to a couple of then popular screen widths by shedding some of its columns. It also had matching typographic presets to go with it, built with [a modular scale based on the golden ratio](http://www.modularscale.com/?1&em&1.618&web&text).
 
+    [Available on GitHub](https://github.com/jonikorpi/Less-Framework)
+
+    # Guidelines over code
+
     Contrary to how most CSS frameworks work, Less Framework simply provided a set of code comments and visual templates, instead of having predefined classes to control the layout with. This is how I still work today and definitely a method I advocate. Predefined layout code makes too many assumptions, getting in the way whenever I try to do anything different.
 
         /*		Default Layout: 992px.
@@ -28,9 +32,13 @@ title: Less Framework
         cols    1     2      3      4      5      6      7      8      9      10
         px      68    160    252    344    436    528    620    712    804    896    */
 
+    # Reception
+
     Less Framework was popular in the early days of responsive design. (It actually launched around the same time as [LESS](http://lesscss.org). That was quite a naming conflict.) With articles written on sites like [Mashable](http://mashable.com/2011/03/17/less-framework-guid/) and [Sitepoint](http://www.sitepoint.com/responsive-web-design-with-html5-and-the-less-framework-3/). It ended up helping design various sites and even being used as part of other frameworks, like [320 and Up](http://stuffandnonsense.co.uk/projects/320andup/).
 
-    The popularity was helped by the following contributions and the lovely people behind them (dead links crossed off):
+    Eventually, I moved on from fixed-width grid systems and worked on a fully fluid-width one, in the form of [Golden Grid System](/responsive-layout-systems/less-framework/). Later, I revisited the fixed-width grid concept in the form of [Frameless](/responsive-layout-systems/frameless/).
+
+    Less Framework's popularity was helped by the following contributions and the lovely people behind them (dead links crossed off):
 
     - [Rails gem](https://github.com/aslamnd/lessframework-rails) by [Aslam Najeebdeen](http://frontcube.com/).
     - <del>Omnigraffle stencil</del> by <del>Uproot</del>.

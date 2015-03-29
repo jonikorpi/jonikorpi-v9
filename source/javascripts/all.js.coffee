@@ -28,7 +28,7 @@ $ ->
     targetCanvas: $(".target-canvas")
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
-    zoomableLink: ".zoomable-link"
+    zoomableLink: ".zoomable-link, section a[href^='/']"
     zoomOutButton: $("#zoom-out")
     baseTransitionTime: 0.414
     transitionEasing: "cubic-bezier(0.236, 0, 0.146, 1.236)"

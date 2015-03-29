@@ -100,6 +100,8 @@ $emphasis:  hsl($hue-main, 38.2%, 85.4%);
 $purple: hsl($hue-618, 61.8%, 23.6%);
 $link:   hsl($hue-618, 85.4%, 61.8%);
 
+$yellow-link:  hsl($hue-main, 61.8%, 50%);
+
 //
 // Media queries
 
@@ -129,6 +131,7 @@ body {
 
 html {
   background: $background;
+  font-size: 1.25vw;
 }
 
 body {
@@ -430,7 +433,6 @@ html,
 .zoomable-content {
   width: 100vw;
   height: 100vw;
-  font-size: 1.25vw;
   transform-origin: left top;
   position: absolute;
 }
@@ -526,6 +528,14 @@ html,
 
     @media #{$retina} {
       border-bottom-width: 0.5px;
+    }
+
+    &[href^="/"] {
+      color: $yellow-link;
+
+      &:after {
+        content: "→";
+      }
     }
 
     &:hover {
