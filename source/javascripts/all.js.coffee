@@ -90,11 +90,12 @@ $ ->
             zoomToFit( targetZoomable[0], transitionTime )
           else
             console.log "NOT ZOOMING; ID NOT FOUND"
+            window.Engine.canvas.dequeue()
 
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = window.Engine.baseTransitionTime, statelessZoom = false, backgroundZoom = false) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime, statelessZoom = false, instaZoom = false) ->
 
     console.log "------------------------------------------------"
 
@@ -202,9 +203,9 @@ $ ->
     #
     # After transition ends
 
-    if backgroundZoom
+    if instaZoom
       console.log "NOT WAITING FOR TRANSITIONEND"
-      afterTransition(scale, x, y, $target)
+      afterTransition(scale, x, y, $target, false)
     else
       window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
         console.log "TRANSITIONEND"
@@ -213,7 +214,8 @@ $ ->
   #
   # Post-transition stuff
 
-  afterTransition = (scale, x, y, $target) ->
+  afterTransition = (scale, x, y, $target, removeEvents = true) ->
+
     # Replace 3D transforms with 2D ones after transition finishes
     window.Engine.canvas.css
       "-webkit-transition": "none"
@@ -225,10 +227,13 @@ $ ->
       "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
       "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
       "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-    console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
+    console.log "TRANSFORM2D scale(#{scale}) translate(#{x}px, #{y}px)"
 
-    window.Engine.canvas.off "transitionend webkitTransitionEnd"
     $target.addClass("visited-zoomable")
+
+    if removeEvents
+      window.Engine.canvas.off "transitionend webkitTransitionEnd"
+
     window.Engine.canvas.dequeue()
 
   #
