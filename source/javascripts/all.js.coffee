@@ -30,7 +30,7 @@ $ ->
     zoomableLink: ".zoomable-link, section a[href^='/']"
     zoomOutButton: $("#zoom-out")
     baseTransitionTime: 0.414
-    transitionEasing: "cubic-bezier(0.236, 0, 0.146, 1.236)"
+    transitionEasing:  "cubic-bezier(0.236, 0, 0.5, 1)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -60,7 +60,7 @@ $ ->
           zoomToFit( targetZoomable[0], transitionTime, true )
         when "background"
           console.log "BACKGROUND"
-          zoomToFit( targetZoomable[0], 0 )
+          zoomToFit( targetZoomable[0], 0, false, true )
         when "refocus"
           if currentZoomable[0] == window.Engine.initialZoomable[0]
             console.log "NO NEED TO REFOCUS"
@@ -89,7 +89,7 @@ $ ->
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = window.Engine.baseTransitionTime, statelessZoom = false) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime, statelessZoom = false, backgroundZoom = false) ->
 
     console.log "------------------------------------------------"
 
@@ -197,8 +197,8 @@ $ ->
     #
     # After transition ends
 
-    window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
-      console.log "TRANSITIONEND"
+    if backgroundZoom
+      console.log "NOT WAITING FOR TRANSITIONEND"
 
       # Replace 3D transforms with 2D ones after transition finishes
       window.Engine.canvas.css
@@ -216,6 +216,26 @@ $ ->
       window.Engine.canvas.off "transitionend webkitTransitionEnd"
       $target.addClass("visited-zoomable")
       window.Engine.canvas.dequeue()
+    else
+      window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
+        console.log "TRANSITIONEND"
+
+        # Replace 3D transforms with 2D ones after transition finishes
+        window.Engine.canvas.css
+          "-webkit-transition": "none"
+          "-moz-transition":    "none"
+          "-o-transition":      "none"
+          "-ms-transition":     "none"
+          "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+          "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+          "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+          "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+          "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+        console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
+
+        window.Engine.canvas.off "transitionend webkitTransitionEnd"
+        $target.addClass("visited-zoomable")
+        window.Engine.canvas.dequeue()
 
   #
   # Anchors on zoomables
