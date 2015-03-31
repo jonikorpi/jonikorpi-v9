@@ -127,6 +127,7 @@ $retina:   "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 html {
@@ -188,8 +189,7 @@ del {
   }
 }
 
-html,
-.target-canvas {
+html {
   background-color: $background;
   // background: radial-gradient(ellipse, $offset 76.4%, $background);
 }
@@ -331,29 +331,6 @@ html,
   }
 }
 
-.target-canvas {
-  position: relative;
-  z-index: 20;
-
-  .index & {
-    display: none;
-  }
-
-  & > .zoomable {
-    width: auto;
-    height: auto;
-    float: none;
-    min-height: 100vh;
-
-    & > .zoomable-content {
-      position: static;
-      width: auto;
-      height: auto;
-      transform: none;
-    }
-  }
-}
-
 .ui-canvas {
   position: fixed;
   left: 0; top: 0;
@@ -445,9 +422,14 @@ html,
 
 .zoomable-content {
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   transform-origin: left top;
   position: absolute;
+
+  .current-zoomable > & {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .fake-paragraphs {
@@ -465,13 +447,11 @@ html,
   background: $background;
   opacity: 0.382;
 
-  .current-zoomable .zoomable .zoomable &,
-  .target-canvas > .zoomable .zoomable .zoomable & {
+  .current-zoomable .zoomable .zoomable & {
     display: none;
   }
 
-  .current-zoomable .zoomable > &,
-  .target-canvas > .zoomable .zoomable > & {
+  .current-zoomable .zoomable > & {
     display: block;
   }
 

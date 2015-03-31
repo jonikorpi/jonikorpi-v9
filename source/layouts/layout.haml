@@ -44,10 +44,6 @@
     -# %meta{name: "format-detection", content: "telephone=no"}
 
   %body
-    %main.target-canvas
-      - unless data.page.root
-        = partial "card", :locals => {card: current_page} do
-          = yield
     .site-viewport
       %nav.site-canvas
         = partial "home"

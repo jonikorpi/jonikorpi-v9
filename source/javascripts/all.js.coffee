@@ -25,7 +25,6 @@ $ ->
     htmlTag: $("html")
     viewport: $("body")
     canvas: $(".site-canvas")
-    targetCanvas: $(".target-canvas")
     initialZoomable: $(".initial-zoomable")
     zoomableAnchor: ".zoomable-anchor"
     zoomableLink: ".zoomable-link, section a[href^='/']"
@@ -58,17 +57,17 @@ $ ->
       switch zoomType
         when "stateless"
           console.log "STATELESS"
-          zoomToFit( targetZoomable[0], transitionTime, false, true )
+          zoomToFit( targetZoomable[0], transitionTime, true )
         when "background"
           console.log "BACKGROUND"
-          zoomToFit( targetZoomable[0], 0, true )
+          zoomToFit( targetZoomable[0], 0 )
         when "refocus"
           if currentZoomable[0] == window.Engine.initialZoomable[0]
             console.log "NO NEED TO REFOCUS"
             window.Engine.canvas.dequeue()
           else
             console.log "REFOCUS"
-            zoomToFit( currentZoomable[0], transitionTime * 0.854, true )
+            zoomToFit( currentZoomable[0], transitionTime * 0.5 )
         when "out"
           if parentZoomables.length > 0
             console.log "OUT"
@@ -90,25 +89,12 @@ $ ->
   #
   # Zoom-to-fit function
 
-  zoomToFit = (target, duration = window.Engine.baseTransitionTime, backgroundZoom = false, statelessZoom = false) ->
+  zoomToFit = (target, duration = window.Engine.baseTransitionTime, statelessZoom = false) ->
 
     console.log "------------------------------------------------"
 
     $target = $(target)
     targetID = $target.data("id")
-
-    #
-    # Pop .current-zoomable back into canvas, if it's outside
-
-    unless backgroundZoom
-      console.log "HIDING TARGET CANVAS"
-      window.Engine.targetCanvas[0].style.display = "none"
-      targetCanvasContent = window.Engine.targetCanvas.children(".zoomable")
-      if targetCanvasContent.length > 0
-        # window.Engine.canvas.find(".target-placeholder").replaceWith( targetCanvasContent[0] )
-        # console.log targetCanvasContent[0]
-        # console.log "… was appended back."
-        window.Engine.targetCanvas[0].innerHTML = ""
 
     # Calculate current viewport, canvas and target positions
     viewportWidth  = window.Engine.viewport[0].offsetWidth
@@ -211,37 +197,25 @@ $ ->
     #
     # After transition ends
 
-    if backgroundZoom
-      console.log "NOT WAITING FOR TRANSITION TO END"
-      window.Engine.canvas.dequeue()
+    window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
+      console.log "TRANSITIONEND"
+
+      # Replace 3D transforms with 2D ones after transition finishes
+      window.Engine.canvas.css
+        "-webkit-transition": "none"
+        "-moz-transition":    "none"
+        "-o-transition":      "none"
+        "-ms-transition":     "none"
+        "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+        "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+      console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
+
+      window.Engine.canvas.off "transitionend webkitTransitionEnd"
       $target.addClass("visited-zoomable")
-    else
-      window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
-        console.log "TRANSITIONEND"
-
-        # Replace 3D transforms with 2D ones after transition finishes
-        # window.Engine.canvas.off "otransitionend transitionend webkitTransitionEnd"
-        # window.Engine.canvas.css
-        #   "-webkit-transition": "none"
-        #   "-moz-transition":    "none"
-        #   "-o-transition":      "none"
-        #   "-ms-transition":     "none"
-        #   "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
-        #   "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
-        #   "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
-        #   "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
-        #   "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-        # console.log "Now setting scale(#{scale}) translate(#{x}px, #{y}px)"
-
-        # Pop target out of the canvas and show it at 1:1 scale
-        unless window.Engine.initialZoomable[0] == target
-          console.log "SHOWING TARGET CANVAS"
-          window.Engine.targetCanvas[0].style.display = "block"
-          $target.clone().appendTo(window.Engine.targetCanvas)
-
-        window.Engine.canvas.off "transitionend webkitTransitionEnd"
-        $target.addClass("visited-zoomable")
-        window.Engine.canvas.dequeue()
+      window.Engine.canvas.dequeue()
 
   #
   # Anchors on zoomables
