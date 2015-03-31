@@ -178,7 +178,7 @@ $ ->
       window.Engine.htmlTag.removeClass("initial-zoom")
 
     $(".current-zoomable").removeClass("current-zoomable")
-    $target.addClass("current-zoomable")
+    $target.addClass("current-zoomable visited-zoomable")
 
     #
     # Save variables for next transform
@@ -207,9 +207,10 @@ $ ->
       console.log "NOT WAITING FOR TRANSITIONEND"
       afterTransition(scale, x, y, $target, false)
     else
-      window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
-        console.log "TRANSITIONEND"
-        afterTransition(scale, x, y, $target)
+      window.Engine.canvas.on "transitionend webkitTransitionEnd", (event) ->
+        if event.originalEvent.target == window.Engine.canvas[0]
+          console.log "TRANSITIONEND"
+          afterTransition(scale, x, y, $target)
 
   #
   # Post-transition stuff
@@ -229,7 +230,6 @@ $ ->
       "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
     console.log "TRANSFORM2D scale(#{scale}) translate(#{x}px, #{y}px)"
 
-    $target.addClass("visited-zoomable")
 
     if removeEvents
       window.Engine.canvas.off "transitionend webkitTransitionEnd"
