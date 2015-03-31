@@ -43,6 +43,7 @@ $ ->
     console.log "------------------------------------------------"
     console.log "QUEUING (#{window.Engine.canvas.queue("fx").length}) #{targetID}"
 
+    # Speed up transition if the queue is long
     if window.Engine.canvas.queue("fx").length > 0
       transitionTime = window.Engine.baseTransitionTime * 0.854
     else
@@ -50,25 +51,29 @@ $ ->
 
     window.Engine.canvas.queue ->
       currentZoomable = window.Engine.canvas.find("[data-id='#{window.Engine.currentZoomableID}']")
-      parentZoomables = currentZoomable.parent().closest(".zoomable")
       if targetID
         targetZoomable = window.Engine.canvas.find("[data-id='#{targetID}']")
 
       switch zoomType
+
         when "stateless"
           console.log "STATELESS"
           zoomToFit( targetZoomable[0], transitionTime, true )
+
         when "background"
           console.log "BACKGROUND"
           zoomToFit( targetZoomable[0], 0, false, true )
+
         when "refocus"
           if currentZoomable[0] == window.Engine.initialZoomable[0]
             console.log "NO NEED TO REFOCUS"
             window.Engine.canvas.dequeue()
           else
             console.log "REFOCUS"
-            zoomToFit( currentZoomable[0], transitionTime * 0.5 )
+            zoomToFit( currentZoomable[0], transitionTime * 0.5, true )
+
         when "out"
+          parentZoomables = currentZoomable.parent().closest(".zoomable")
           if parentZoomables.length > 0
             console.log "OUT"
             zoomToFit( window.Engine.canvas.find("[data-id='#{parentZoomables.data("id")}']")[0], transitionTime )
@@ -78,13 +83,13 @@ $ ->
           else
             console.log "OUT TO HOME"
             zoomToFit( window.Engine.initialZoomable[0], transitionTime )
+
         when "normal"
           if targetID && targetZoomable.length > 0
             console.log "TARGET BY ID: #{targetID}"
             zoomToFit( targetZoomable[0], transitionTime )
           else
-            console.log "TARGET HOME"
-            zoomToFit( window.Engine.initialZoomable[0], transitionTime )
+            console.log "NOT ZOOMING; ID NOT FOUND"
 
   #
   # Zoom-to-fit function
@@ -199,43 +204,32 @@ $ ->
 
     if backgroundZoom
       console.log "NOT WAITING FOR TRANSITIONEND"
-
-      # Replace 3D transforms with 2D ones after transition finishes
-      window.Engine.canvas.css
-        "-webkit-transition": "none"
-        "-moz-transition":    "none"
-        "-o-transition":      "none"
-        "-ms-transition":     "none"
-        "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
-        "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
-        "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
-        "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
-        "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-      console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
-
-      window.Engine.canvas.off "transitionend webkitTransitionEnd"
-      $target.addClass("visited-zoomable")
-      window.Engine.canvas.dequeue()
+      afterTransition(scale, x, y, $target)
     else
       window.Engine.canvas.one "transitionend webkitTransitionEnd", (event) ->
         console.log "TRANSITIONEND"
+        afterTransition(scale, x, y, $target)
 
-        # Replace 3D transforms with 2D ones after transition finishes
-        window.Engine.canvas.css
-          "-webkit-transition": "none"
-          "-moz-transition":    "none"
-          "-o-transition":      "none"
-          "-ms-transition":     "none"
-          "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
-          "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
-        console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
+  #
+  # Post-transition stuff
 
-        window.Engine.canvas.off "transitionend webkitTransitionEnd"
-        $target.addClass("visited-zoomable")
-        window.Engine.canvas.dequeue()
+  afterTransition = (scale, x, y, $target) ->
+    # Replace 3D transforms with 2D ones after transition finishes
+    window.Engine.canvas.css
+      "-webkit-transition": "none"
+      "-moz-transition":    "none"
+      "-o-transition":      "none"
+      "-ms-transition":     "none"
+      "-webkit-transform": "scale(#{scale}) translate(#{x}px, #{y}px)"
+      "-moz-transform":    "scale(#{scale}) translate(#{x}px, #{y}px)"
+      "-o-transform":      "scale(#{scale}) translate(#{x}px, #{y}px)"
+      "-ms-transform":     "scale(#{scale}) translate(#{x}px, #{y}px)"
+      "transform":         "scale(#{scale}) translate(#{x}px, #{y}px)"
+    console.log "Now setting 2D scale(#{scale}) translate(#{x}px, #{y}px)"
+
+    window.Engine.canvas.off "transitionend webkitTransitionEnd"
+    $target.addClass("visited-zoomable")
+    window.Engine.canvas.dequeue()
 
   #
   # Anchors on zoomables
