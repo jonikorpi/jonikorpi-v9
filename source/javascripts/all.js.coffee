@@ -134,7 +134,7 @@ $ ->
     scaleChange = Math.abs(window.Engine.currentScale - scale)
     biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
     durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 50
-    transitionTime = duration * durationModifier
+    transitionTime = duration #* durationModifier
 
     # Set new scale and canvas position
     canvas = window.Engine.canvas[0];
