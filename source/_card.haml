@@ -3,7 +3,7 @@
   .zoomable-content{class: card.data.top ? "" : "scrollable-zoomable"}
     = yield
 
-    - children = card.children.select { |card| card.ext == ".html" && !card.data.unpublished }
+    - children = card.children.select { |card| card.ext == ".html" && !card.data.unpublished }.sort_by { |card| card.data.weight }
     - if children.any?
       .zoomables-container
         - children.each do |childCard|
