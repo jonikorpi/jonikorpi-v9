@@ -216,6 +216,14 @@ html {
   float: left;
   @include size(1);
 
+  .current-zoomable & {
+    background: $highlight;
+
+    .zoomable {
+      background: transparent;
+    }
+  }
+
   .visited-zoomable {
 
   }
@@ -369,10 +377,10 @@ html {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   z-index: 1000;
-  transition: all $baseTransitionTime ease-out;
+  // transition: all $baseTransitionTime ease-out;
   display: none;
   border: solid transparent;
-  border-width: lines(0.146) 0 0 lines(0.146);
+  border-width: 0 lines(0.09);
 
   .current-zoomable .zoomable .zoomable & {
     display: none;
@@ -381,11 +389,15 @@ html {
 
   .current-zoomable .zoomable > & {
     display: block;
-    border-color: $highlight;
+    border-color: $background;
   }
 
-  .zoomable:first-child > & {
-    border-left-width: 0;
+  .current-zoomable .zoomable:first-child > & {
+    border-left-color: transparent;
+  }
+
+  .current-zoomable .zoomable:last-child > & {
+    border-right-color: transparent;
   }
 
   // .visited-zoomable > & {
@@ -403,7 +415,6 @@ html {
 // Masthead
 
 .masthead {
-  background: $highlight;
   display: table;
   width: 100%;
   height: 0.146vh;
@@ -425,7 +436,7 @@ html {
 // Card sections
 
 .padded-section {
-  padding: lines(1) lines(3);
+  padding: lines(1) lines(5);
 
   &:first-child {
     padding-top: lines(3);
