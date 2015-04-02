@@ -25,7 +25,7 @@ textarea { resize: vertical; }
 // pixels to ems & baselines to ems
 
 $font-size: 16;
-$line-height: 22;
+$line-height: 24;
 
 @function em($pixels, $context-font-size: $font-size) {
   @return ($pixels / $context-font-size) * 1em;
@@ -181,7 +181,8 @@ del {
 
 @mixin size ($ratio, $w-size:1, $h-size:1) {
   width:  100vw * $ratio * $w-size;
-  height: 100vh * $ratio * $h-size;
+  // height: 100vh * $ratio * $h-size;
+  min-height: 100%;
   // font-size: 3vmin * $ratio;
 
   & > .zoomable-content {
@@ -206,128 +207,61 @@ html {
   height: 100vh;
   position: relative;
   transform: translate3d(0,0,0);
+  transform-origin: center top;
   z-index: 10;
 }
 
-.sizeable {
+.zoomable {
+  position: relative;
   float: left;
-  @include size(1/2);
+  @include size(1);
+
+  .current-zoomable & {
+    border-left: lines(0.25) solid $highlight;
+
+    &:first-child,
+    .zoomable {
+      border-left: 0;
+    }
+  }
 
   .visited-zoomable {
 
   }
 
-  &.card-header {
-    @include size(1/2, 2);
-  }
-
-  &:only-child {
-    @include size(1);
-  }
-
   &:nth-last-child(2):first-child,
   &:nth-last-child(2):first-child ~ & {
-    @include size(2/3);
-    float: none;
-    margin-left: 16.666%;
-
-    &.card-header {
-      @include size(1/3, 3);
-      margin-left: 0;
-    }
+    @include size(1/2);
   }
 
   &:nth-last-child(3):first-child,
   &:nth-last-child(3):first-child ~ & {
-
+    @include size(1/3);
   }
 
   &:nth-last-child(4):first-child,
   &:nth-last-child(4):first-child ~ & {
-    &.card-header {
-      @include size(1/3, 3, 1);
-      margin-left: 0;
-    }
-
-    &.zoomable {
-      @include size(2/3);
-    }
-
-    &.zoomable + .zoomable {
-      @include size(1/3);
-    }
+    @include size(1/4);
   }
 
   &:nth-last-child(5):first-child,
   &:nth-last-child(5):first-child ~ & {
-    &.card-header {
-      @include size(1/4, 4);
-      margin-left: 0;
-    }
-
-    &.zoomable {
-      @include size(3/4);
-    }
-
-    &.zoomable + .zoomable {
-      @include size(1/4);
-    }
+    @include size(1/5);
   }
 
   &:nth-last-child(6):first-child,
   &:nth-last-child(6):first-child ~ & {
-    &.card-header {
-      @include size(1/6, 6);
-      margin-left: 0;
-    }
-
-    &.zoomable,
-    &.zoomable + .zoomable {
-      @include size(1/2);
-    }
-
-    &.zoomable + .zoomable + .zoomable {
-      @include size(1/3);
-    }
+    @include size(1/6);
   }
 
   &:nth-last-child(7):first-child,
   &:nth-last-child(7):first-child ~ & {
-    &.card-header {
-      @include size(1/4, 4);
-      margin-left: 0;
-    }
-
-    &.zoomable,
-    &.zoomable + .zoomable {
-      @include size(1/2);
-    }
-
-    &.zoomable + .zoomable + .zoomable {
-      @include size(1/4);
-    }
+    @include size(1/7);
   }
 
   &:nth-last-child(8):first-child,
   &:nth-last-child(8):first-child ~ & {
-    &.card-header {
-      @include size(1/12, 12, 1);
-      margin-left: 0;
-      font-size: 0.75em;
-    }
-
-    &.zoomable {
-      @include size(2/3);
-    }
-
-    &.zoomable + .zoomable,
-    &.zoomable + .zoomable + .zoomable {
-      @include size(1/3);
-    }
-
-    &.zoomable + .zoomable + .zoomable + .zoomable {
-      @include size(1/4);
-    }
+    @include size(1/8);
   }
 }
 
@@ -389,20 +323,31 @@ html {
 }
 
 .initial-zoomable {
-  overflow: hidden;
+  height: 100%;
+}
+
+.zoomables-container {
+  height: 100%;
+}
+
+.card-header {
+  display: table;
+  width: 100%;
+  height: 38.2vh;
+  font-size: 2vmin;
 }
 
 .card-header-wrapper {
   display: table-cell;
-  vertical-align: middle;
-  padding: 0 lines(3);
-  text-align: center;
+  vertical-align: bottom;
   font-style: italic;
+  padding: 0 lines(3) lines(2);
+  text-align: center;
 
   h1 {
     font-weight: bold;
-    font-size: em(42);
-    line-height: lines(2, 42);
+    font-size: em(110);
+    line-height: lines(5, 110);
   }
 
   p {
@@ -411,22 +356,13 @@ html {
   }
 }
 
-.card-header {
-  display: table;
-}
-
-.zoomable {
-  position: relative;
-  overflow: hidden;
-}
-
 .zoomable-content {
   width: 100vw;
   height: 100vh;
   transform-origin: left top;
   position: absolute;
 
-  .current-zoomable > & {
+  .current-zoomable > &.scrollable-zoomable {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -444,8 +380,6 @@ html {
   z-index: 1000;
   transition: all $baseTransitionTime*0.236 ease-out;
   display: none;
-  background: $background;
-  opacity: 0.382;
 
   .current-zoomable .zoomable .zoomable & {
     display: none;
@@ -462,9 +396,29 @@ html {
   &:hover,
   &:focus {
     cursor: zoom-in;
-    border-color: $link;
     z-index: 1001;
-    opacity: 0;
+  }
+}
+
+//
+// Masthead
+
+.masthead {
+  background: $highlight;
+  display: table;
+  width: 100%;
+  height: 0.146vh;
+}
+
+.masthead-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  padding: lines(1);
+
+  h1, p {
+    display: inline-block;
+    vertical-align: bottom;
   }
 }
 
@@ -488,8 +442,6 @@ html {
 }
 
 .header-section {
-  text-align: center;
-
   h1 {
     font-size: em(110);
     line-height: lines(5, 110);
@@ -513,7 +465,7 @@ html {
   h1, h2, h3, h4, h5, h6,
   p, ul, ol, blockquote,
   hr, pre {
-    margin: lines(1) auto;
+    margin: lines(1) 0;
     max-width: $max-content-width;
   }
 
@@ -604,6 +556,15 @@ html {
 
     p {
       max-width: none;
+    }
+  }
+
+  figure {
+    position: relative;
+
+    img {
+      display: block;
+      max-width: 100%;
     }
   }
 

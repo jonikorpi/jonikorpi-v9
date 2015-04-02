@@ -1,10 +1,13 @@
-%article.card.zoomable.sizeable{id: card.url, "data-id" => card.url, "data-title" => card.data.title}
+%article.card.zoomable{id: card.url, "data-id" => card.url, "data-title" => card.data.title}
 
-  .zoomable-content
+  .zoomable-content{class: card.data.top ? "" : "scrollable-zoomable"}
     = yield
 
-    - card.children.select { |card| card.ext == ".html"}.each do |childCard|
-      = partial "card", :locals => {card: childCard} do
-        = childCard.render({:layout => false})
+    - children = card.children.select { |card| card.ext == ".html" && !card.data.unpublished }
+    - if children.any?
+      .zoomables-container
+        - children.each do |childCard|
+          = partial "card", :locals => {card: childCard} do
+            = childCard.render({:layout => false})
 
   %a.card-link.zoomable-anchor{href: "#{card.url}"}

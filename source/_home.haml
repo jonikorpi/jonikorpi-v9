@@ -1,12 +1,13 @@
 .initial-zoomable{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
 
-  .card-header.sizeable
-    .card-header-wrapper
+  .masthead
+    .masthead-wrapper
       %h1 Joni Korpi
       %p
         A Finnish designer, currently working on
         zoomable UIs on the web.
 
-  - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && card.data.top }.sort_by { |card| card.data.weight }.each do |card|
-    = partial "card", :locals => {card: card} do
-      = card.render({:layout => false})
+  .zoomables-container
+    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished && card.data.top }.sort_by { |card| card.data.weight }.each do |card|
+      = partial "card", :locals => {card: card} do
+        = card.render({:layout => false})

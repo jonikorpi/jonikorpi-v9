@@ -115,19 +115,21 @@ $ ->
     targetTop      = targetRect.top # + document.body.scrollTop
 
     # Calculate new scale, canvas position and transition time
-    scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
+    # scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
+    scale = viewportWidth/targetWidth
 
     # Calculate left/top positions
     targetOffsetX  = viewportWidth  / window.Engine.currentScale * 0.5 - targetWidth  * 0.5
-    targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
+    # targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
+    targetOffsetY  = 0
 
     if window.Engine.initialZoomable[0] == target
       x = 0
       y = 0
       scale = 1
     else
-      x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 5 )
-      y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 5 )
+      x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 2 )
+      y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 2 )
     z = 0
 
     # Set transition duration and weigh it by how far we're transiting
