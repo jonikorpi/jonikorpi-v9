@@ -216,15 +216,6 @@ html {
   float: left;
   @include size(1);
 
-  .current-zoomable & {
-    border-left: lines(0.25) solid $highlight;
-
-    &:first-child,
-    .zoomable {
-      border-left: 0;
-    }
-  }
-
   .visited-zoomable {
 
   }
@@ -378,15 +369,23 @@ html {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   z-index: 1000;
-  transition: all $baseTransitionTime*0.236 ease-out;
+  transition: all $baseTransitionTime ease-out;
   display: none;
+  border: solid transparent;
+  border-width: lines(0.146) 0 0 lines(0.146);
 
   .current-zoomable .zoomable .zoomable & {
     display: none;
+    border-color: transparent;
   }
 
   .current-zoomable .zoomable > & {
     display: block;
+    border-color: $highlight;
+  }
+
+  .zoomable:first-child > & {
+    border-left-width: 0;
   }
 
   // .visited-zoomable > & {
