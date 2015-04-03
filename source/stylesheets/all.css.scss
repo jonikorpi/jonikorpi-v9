@@ -189,33 +189,30 @@ del {
 
 .card-header h1,
 .header-section h1 {
-  font-size: em(22);
-  line-height: lines(1.25, 22);
+  font-size: em(32);
+  line-height: lines(1.5, 32);
+  font-weight: normal;
 
   @media #{$xs} {
-    font-size: em(32);
-    line-height: lines(1.5, 32);
+    font-size: em(42);
+    line-height: lines(2, 42);
+    letter-spacing: em(-1, 42);
   }
 
   @media #{$s} {
-    font-size: em(42);
-    line-height: lines(2, 42);
+    font-size: em(58);
+    line-height: lines(2.5, 58);
   }
 
-  @media #{$l} {
+  @media #{$m} {
     font-size: em(68);
     line-height: lines(3, 68);
-    letter-spacing: -1px;
   }
 
-  @media #{$x4l} {
+  @media #{$x2l} {
     font-size: em(110);
     line-height: lines(5, 110);
-  }
-
-  @media #{$x6l} {
-    font-size: em(177);
-    line-height: lines(7, 177);
+    letter-spacing: em(-2, 110);
   }
 }
 
@@ -236,16 +233,10 @@ del {
     margin-top: lines(1, 26);
   }
 
-  @media #{$x4l} {
+  @media #{$x2l} {
     font-size: em(42);
     line-height: lines(2, 42);
     margin-top: lines(1, 42);
-  }
-
-  @media #{$x6l} {
-    font-size: em(66);
-    line-height: lines(3, 66);
-    margin-top: lines(2, 66);
   }
 }
 
@@ -290,7 +281,7 @@ html {
   position: relative;
   float: left;
   @include size(1);
-  overflow: hidden;
+  // overflow: hidden;
 
   .visited-zoomable {
 
@@ -403,11 +394,11 @@ html {
 }
 
 .card-header-wrapper {
-  font-style: italic;
   text-align: center;
 
   h1 {
-    font-weight: normal;
+    font-weight: bold;
+    font-style: italic;
   }
 }
 
@@ -420,11 +411,11 @@ html {
   }
 
   .current-zoomable .zoomable & {
-    color: $link;
+    // color: $link;
   }
 
   .current-zoomable .zoomable .zoomable & {
-    color: $emphasis;
+    // color: $emphasis;
   }
 }
 
@@ -519,14 +510,14 @@ html {
     padding-top: lines(1.618);
 
     @media #{$s}   { padding-top: lines(2.618); }
-    @media #{$l}   { padding-top: lines(4.236); }
+    @media #{$l}   { padding-top: lines(3.618); }
   }
 
   &:last-child {
     padding-bottom: lines(1.618);
 
     @media #{$s}   { padding-bottom: lines(2.618); }
-    @media #{$l}   { padding-bottom: lines(4.236); }
+    @media #{$l}   { padding-bottom: lines(3.618); }
   }
 }
 
