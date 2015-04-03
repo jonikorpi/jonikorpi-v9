@@ -95,12 +95,11 @@ $border:     hsl($hue-618, 23.6%, 38.2%);
 
 $aside:     hsl($hue-main, 14.6%, 50%);
 $body:      hsl($hue-main, 14.6%, 61.8%);
-$emphasis:  hsl($hue-main, 38.2%, 85.4%);
+$emphasis:  hsl($hue-main, 23.6%, 76.4%);
 
 $purple: hsl($hue-618, 61.8%, 23.6%);
-$link:   hsl($hue-618, 85.4%, 61.8%);
 
-$yellow-link:  hsl($hue-main, 61.8%, 50%);
+$link: hsl($hue-main, 50%, 50%);
 
 //
 // Media queries
@@ -228,14 +227,6 @@ html {
   position: relative;
   float: left;
   @include size(1);
-
-  .current-zoomable & {
-    background: $highlight;
-
-    .zoomable {
-      background: transparent;
-    }
-  }
 
   .visited-zoomable {
 
@@ -365,6 +356,19 @@ html {
   p {
     font-size: em(26);
     line-height: lines(1.5, 26);
+  }
+}
+
+.card-header h1,
+.header-section h1 {
+  transition: color $baseTransitionTime $ease-bounce-out;
+
+  .current-zoomable .zoomable & {
+    color: $link;
+  }
+
+  .current-zoomable .zoomable .zoomable & {
+    color: $emphasis;
   }
 }
 
