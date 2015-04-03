@@ -47,8 +47,8 @@ $max-content-width: lines(28);
 $baseTransitionTime: 0.414s;
 $zoom-out-size: lines(0.618);
 
-$ease-bounce-out: cubic-bezier(0.618,  0.0,   0.382, 1.382);
-$ease-bounce-in:  cubic-bezier(0.618, -0.382, 0.382, 1.0);
+$ease-bounce-out: cubic-bezier(0.236, 0, 0.5, 1);
+$ease-bounce-in:  cubic-bezier(0.236, 0, 0.5, 1);
 
 //
 // Typography variables
@@ -90,14 +90,15 @@ $hue-414: $hue-main + (360 * 0.414);
 
 $background: hsl($hue-618, 38.2%, 9%);
 $highlight:  hsl($hue-618, 23.6%, 14.6%);
-$offset:     hsl($hue-618, 23.6%, 23.6%);
-$border:     hsl($hue-618, 23.6%, 38.2%);
+$offset:     hsl($hue-618, 14.6%, 23.6%);
+$border:     hsl($hue-618, 9%, 38.2%);
 
 $aside:     hsl($hue-main, 14.6%, 50%);
 $body:      hsl($hue-main, 14.6%, 61.8%);
 $emphasis:  hsl($hue-main, 23.6%, 76.4%);
 
-$purple: hsl($hue-618, 61.8%, 23.6%);
+$purple:           hsl($hue-618, 61.8%, 23.6%);
+$purple-highlight: hsl($hue-618, 61.8%, 61.8%);
 
 $link: hsl($hue-main, 50%, 50%);
 
@@ -411,7 +412,11 @@ html {
 
 .card-header h1,
 .header-section h1 {
-  // transition: color $baseTransitionTime $ease-bounce-out;
+  // transition: color $baseTransitionTime*0.618 $ease-bounce-out;
+
+  .current-zoomable & {
+    // color: $purple-highlight;
+  }
 
   .current-zoomable .zoomable & {
     color: $link;

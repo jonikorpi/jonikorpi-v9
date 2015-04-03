@@ -150,6 +150,42 @@ $ ->
     canvas.style.transform = "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     #
+    # Set some classes to help with CSS
+
+    if window.Engine.initialZoomable[0] == target
+      window.Engine.htmlTag.addClass("initial-zoom")
+    else
+      window.Engine.htmlTag.removeClass("initial-zoom")
+
+    $(".current-zoomable").removeClass("current-zoomable")
+    $target.addClass("current-zoomable visited-zoomable")
+
+    #
+    # Set history API stuff
+
+    unless statelessZoom
+      if targetID == window.Engine.initialZoomable.data("id")
+        history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
+        console.log "Clearing hash"
+      else
+        history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
+        console.log "Setting hash to #{targetID} with #{$target.data("title")}"
+    document.title = $target.data("title")
+
+
+    #
+    # After transition ends
+
+    if instaZoom
+      console.log "NOT WAITING FOR TRANSITIONEND"
+      afterTransition(scale, x, y, $target, false)
+    else
+      window.Engine.canvas.on "transitionend webkitTransitionEnd", (event) ->
+        if event.originalEvent.target == window.Engine.canvas[0]
+          console.log "TRANSITIONEND"
+          afterTransition(scale, x, y, $target)
+
+    #
     # Debug logs
     console.log $target
     console.log "currentScale   : #{window.Engine.currentScale}"
@@ -172,47 +208,12 @@ $ ->
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     #
-    # Set some classes to help with CSS
-
-    if window.Engine.initialZoomable[0] == target
-      window.Engine.htmlTag.addClass("initial-zoom")
-    else
-      window.Engine.htmlTag.removeClass("initial-zoom")
-
-    $(".current-zoomable").removeClass("current-zoomable")
-    $target.addClass("current-zoomable visited-zoomable")
-
-    #
     # Save variables for next transform
 
     window.Engine.currentScale = scale
     window.Engine.currentX = x
     window.Engine.currentY = y
     window.Engine.currentZoomableID = targetID
-
-    #
-    # Set history API stuff
-
-    unless statelessZoom
-      if targetID == window.Engine.initialZoomable.data("id")
-        history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
-        console.log "Clearing hash"
-      else
-        history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
-        console.log "Setting hash to #{targetID} with #{$target.data("title")}"
-    document.title = $target.data("title")
-
-    #
-    # After transition ends
-
-    if instaZoom
-      console.log "NOT WAITING FOR TRANSITIONEND"
-      afterTransition(scale, x, y, $target, false)
-    else
-      window.Engine.canvas.on "transitionend webkitTransitionEnd", (event) ->
-        if event.originalEvent.target == window.Engine.canvas[0]
-          console.log "TRANSITIONEND"
-          afterTransition(scale, x, y, $target)
 
   #
   # Post-transition stuff
