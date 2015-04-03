@@ -1,13 +1,13 @@
 %article.card.zoomable{id: card.url, "data-id" => card.url, "data-title" => card.data.title}
 
-  .zoomable-content{class: card.data.top ? "" : "scrollable-zoomable"}
+  .zoomable-content{class: card.data.scrollable ? "scrollable-zoomable" : ""}
     = yield
 
-    - children = card.children.select { |card| card.ext == ".html" && !card.data.unpublished }.sort_by { |card| card.data.weight }
+    - children = sitemap.resources.select { |child| child.ext == ".html" && !child.data.unpublished && child.data.inside == card.url }.sort_by { |child| child.data.weight }
     - if children.any?
       .zoomables-container
         - children.each do |childCard|
           = partial "card", :locals => {card: childCard} do
             = childCard.render({:layout => false})
 
-  %a.card-link.zoomable-anchor{href: "#{card.url}"}
+  %a.card-link.zoomable-anchor{href: card.url}

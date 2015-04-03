@@ -40,7 +40,7 @@ $line-height: 24;
 }
 
 //
-// Variables
+// General variables
 
 $max-width: lines(40);
 $max-content-width: lines(28);
@@ -51,7 +51,7 @@ $ease-bounce-out: cubic-bezier(0.618,  0.0,   0.382, 1.382);
 $ease-bounce-in:  cubic-bezier(0.618, -0.382, 0.382, 1.0);
 
 //
-// Typography
+// Typography variables
 
 @import "fonts";
 
@@ -59,7 +59,7 @@ $ease-bounce-in:  cubic-bezier(0.618, -0.382, 0.382, 1.0);
 @mixin monospace-font { font-family: Menlo, Consolas, monospace, monospace; }
 
 //
-// Colors
+// Color variables
 
 $hue-main: 45;
 
@@ -186,6 +186,68 @@ del {
   color: $aside;
 }
 
+.card-header h1,
+.header-section h1 {
+  font-size: em(22);
+  line-height: lines(1.25, 22);
+
+  @media #{$xs} {
+    font-size: em(32);
+    line-height: lines(1.5, 32);
+  }
+
+  @media #{$s} {
+    font-size: em(42);
+    line-height: lines(2, 42);
+  }
+
+  @media #{$l} {
+    font-size: em(68);
+    line-height: lines(3, 68);
+    letter-spacing: -1px;
+  }
+
+  @media #{$x4l} {
+    font-size: em(110);
+    line-height: lines(5, 110);
+  }
+
+  @media #{$x6l} {
+    font-size: em(177);
+    line-height: lines(7, 177);
+  }
+}
+
+.card-header p,
+.header-section p {
+  margin-top: lines(1);
+  color: $aside;
+
+  @media #{$xs} {
+    font-size: em(22);
+    line-height: lines(1.25, 22);
+    margin-top: lines(1, 22);
+  }
+
+  @media #{$s} {
+    font-size: em(26);
+    line-height: lines(1.5, 26);
+    margin-top: lines(1, 26);
+  }
+
+  @media #{$x4l} {
+    font-size: em(42);
+    line-height: lines(2, 42);
+    margin-top: lines(1, 42);
+  }
+
+  @media #{$x6l} {
+    font-size: em(66);
+    line-height: lines(3, 66);
+    margin-top: lines(2, 66);
+  }
+}
+
 ::selection      { background: $link; color: $emphasis; }
 -moz-::selection { background: $link; color: $emphasis; }
 
@@ -194,7 +256,7 @@ del {
 @mixin size ($ratio, $w-size:1, $h-size:1) {
   width:  100vw * $ratio * $w-size;
   // height: 100vh * $ratio * $h-size;
-  min-height: 100%;
+  height: 100vh;
   // font-size: 3vmin * $ratio;
 
   & > .zoomable-content {
@@ -334,34 +396,22 @@ html {
 }
 
 .card-header {
-  display: table;
   width: 100%;
   height: 38.2vh;
-  font-size: 2vmin;
 }
 
 .card-header-wrapper {
-  display: table-cell;
-  vertical-align: bottom;
   font-style: italic;
-  padding: 0 lines(3) lines(2);
   text-align: center;
 
   h1 {
-    font-weight: bold;
-    font-size: em(110);
-    line-height: lines(5, 110);
-  }
-
-  p {
-    font-size: em(26);
-    line-height: lines(1.5, 26);
+    font-weight: normal;
   }
 }
 
 .card-header h1,
 .header-section h1 {
-  transition: color $baseTransitionTime $ease-bounce-out;
+  // transition: color $baseTransitionTime $ease-bounce-out;
 
   .current-zoomable .zoomable & {
     color: $link;
@@ -396,8 +446,8 @@ html {
   z-index: 1000;
   // transition: all $baseTransitionTime ease-out;
   display: none;
-  border: solid transparent;
-  border-width: 0 lines(0.09);
+  // border: solid transparent;
+  // border-width: 0 lines(0.09);
 
   .current-zoomable .zoomable .zoomable & {
     display: none;
@@ -406,7 +456,7 @@ html {
 
   .current-zoomable .zoomable > & {
     display: block;
-    border-color: $background;
+    border-color: $border;
   }
 
   .current-zoomable .zoomable:first-child > & {
@@ -452,7 +502,8 @@ html {
 //
 // Card sections
 
-.padded-section {
+.padded-section,
+.card-header-wrapper {
   padding: lines(0.5) lines(0.618);
 
   @media #{$s}   { padding: lines(1) lines(1.618); }
@@ -478,65 +529,7 @@ html {
 }
 
 .header-section {
-  h1 {
-    font-size: em(22);
-    line-height: lines(1.25, 22);
-
-    @media #{$xs} {
-      font-size: em(32);
-      line-height: lines(1.5, 32);
-    }
-
-    @media #{$s} {
-      font-size: em(42);
-      line-height: lines(2, 42);
-    }
-
-    @media #{$l} {
-      font-size: em(68);
-      line-height: lines(3, 68);
-      letter-spacing: -1px;
-    }
-
-    @media #{$x4l} {
-      font-size: em(110);
-      line-height: lines(5, 110);
-    }
-
-    @media #{$x6l} {
-      font-size: em(177);
-      line-height: lines(7, 177);
-    }
-  }
-
-  p {
-    margin-top: lines(1);
-    color: $aside;
-
-    @media #{$xs} {
-      font-size: em(22);
-      line-height: lines(1.25, 22);
-      margin-top: lines(1, 22);
-    }
-
-    @media #{$s} {
-      font-size: em(26);
-      line-height: lines(1.5, 26);
-      margin-top: lines(1, 26);
-    }
-
-    @media #{$x4l} {
-      font-size: em(42);
-      line-height: lines(2, 42);
-      margin-top: lines(1, 42);
-    }
-
-    @media #{$x6l} {
-      font-size: em(66);
-      line-height: lines(3, 66);
-      margin-top: lines(2, 66);
-    }
-  }
+  text-align: center;
 }
 
 .centered-section {
@@ -549,8 +542,9 @@ html {
 .markdown-content {
   h1, h2, h3, h4, h5, h6,
   p, ul, ol, blockquote,
-  hr, pre {
-    margin: lines(1) 0;
+  hr, pre,
+  figure {
+    margin: lines(1) auto;
     max-width: $max-content-width;
   }
 
@@ -647,10 +641,23 @@ html {
 
   figure {
     position: relative;
+    text-align: center;
+    max-width: none;
+
+    &.small-figure {
+      max-width: $max-content-width;
+    }
 
     img {
       display: block;
       max-width: 100%;
+      margin: 0 auto;
+    }
+
+    figcaption {
+      color: $aside;
+      font-style: italic;
+      margin-top: lines(0.5);
     }
   }
 
