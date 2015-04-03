@@ -105,21 +105,21 @@ $yellow-link:  hsl($hue-main, 61.8%, 50%);
 //
 // Media queries
 
-$xxs:      "screen and (max-width: 317px)";
-$xs:       "screen and (min-width: 318px)";
-$s:        "screen and (min-width: 478px)";
+$x2s: "screen and (max-width:  317px)";
+$xs:  "screen and (min-width:  318px)";
+$s:   "screen and (min-width:  478px)";
 
-$m:        "screen and (min-width: 560px)";
+$m:   "screen and (min-width:  560px)";
 
-$l:        "screen and (min-width: 780px)";
-$xl:       "screen and (min-width: 960px)";
-$xxl:      "screen and (min-width: 1100px)";
-$xxxl:     "screen and (min-width: 1200px)";
-$xxxxl:    "screen and (min-width: 1400px)";
-$xxxxxl:   "screen and (min-width: 1700px)";
-$xxxxxxl:  "screen and (min-width: 2000px)";
+$l:   "screen and (min-width:  780px)";
+$xl:  "screen and (min-width:  960px)";
+$x2l: "screen and (min-width: 1100px)";
+$x3l: "screen and (min-width: 1200px)";
+$x4l: "screen and (min-width: 1400px)";
+$x5l: "screen and (min-width: 1700px)";
+$x6l: "screen and (min-width: 2500px)";
 
-$retina:   "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+$retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 
 //
 // Basic styles
@@ -132,7 +132,20 @@ body {
 
 html {
   background: $background;
-  font-size: 1.25vw;
+
+  @media #{$x2s} { font-size: 6.000vw; }
+  @media #{$xs}  { font-size: 4.236vw; }
+  @media #{$s}   { font-size: 3.000vw; }
+
+  @media #{$m}   { font-size: 2.618vw; }
+
+  @media #{$l}   { font-size: 2.000vw; }
+  @media #{$xl}  { font-size: 1.618vw; }
+  @media #{$x2l} { font-size: 1.500vw; }
+  @media #{$x3l} { font-size: 1.382vw; }
+  @media #{$x4l} { font-size: 1.236vw; }
+  @media #{$x5l} { font-size: 1.056vw; }
+  @media #{$x6l} { font-size: 1.000vw; }
 }
 
 body {
@@ -436,14 +449,23 @@ html {
 // Card sections
 
 .padded-section {
-  padding: lines(1) lines(5);
+  padding: lines(0.5) lines(0.618);
+
+  @media #{$s}   { padding: lines(1) lines(1.618); }
+  @media #{$l}   { padding: lines(1) lines(2.618); }
 
   &:first-child {
-    padding-top: lines(3);
+    padding-top: lines(1.618);
+
+    @media #{$s}   { padding-top: lines(2.618); }
+    @media #{$l}   { padding-top: lines(4.236); }
   }
 
   &:last-child {
-    padding-bottom: lines(3);
+    padding-bottom: lines(1.618);
+
+    @media #{$s}   { padding-bottom: lines(2.618); }
+    @media #{$l}   { padding-bottom: lines(4.236); }
   }
 }
 
@@ -453,14 +475,62 @@ html {
 
 .header-section {
   h1 {
-    font-size: em(110);
-    line-height: lines(5, 110);
+    font-size: em(22);
+    line-height: lines(1.25, 22);
+
+    @media #{$xs} {
+      font-size: em(32);
+      line-height: lines(1.5, 32);
+    }
+
+    @media #{$s} {
+      font-size: em(42);
+      line-height: lines(2, 42);
+    }
+
+    @media #{$l} {
+      font-size: em(68);
+      line-height: lines(3, 68);
+    }
+
+    @media #{$x4l} {
+      font-size: em(110);
+      line-height: lines(5, 110);
+    }
+
+    @media #{$x6l} {
+      font-size: em(177);
+      line-height: lines(7, 177);
+    }
   }
 
   p {
-    font-size: em(42);
-    line-height: lines(2, 42);
+    margin-top: lines(1);
     color: $aside;
+
+    @media #{$xs} {
+      font-size: em(22);
+      line-height: lines(1.25, 22);
+      margin-top: lines(1, 22);
+    }
+
+    @media #{$s} {
+      font-size: em(26);
+      line-height: lines(1.5, 26);
+      margin-top: lines(1, 26);
+    }
+
+    @media #{$x4l} {
+      font-size: em(42);
+      line-height: lines(2, 42);
+      margin-top: lines(1, 42);
+    }
+
+    @media #{$x6l} {
+      font-size: em(66);
+      line-height: lines(3, 66);
+      margin-top: lines(2, 66);
+    }
   }
 }
 
@@ -555,13 +625,14 @@ html {
 
   blockquote {
     position: relative;
+    padding-left: lines(1);
 
     &:before {
       content: "";
       display: block;
       border-left: em(2) solid $purple;
       position: absolute;
-      left: lines(-1); top: em(4); bottom: em(5);
+      left: 0; top: em(4); bottom: em(5);
     }
 
     p {
