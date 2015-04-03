@@ -491,6 +491,7 @@ html {
     @media #{$l} {
       font-size: em(68);
       line-height: lines(3, 68);
+      letter-spacing: -1px;
     }
 
     @media #{$x4l} {
