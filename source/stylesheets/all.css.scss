@@ -100,7 +100,7 @@ $emphasis:  hsl($hue-main, 23.6%, 76.4%);
 $purple:           hsl($hue-618, 61.8%, 23.6%);
 $purple-highlight: hsl($hue-618, 61.8%, 61.8%);
 
-$link: hsl($hue-main, 50%, 50%);
+$link: hsl($hue-main, 76.4%, 61.8%);
 
 //
 // Media queries
@@ -202,17 +202,19 @@ del {
   @media #{$s} {
     font-size: em(58);
     line-height: lines(2.5, 58);
+    letter-spacing: em(-1, 58);
   }
 
   @media #{$m} {
     font-size: em(68);
     line-height: lines(3, 68);
+    letter-spacing: em(-1, 68);
   }
 
   @media #{$xl2} {
-    font-size: em(110);
-    line-height: lines(5, 110);
-    letter-spacing: em(-2, 110);
+    font-size: em(114);
+    line-height: lines(5, 114);
+    letter-spacing: em(-1, 114);
   }
 }
 
@@ -248,7 +250,7 @@ del {
 @mixin size ($ratio, $w-size:1, $h-size:1) {
   width:  100vw * $ratio * $w-size;
   // height: 100vh * $ratio * $h-size;
-  height: 50vh;
+  height: 100vh;
   // font-size: 3vmin * $ratio;
 
   & > .zoomable-content {
@@ -389,17 +391,28 @@ html {
 }
 
 .card-header {
-  width: 100%;
-  height: 50vh;
-}
+  position: absolute;
+  left: 0; bottom: 0; right: 0;
+  z-index: 1100;
+  pointer-events: none;
+  color: $emphasis;
 
-.card-header-wrapper {
-  text-align: center;
+  .initial-zoomable > &,
+  .current-zoomable > .zoomable-content > & {
+    color: $purple-highlight;
+  }
 
   h1 {
     font-weight: bold;
-    font-style: italic;
+    padding: 0.382em;
+    text-align: center;
+    color: inherit;
+    // font-style: italic;
   }
+}
+
+.card-header-wrapper {
+
 }
 
 .card-header h1,
@@ -431,38 +444,33 @@ html {
   }
 }
 
-.fake-paragraphs {
-  p + p {
-    margin-top: lines(1);
-  }
-}
-
 .zoomable-anchor {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   z-index: 1000;
   // transition: all $baseTransitionTime ease-out;
   display: none;
-  // border: solid transparent;
-  // border-width: 0 lines(0.09);
+  border: solid transparent;
+  border-width: 0 0 lines(0.146);
+  // background: rgba($background, 0.382);
 
   .current-zoomable .zoomable .zoomable & {
-    display: none;
-    border-color: transparent;
+    // display: none;
+    // border-color: transparent;
   }
 
-  .current-zoomable .zoomable > & {
+  .current-zoomable .zoomable & {
     display: block;
-    border-color: $border;
+    // border-color: $border;
   }
 
-  .current-zoomable .zoomable:first-child > & {
-    border-left-color: transparent;
-  }
-
-  .current-zoomable .zoomable:last-child > & {
-    border-right-color: transparent;
-  }
+  // .current-zoomable .zoomable:first-child > & {
+  //   border-left-color: transparent;
+  // }
+  //
+  // .current-zoomable .zoomable:last-child > & {
+  //   border-right-color: transparent;
+  // }
 
   // .visited-zoomable > & {
   //   opacity: 0.618;
@@ -470,8 +478,15 @@ html {
 
   &:hover,
   &:focus {
-    cursor: zoom-in;
-    z-index: 1001;
+    // cursor: zoom-in;
+    // z-index: 1001;
+    border-color: $purple-highlight;
+    background: rgba($purple, 0.146);
+
+    & + .zoomable-content > .card-header > .card-header-wrapper > h1,
+    & + .zoomable-content > .header-section > h1 {
+      color: $link;
+    }
   }
 }
 
@@ -499,8 +514,7 @@ html {
 //
 // Card sections
 
-.padded-section,
-.card-header-wrapper {
+.padded-section {
   padding: lines(0.5) lines(0.618);
 
   @media #{$s}   { padding: lines(1) lines(1.618); }
