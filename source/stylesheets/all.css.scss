@@ -450,8 +450,8 @@ html {
   z-index: 1000;
   // transition: all $baseTransitionTime ease-out;
   display: none;
-  border: solid transparent;
-  border-width: 0 0 lines(0.146);
+  // border: solid transparent;
+  // border-width: 0 0 lines(0.146);
   // background: rgba($background, 0.382);
 
   .current-zoomable .zoomable .zoomable & {
@@ -480,13 +480,13 @@ html {
   &:focus {
     // cursor: zoom-in;
     // z-index: 1001;
-    border-color: $purple-highlight;
-    background: rgba($purple, 0.146);
+    // border-color: $purple-highlight;
+    // background: rgba($purple, 0.146);
 
-    & + .zoomable-content > .card-header > .card-header-wrapper > h1,
-    & + .zoomable-content > .header-section > h1 {
-      color: $link;
-    }
+    // & + .zoomable-content > .card-header > .card-header-wrapper > h1,
+    // & + .zoomable-content > .header-section > h1 {
+    //   color: $link;
+    // }
   }
 }
 
