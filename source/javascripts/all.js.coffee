@@ -30,7 +30,7 @@ $ ->
     zoomableLink: ".zoomable-link, section a[href^='/']"
     zoomOutButton: $("#zoom-out")
     baseTransitionTime: 0.414
-    transitionEasing:  "cubic-bezier(0.236, 0, 0.5, 1)"
+    transitionEasing:  "cubic-bezier(0.146, 0.0, 0.0, 0.236)"
     currentScale: 1
     currentX: 0
     currentY: 0
