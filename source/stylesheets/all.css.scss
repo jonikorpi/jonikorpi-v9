@@ -260,8 +260,8 @@ del {
 }
 
 html {
-  background-color: $background;
-  // background: radial-gradient(ellipse, $offset 76.4%, $background);
+  // background-color: $background;
+  background: linear-gradient(to bottom, $highlight, $background);
 }
 
 .site-viewport {
@@ -397,18 +397,23 @@ html {
   z-index: 1100;
   pointer-events: none;
   color: $emphasis;
-
-  .initial-zoomable > &,
-  .current-zoomable > .zoomable-content > & {
-    color: $purple-highlight;
-  }
+  text-align: center;
 
   h1 {
     font-weight: bold;
-    padding: 0.382em;
+    padding: 0.136em 0.236em 0.156em;
     text-align: center;
     color: inherit;
+    border: 2px solid $emphasis;
+    display: inline-block;
     // font-style: italic;
+    border-radius: 0.146em;
+    margin-bottom: 0.146em;
+
+    .masthead &,
+    .current-zoomable > .zoomable-content > & {
+      border-color: transparent;
+    }
   }
 }
 
