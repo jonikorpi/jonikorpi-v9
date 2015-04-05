@@ -89,13 +89,17 @@ $hue-021: $hue-main + (360 * 0.021);
 $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
-$background: hsl($hue-618, 38.2%, 9%);
-$highlight:  hsl($hue-618, 23.6%, 14.6%);
-$offset:     hsl($hue-618, 14.6%, 23.6%);
+$background: hsl($hue-618, 23.6%, 14.6%);
+$highlight:  hsl($hue-764, 38.2%, 9%);
+$offset:     hsl($hue-618, 14.6%, 38.2%);
 $border:     hsl($hue-618, 9%, 38.2%);
 
-$aside:     hsl($hue-main, 14.6%, 50%);
-$body:      hsl($hue-main, 14.6%, 61.8%);
+$aside:        hsl($hue-main, 14.6%, 50%);
+$purple-aside: hsl($hue-618,  14.6%, 50%);
+
+$body:        hsl($hue-main, 14.6%, 61.8%);
+$purple-body: hsl($hue-618,  14.6%, 61.8%);
+
 $emphasis:  hsl($hue-main, 23.6%, 76.4%);
 
 $purple:           hsl($hue-618, 61.8%, 23.6%);
@@ -182,7 +186,8 @@ strong, b {
 code {
   @include monospace-font;
   font-size: em(13);
-  line-height: lines(1, 13);
+  line-height: lines(0.75, 13);
+  color: $purple-body;
 }
 
 del {
@@ -261,8 +266,8 @@ del {
 }
 
 html {
-  background-color: $background;
-  // background: linear-gradient(to bottom, $highlight, $background);
+  // background-color: $background;
+  background: linear-gradient(to top, $highlight, $background);
 }
 
 .site-viewport {
@@ -404,6 +409,7 @@ html {
 
   h1 {
     font-weight: bold;
+    font-style: italic;
     text-align: center;
     padding: 0.236em;
     color: inherit;
@@ -543,8 +549,9 @@ html {
     max-width: $max-content-width;
   }
 
-  pre {
-    max-width: none;
+  figure,
+  hr {
+    margin: lines(2) auto;
   }
 
   a {
@@ -555,22 +562,28 @@ html {
       border-bottom-width: 0.5px;
     }
 
-    &[href^="/"] {
-      color: $yellow;
-
-      &:after {
-        content: "→";
-      }
-    }
-
     &:hover {
       color: $emphasis;
-      border-bottom-color: $yellow;
+      border-bottom-color: $purple-highlight;
     }
 
     &:active {
+      color: $purple-highlight;
+      border-bottom-color: $purple-highlight;
+    }
+
+    &[href^="/"] {
       color: $yellow;
-      border-bottom-color: $yellow;
+
+      &:hover {
+        color: $emphasis;
+        border-bottom-color: $yellow;
+      }
+
+      &:active {
+        color: $aside;
+        border-bottom-color: $aside;
+      }
     }
   }
 
@@ -610,25 +623,41 @@ html {
   }
 
   pre {
-    background: $highlight;
-    overflow: auto;
+    position: relative;
+    overflow: visible;
 
     code {
-      padding: lines(1, 13);
       display: block;
+      overflow: auto;
+    }
+
+    &:before {
+      content: "";
+      display: block;
+      border-left: em(2) solid $purple-highlight;
+      position: absolute;
+      left: lines(-0.618); top: 0; bottom: 0;
+
+      @media #{$s}   { left: lines(-1); }
     }
   }
 
   blockquote {
     position: relative;
-    padding-left: lines(1);
+    font-style: italic;
+
+    em, i {
+      font-style: normal;
+    }
 
     &:before {
       content: "";
       display: block;
-      border-left: em(2) solid $purple;
+      border-left: em(2) solid $yellow;
       position: absolute;
-      left: 0; top: em(4); bottom: em(5);
+      left: lines(-0.618); top: em(4); bottom: em(5);
+
+      @media #{$s}   { left: 0; }
     }
 
     p {
@@ -654,7 +683,7 @@ html {
     figcaption {
       color: $aside;
       font-style: italic;
-      margin-top: lines(0.5);
+      margin-top: lines(1);
     }
   }
 
