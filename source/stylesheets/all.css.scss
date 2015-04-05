@@ -101,7 +101,8 @@ $emphasis:  hsl($hue-main, 23.6%, 76.4%);
 $purple:           hsl($hue-618, 61.8%, 23.6%);
 $purple-highlight: hsl($hue-618, 61.8%, 61.8%);
 
-$link: hsl($hue-main, 76.4%, 61.8%);
+$yellow:           hsl($hue-main, 76.4%, 61.8%);
+$yellow-highlight: hsl($hue-main, 100%, 85.4%);
 
 //
 // Media queries
@@ -154,13 +155,13 @@ body {
   font-size: em($font-size, 16);
   line-height: $line-height/$font-size;
   color: $body;
-  -webkit-tap-highlight-color: transparentize($link, 0.5);
+  -webkit-tap-highlight-color: transparentize($yellow, 0.5);
   position: relative;
   perspective: 1000;
 }
 
 a {
-  color: $link;
+  color: $yellow;
   text-decoration: none;
 
   &:hover,
@@ -243,8 +244,8 @@ del {
   }
 }
 
-::selection      { background: $link; color: $emphasis; }
--moz-::selection { background: $link; color: $emphasis; }
+::selection      { background: $purple-highlight; color: $emphasis; }
+-moz-::selection { background: $purple-highlight; color: $emphasis; }
 
 /////////////////////////////////////////////////////////
 
@@ -260,8 +261,8 @@ del {
 }
 
 html {
-  // background-color: $background;
-  background: linear-gradient(to bottom, $highlight, $background);
+  background-color: $background;
+  // background: linear-gradient(to bottom, $highlight, $background);
 }
 
 .site-viewport {
@@ -347,7 +348,7 @@ html {
   background: none;
   border: none;
   color: $background;
-  background: $link;
+  background: $yellow;
   width: $zoom-out-size * 15;
   padding: $zoom-out-size * 0.625 0 $zoom-out-size * 2.375;
   text-align: center;
@@ -393,50 +394,24 @@ html {
 }
 
 .card-header {
-  position: absolute;
-  left: 0; bottom: 0; right: 0;
-  z-index: 1100;
-  pointer-events: none;
-  color: $emphasis;
   text-align: center;
+
+  .masthead & {
+    position: absolute;
+    left: 0; bottom: 0; right: 0;
+    color: $emphasis;
+  }
 
   h1 {
     font-weight: bold;
-    padding: 0.136em 0.236em 0.156em;
     text-align: center;
+    padding: 0.236em;
     color: inherit;
-    border: 2px solid $emphasis;
-    display: inline-block;
-    // font-style: italic;
-    border-radius: 0.146em;
-    margin-bottom: 0.146em;
-
-    .masthead &,
-    .current-zoomable > .zoomable-content > & {
-      border-color: transparent;
-    }
   }
 }
 
 .card-header-wrapper {
 
-}
-
-.card-header h1,
-.header-section h1 {
-  // transition: color $baseTransitionTime*0.618 $ease-bounce-out;
-
-  .current-zoomable & {
-    // color: $purple-highlight;
-  }
-
-  .current-zoomable .zoomable & {
-    // color: $link;
-  }
-
-  .current-zoomable .zoomable .zoomable & {
-    // color: $emphasis;
-  }
 }
 
 .zoomable-content {
@@ -445,7 +420,7 @@ html {
   transform-origin: left top;
   position: absolute;
 
-  .current-zoomable > &.scrollable-zoomable {
+  .current-zoomable.zoomable-scrollable > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -453,48 +428,50 @@ html {
 
 .zoomable-anchor {
   position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
+  left: 0; right: 0; bottom: 0;
   z-index: 1000;
+  display: block;
   // transition: all $baseTransitionTime ease-out;
-  display: none;
-  // border: solid transparent;
-  // border-width: 0 0 lines(0.146);
-  // background: rgba($background, 0.382);
 
-  .current-zoomable .zoomable .zoomable & {
-    // display: none;
-    // border-color: transparent;
+  &.zoomable-anchor-scrollable {
+    top: 0;
+
+    & + .zoomable-content .header-section h1 {
+      color: $yellow;
+
+      .current-zoomable > & {
+        color: $emphasis;
+      }
+    }
+
+    &:hover + .zoomable-content .header-section h1 {
+      color: $yellow-highlight;
+    }
+
+    .current-zoomable > & {
+      display: none;
+    }
   }
 
-  .current-zoomable .zoomable & {
-    display: block;
-    // border-color: $border;
-  }
+  &.zoomable-anchor-not-scrollable {
+    z-index: 1010;
 
-  // .current-zoomable .zoomable:first-child > & {
-  //   border-left-color: transparent;
-  // }
-  //
-  // .current-zoomable .zoomable:last-child > & {
-  //   border-right-color: transparent;
-  // }
+    &:hover {
+      color: $yellow-highlight;
+    }
+
+    .current-zoomable > .zoomable-content > & {
+      pointer-events: none;
+
+      h1 {
+        color: $emphasis;
+      }
+    }
+  }
 
   // .visited-zoomable > & {
   //   opacity: 0.618;
   // }
-
-  &:hover,
-  &:focus {
-    // cursor: zoom-in;
-    // z-index: 1001;
-    // border-color: $purple-highlight;
-    // background: rgba($purple, 0.146);
-
-    // & + .zoomable-content > .card-header > .card-header-wrapper > h1,
-    // & + .zoomable-content > .header-section > h1 {
-    //   color: $link;
-    // }
-  }
 }
 
 //
@@ -579,7 +556,7 @@ html {
     }
 
     &[href^="/"] {
-      color: $link;
+      color: $yellow;
 
       &:after {
         content: "→";
@@ -588,12 +565,12 @@ html {
 
     &:hover {
       color: $emphasis;
-      border-bottom-color: $link;
+      border-bottom-color: $yellow;
     }
 
     &:active {
-      color: $link;
-      border-bottom-color: $link;
+      color: $yellow;
+      border-bottom-color: $yellow;
     }
   }
 
