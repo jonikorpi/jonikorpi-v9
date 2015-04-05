@@ -47,8 +47,8 @@ $max-content-width: lines(28);
 $baseTransitionTime: 0.414s;
 $zoom-out-size: lines(0.618);
 
-$ease-bounce-out: cubic-bezier(0.236, 0, 0.5, 1);
-$ease-bounce-in:  cubic-bezier(0.236, 0, 0.5, 1);
+$ease-bounce-out: cubic-bezier(0.0, 0,    0.5, 1.5);
+$ease-bounce-in:  cubic-bezier(0.5, -0.5, 1.0, 1);
 $ease-smooth:     cubic-bezier(0.146, 0.0, 0.0, 0.236);
 
 //
@@ -342,6 +342,7 @@ html {
   transition: all $baseTransitionTime*2 $ease-bounce-out;
   transform: translate(-50%, 50%) rotate(45deg) translate(0, -33.333%);
   transform-origin: center center;
+  transition-delay: $baseTransitionTime;
   -webkit-appearance: none;
   background: none;
   border: none;
