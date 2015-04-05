@@ -45,7 +45,7 @@ $ ->
 
     # Speed up transition if the queue is long
     if window.Engine.canvas.queue("fx").length > 0
-      transitionTime = window.Engine.baseTransitionTime * 0.854
+      transitionTime = window.Engine.baseTransitionTime * 0.618
     else
       transitionTime = window.Engine.baseTransitionTime
 
@@ -135,8 +135,8 @@ $ ->
     # Set transition duration and weigh it by how far we're transiting
     scaleChange = Math.abs(window.Engine.currentScale - scale)
     biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 50
-    transitionTime = duration #* durationModifier
+    durationModifier = 1 + (biggerCoordinate / 3000) + (scaleChange / 62)
+    transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
     canvas = window.Engine.canvas[0];
@@ -198,7 +198,7 @@ $ ->
     console.log "targetLeft     : #{targetLeft}     "
     console.log "targetTop      : #{targetTop}"
     console.log "scale          : #{scale}"
-    console.log "transitionTime : #{transitionTime}"
+    console.log "transitionTime : #{transitionTime} (#{durationModifier}x, [#{biggerCoordinate}/#{scaleChange}])"
     console.log "z              : #{z}"
     console.log "y              : #{y}"
     console.log "x              : #{x}"
