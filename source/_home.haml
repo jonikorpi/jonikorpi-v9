@@ -6,6 +6,6 @@
         %h1 Joni Korpi
 
   .zoomables-container
-    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished && !card.data.inside && card.data.top }.sort_by { |card| card.data.weight }.each do |card|
+    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished && !card.data.inside }.sort_by { |card| card.data.weight }.each do |card|
       = partial "card", :locals => {card: card} do
         = card.render({:layout => false})
