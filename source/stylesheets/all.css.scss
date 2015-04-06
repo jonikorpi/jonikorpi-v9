@@ -566,10 +566,6 @@ del {
     color: inherit;
     border-bottom: 1px solid $aside;
 
-    @media #{$retina} {
-      border-bottom-width: 0.5px;
-    }
-
     &:hover {
       color: $emphasis;
       border-bottom-color: $purple-highlight;
