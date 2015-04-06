@@ -300,3 +300,8 @@ $ ->
 
   unless window.Engine.currentZoomableID == "/"
     queueZoom( window.Engine.currentZoomableID, "background" )
+
+  #
+  # Fastclick
+
+  FastClick.attach document.body

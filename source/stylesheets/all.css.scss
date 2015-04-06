@@ -21,6 +21,18 @@ html * {
 textarea { resize: vertical; }
 
 //
+// Touchable things (in addition to FastClick)
+
+a,
+button,
+input,
+textarea,
+.touchable {
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+}
+
+//
 // Em conversion functions
 // pixels to ems & baselines to ems
 
