@@ -101,7 +101,7 @@ $hue-021: $hue-main + (360 * 0.021);
 $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
-$background: hsl($hue-618, 23.6%, 14.6%);
+$background: hsl($hue-618, 14.6%, 14.6%);
 $highlight:  hsl($hue-764, 38.2%, 9%);
 $offset:     hsl($hue-618, 14.6%, 38.2%);
 $border:     hsl($hue-618, 9%, 38.2%);
@@ -277,11 +277,6 @@ del {
   }
 }
 
-html {
-  // background-color: $background;
-  background: linear-gradient(to top, $highlight, $background);
-}
-
 .site-viewport {
   position: absolute;
   left: 0; top: 0; right: 0;
@@ -296,6 +291,7 @@ html {
   transform: translate3d(0,0,0);
   transform-origin: center top;
   z-index: 10;
+  background: linear-gradient(to top, $highlight, $background);
 }
 
 .zoomable {
