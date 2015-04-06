@@ -55,7 +55,7 @@ $line-height: 24;
 // General variables
 
 $max-width: lines(40);
-$max-content-width: lines(28);
+$max-content-width: lines(26);
 $baseTransitionTime: 0.414s;
 $zoom-out-size: lines(0.618);
 
@@ -641,39 +641,40 @@ html {
     code {
       display: block;
       overflow: auto;
-    }
-
-    &:before {
-      content: "";
-      display: block;
-      border-left: em(2) solid $purple-highlight;
-      position: absolute;
-      left: lines(-0.618); top: 0; bottom: 0;
-
-      @media #{$s}   { left: lines(-1); }
+      background: $highlight;
+      overflow: auto;
+      padding: lines(1, 13);
     }
   }
 
   blockquote {
     position: relative;
     font-style: italic;
+    text-align: center;
+    max-width: none;
 
     em, i {
       font-style: normal;
     }
 
-    &:before {
-      content: "";
-      display: block;
-      border-left: em(2) solid $yellow;
-      position: absolute;
-      left: lines(-0.618); top: em(4); bottom: em(5);
-
-      @media #{$s}   { left: 0; }
-    }
-
     p {
       max-width: none;
+      color: $purple-body;
+      font-size: em(22);
+      line-height: lines(1.25, 22);
+      margin: lines(1, 22) 0;
+
+      @media #{$m} {
+        font-size: em(26);
+        line-height: lines(1.5, 26);
+        margin: lines(1.5, 26) 0;
+      }
+
+      @media #{$xl} {
+        font-size: em(42);
+        line-height: lines(2, 42);
+        margin: lines(2, 42) 0;
+      }
     }
   }
 
