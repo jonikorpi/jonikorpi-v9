@@ -134,8 +134,8 @@ $ ->
 
     # Set transition duration and weigh it by how far we're transiting
     scaleChange = Math.abs(window.Engine.currentScale - scale)
-    biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + (biggerCoordinate / 3000) + (scaleChange / 62)
+    # biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
+    durationModifier = 1 + (scaleChange / 30) # + (biggerCoordinate / 1000)
     transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
@@ -198,7 +198,7 @@ $ ->
     console.log "targetLeft     : #{targetLeft}     "
     console.log "targetTop      : #{targetTop}"
     console.log "scale          : #{scale}"
-    console.log "transitionTime : #{transitionTime} (#{durationModifier}x, [#{biggerCoordinate}/#{scaleChange}])"
+    console.log "transitionTime : #{transitionTime} (#{durationModifier}x, [scaleChange: #{scaleChange}])"
     console.log "z              : #{z}"
     console.log "y              : #{y}"
     console.log "x              : #{x}"
