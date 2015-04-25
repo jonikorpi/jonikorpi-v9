@@ -1,5 +1,8 @@
 ---
 title: Adaptive Static Design
+weight: 10
+inside: /writing-in-2010-2011/
+scrollable: true
 ---
 
 %header.header-section.padded-section
@@ -15,8 +18,6 @@ title: Adaptive Static Design
     Responsive web design, a method coined by Ethan Marcotte, has been getting lots of attention lately. In its simplest form, it uses a flexible grid to create a fluid layout, and media queries to spot-fix any problems that crop up when the structure gets too wide or narrow. It’s great, and is really paving the way for more adaptive websites.
 
     > But responsive design is all about fluid layouts. I still prefer set widths.
-    >
-    > <cite>Joni Korpi</cite>
 
     That’s fine, but we static designers haven’t quite updated our tactics to deal with the myriad screen sizes in use today: 960px isn’t good enough any more.
 
@@ -36,7 +37,7 @@ title: Adaptive Static Design
 
     We’ve established that column widths must remain the same across each layout. So must the gaps between columns, since they would change the dimensions of elements that span multiple columns. We’re left with two things to fiddle around with: the margins around the grid and the number of columns.
 
-    I’m going to use [Less Framework](/responsive-layout-systems/less-framework/) – a CSS blueprint I’ve built – as an example. In it, I use a column width of 60px, and 24px gaps between columns. I’ve found these dimensions to be remarkably flexible. With them, I can create layouts with three columns and 46px margins (320px), five columns and 42px margins (480px), eight columns and 60px margins (768px) and 13 columns with 72px margins. There’ll still be space left over for browser chrome (1,212px), and it’s easy to add an 11-column option with 42px margins (984px) if it’s needed.
+    I’m going to use [Less Framework](/less-framework/) – a CSS blueprint I’ve built – as an example. In it, I use a column width of 60px, and 24px gaps between columns. I’ve found these dimensions to be remarkably flexible. With them, I can create layouts with three columns and 46px margins (320px), five columns and 42px margins (480px), eight columns and 60px margins (768px) and 13 columns with 72px margins. There’ll still be space left over for browser chrome (1,212px), and it’s easy to add an 11-column option with 42px margins (984px) if it’s needed.
 
     In a system like this, elements created for one layout are often reusable in others. For example, a block of text three columns wide will fit into any of the layouts as it is, and an image six columns wide can be scaled down to 50 per cent to slot into the three-column layout, taking advantage of the iPhone 4’s double resolution.
 

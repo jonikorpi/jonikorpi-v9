@@ -30,7 +30,7 @@ $ ->
     zoomableLink: ".zoomable-link, section a[href^='/']"
     zoomOutButton: $("#zoom-out")
     baseTransitionTime: 0.414
-    transitionEasing:  "cubic-bezier(0.236, 0, 0.5, 1)"
+    transitionEasing:  "cubic-bezier(0.146, 0.0, 0.0, 0.236)"
     currentScale: 1
     currentX: 0
     currentY: 0
@@ -45,7 +45,7 @@ $ ->
 
     # Speed up transition if the queue is long
     if window.Engine.canvas.queue("fx").length > 0
-      transitionTime = window.Engine.baseTransitionTime * 0.854
+      transitionTime = window.Engine.baseTransitionTime * 0.618
     else
       transitionTime = window.Engine.baseTransitionTime
 
@@ -115,26 +115,28 @@ $ ->
     targetTop      = targetRect.top # + document.body.scrollTop
 
     # Calculate new scale, canvas position and transition time
-    scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
+    # scale = Math.min( viewportWidth/targetWidth, viewportHeight/targetHeight )
+    scale = viewportWidth/targetWidth
 
     # Calculate left/top positions
     targetOffsetX  = viewportWidth  / window.Engine.currentScale * 0.5 - targetWidth  * 0.5
-    targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
+    # targetOffsetY  = viewportHeight / window.Engine.currentScale * 0.5 - targetHeight * 0.5
+    targetOffsetY  = 0
 
     if window.Engine.initialZoomable[0] == target
       x = 0
       y = 0
       scale = 1
     else
-      x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 5 )
-      y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 5 )
+      x = round( (targetLeft / window.Engine.currentScale) * -1 + targetOffsetX + window.Engine.currentX, 2 )
+      y = round( (targetTop  / window.Engine.currentScale) * -1 + targetOffsetY + window.Engine.currentY, 2 )
     z = 0
 
     # Set transition duration and weigh it by how far we're transiting
     scaleChange = Math.abs(window.Engine.currentScale - scale)
-    biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
-    durationModifier = 1 + biggerCoordinate / 900 + scaleChange / 50
-    transitionTime = duration #* durationModifier
+    # biggerCoordinate = Math.max( Math.abs(window.Engine.currentX + x), Math.abs(window.Engine.currentY + y) )
+    durationModifier = 1 + (scaleChange / 30) # + (biggerCoordinate / 1000)
+    transitionTime = duration * durationModifier
 
     # Set new scale and canvas position
     canvas = window.Engine.canvas[0];
@@ -146,6 +148,42 @@ $ ->
     canvas.style.webkitTransform =
     canvas.style.msTransform =
     canvas.style.transform = "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
+
+    #
+    # Set some classes to help with CSS
+
+    if window.Engine.initialZoomable[0] == target
+      window.Engine.htmlTag.addClass("initial-zoom")
+    else
+      window.Engine.htmlTag.removeClass("initial-zoom")
+
+    $(".current-zoomable").removeClass("current-zoomable")
+    $target.addClass("current-zoomable visited-zoomable")
+
+    #
+    # Set history API stuff
+
+    unless statelessZoom
+      if targetID == window.Engine.initialZoomable.data("id")
+        history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
+        console.log "Clearing hash"
+      else
+        history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
+        console.log "Setting hash to #{targetID} with #{$target.data("title")}"
+    document.title = $target.data("title")
+
+
+    #
+    # After transition ends
+
+    if instaZoom
+      console.log "NOT WAITING FOR TRANSITIONEND"
+      afterTransition(scale, x, y, $target, false)
+    else
+      window.Engine.canvas.on "transitionend webkitTransitionEnd", (event) ->
+        if event.originalEvent.target == window.Engine.canvas[0]
+          console.log "TRANSITIONEND"
+          afterTransition(scale, x, y, $target)
 
     #
     # Debug logs
@@ -160,7 +198,7 @@ $ ->
     console.log "targetLeft     : #{targetLeft}     "
     console.log "targetTop      : #{targetTop}"
     console.log "scale          : #{scale}"
-    console.log "transitionTime : #{transitionTime}"
+    console.log "transitionTime : #{transitionTime} (#{durationModifier}x, [scaleChange: #{scaleChange}])"
     console.log "z              : #{z}"
     console.log "y              : #{y}"
     console.log "x              : #{x}"
@@ -170,47 +208,12 @@ $ ->
     console.log "scale3d(#{scale}, #{scale}, #{scale}) translate3d(#{x}px, #{y}px, #{z}px)"
 
     #
-    # Set some classes to help with CSS
-
-    if window.Engine.initialZoomable[0] == target
-      window.Engine.htmlTag.addClass("initial-zoom")
-    else
-      window.Engine.htmlTag.removeClass("initial-zoom")
-
-    $(".current-zoomable").removeClass("current-zoomable")
-    $target.addClass("current-zoomable visited-zoomable")
-
-    #
     # Save variables for next transform
 
     window.Engine.currentScale = scale
     window.Engine.currentX = x
     window.Engine.currentY = y
     window.Engine.currentZoomableID = targetID
-
-    #
-    # Set history API stuff
-
-    unless statelessZoom
-      if targetID == window.Engine.initialZoomable.data("id")
-        history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
-        console.log "Clearing hash"
-      else
-        history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
-        console.log "Setting hash to #{targetID} with #{$target.data("title")}"
-    document.title = $target.data("title")
-
-    #
-    # After transition ends
-
-    if instaZoom
-      console.log "NOT WAITING FOR TRANSITIONEND"
-      afterTransition(scale, x, y, $target, false)
-    else
-      window.Engine.canvas.on "transitionend webkitTransitionEnd", (event) ->
-        if event.originalEvent.target == window.Engine.canvas[0]
-          console.log "TRANSITIONEND"
-          afterTransition(scale, x, y, $target)
 
   #
   # Post-transition stuff
@@ -297,3 +300,8 @@ $ ->
 
   unless window.Engine.currentZoomableID == "/"
     queueZoom( window.Engine.currentZoomableID, "background" )
+
+  #
+  # Fastclick
+
+  FastClick.attach document.body

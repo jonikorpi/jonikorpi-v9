@@ -1,0 +1,26 @@
+# Put this at the root of your project as 'Upstatic'
+# e.g. ~/Coding/my_project/Upstatic
+
+Bucket = "zui-prototype"
+Region = "eu-west-1"
+Account = "zui-prototype"
+GzipExtensions = [".html", ".js", ".json", ".css", ".svg", ".xml"]
+DefaultCacheControl = "public, max-age=691200"
+UploadDir = "./build"
+
+# Specify cache control headers for specific file extensions
+[Extension.html]
+CacheControl = "public, s-maxage=300, max-age=30"
+
+[Extension.xml]
+CacheControl = "public, s-maxage=300, max-age=300"
+
+[Extension.json]
+CacheControl = "public, s-maxage=300, max-age=300"
+
+# Specify S3 redirects
+# [Redirect]
+# Rules = [
+#   ["/old-path", "/new-path"],
+#   ["/older-path", "/newer-path"]
+# ]
