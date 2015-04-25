@@ -1,5 +1,12 @@
 #= require_tree .
 
+#
+# Shim layer for requestAnimationFrame with setTimeout fallback
+
+window.requestAnimFrame = do ->
+  window.requestAnimationFrame or window.webkitRequestAnimationFrame or window.mozRequestAnimationFrame or (callback) ->
+    window.setTimeout callback, 1000 / 60
+
 $ ->
   #
   # Javascript srsly
@@ -35,6 +42,7 @@ $ ->
     currentX: 0
     currentY: 0
     currentZoomableID: $("html").data("current-zoomable")
+    circle: $("#circle")
 
   #
   # Handle zooms
@@ -305,3 +313,19 @@ $ ->
   # Fastclick
 
   FastClick.attach document.body
+
+  #
+  # Tie movement to mousemove
+
+  moveCircle = (event) ->
+    circle = window.Engine.circle[0]
+    x = event.pageX - window.Engine.viewport[0].offsetWidth  + (window.Engine.viewport[0].offsetWidth  / 2)
+    y = event.pageY - window.Engine.viewport[0].offsetHeight + (window.Engine.viewport[0].offsetHeight / 2)
+    circle.style.webkitTransform =
+    circle.style.msTransform =
+    circle.style.transform = "translate3d(#{x}px, #{y}px, 0px)"
+    console.log "Moving circle: translate3d(#{x}px, #{y}px, 0px)"
+
+  window.Engine.canvas.on "mousemove", (event) ->
+    # requestAnimFrame( moveCircle )
+    moveCircle(event)

@@ -268,8 +268,8 @@ del {
 
 @mixin size ($ratio, $w-size:1, $h-size:1) {
   width:  100vw * $ratio * $w-size;
-  // height: 100vh * $ratio * $h-size;
-  height: 100vh;
+  height: 100vh * $ratio * $h-size;
+  // height: 100vh;
   // font-size: 3vmin * $ratio;
 
   & > .zoomable-content {
@@ -282,6 +282,7 @@ del {
   left: 0; top: 0; right: 0;
   height: 100vh;
   overflow: hidden;
+  z-index: 1;
 }
 
 .site-canvas {
@@ -297,61 +298,33 @@ del {
 .zoomable {
   position: relative;
   float: left;
-  @include size(1);
-  // overflow: hidden;
+  @include size(1/4);
+  overflow: hidden;
 
   .visited-zoomable {
 
   }
-
-  &:nth-last-child(2):first-child,
-  &:nth-last-child(2):first-child ~ & {
-    @include size(1/2);
-  }
-
-  &:nth-last-child(3):first-child,
-  &:nth-last-child(3):first-child ~ & {
-    @include size(1/3);
-  }
-
-  &:nth-last-child(4):first-child,
-  &:nth-last-child(4):first-child ~ & {
-    @include size(1/4);
-  }
-
-  &:nth-last-child(5):first-child,
-  &:nth-last-child(5):first-child ~ & {
-    @include size(1/5);
-  }
-
-  &:nth-last-child(6):first-child,
-  &:nth-last-child(6):first-child ~ & {
-    @include size(1/6);
-  }
-
-  &:nth-last-child(7):first-child,
-  &:nth-last-child(7):first-child ~ & {
-    @include size(1/7);
-  }
-
-  &:nth-last-child(8):first-child,
-  &:nth-last-child(8):first-child ~ & {
-    @include size(1/8);
-  }
 }
 
-.ui-canvas {
-  position: fixed;
-  left: 0; bottom: 0;
-  z-index: 30;
-  height: 0;
-  width: 0;
+#circle {
+  width: lines(2);
+  height: lines(2);
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  z-index: 2;
+  margin: auto;
+  border: lines(0.25) solid rgba($emphasis, 0.91);
+  background: rgba($highlight, 0.382);
+  border-radius: 50%;
+  overflow: hidden;
   transform: translate3d(0,0,0);
+  transition: all 0.1618s ease;
 }
 
 #zoom-out {
   position: absolute;
   left: 0; bottom: 0;
+  z-index: 2;
   display: none;
   transition: all $baseTransitionTime*2 $ease-bounce-out;
   transform: translate(-50%, 50%) rotate(45deg) translate(0, -33.333%);

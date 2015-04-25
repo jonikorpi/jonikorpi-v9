@@ -47,9 +47,9 @@
     .site-viewport
       %nav.site-canvas
         = partial "home"
-    .ui-canvas
-      %button#zoom-out{title: "Zoom out (ESC)"}
-      %a.home-link{href: "/"} Home
+    #circle
+    %button#zoom-out{title: "Zoom out (ESC)"}
+    %a.home-link{href: "/"} Home
 
     = javascript_include_tag "all"
     - if build?
