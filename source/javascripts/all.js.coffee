@@ -42,6 +42,7 @@ $ ->
     currentX: 0
     currentY: 0
     currentZoomableID: $("html").data("current-zoomable")
+    origo: $("#origo")
     circle: $("#circle")
 
   #
@@ -315,17 +316,65 @@ $ ->
   FastClick.attach document.body
 
   #
-  # Tie movement to mousemove
+  # Mousemove moves canvas
 
-  moveCircle = (event) ->
-    circle = window.Engine.circle[0]
-    x = event.pageX - window.Engine.viewport[0].offsetWidth  + (window.Engine.viewport[0].offsetWidth  / 2)
-    y = event.pageY - window.Engine.viewport[0].offsetHeight + (window.Engine.viewport[0].offsetHeight / 2)
-    circle.style.webkitTransform =
-    circle.style.msTransform =
-    circle.style.transform = "translate3d(#{x}px, #{y}px, 0px)"
-    console.log "Moving circle: translate3d(#{x}px, #{y}px, 0px)"
+  canvasX = 0
+  canvasY = 0
+  viewportWidth  = window.Engine.viewport[0].offsetWidth
+  viewportHeight = window.Engine.viewport[0].offsetHeight
+
+  window.Engine.viewport.on "mousemove", (event) ->
+    canvasWidth  = window.Engine.canvas[0].offsetWidth
+    canvasHeight = window.Engine.canvas[0].offsetHeight
+    newCanvasX = event.pageX / viewportWidth  * canvasWidth  * -0.5
+    newCanvasY = event.pageY / viewportHeight * canvasHeight * -0.5
+    canvasX = newCanvasX
+    canvasY = newCanvasY
+    requestAnimFrame( moveCanvas )
+
+  moveCanvas = ->
+    window.Engine.canvas[0].style.webkitTransform =
+    window.Engine.canvas[0].style.msTransform =
+    window.Engine.canvas[0].style.transform = "translate3d(#{canvasX}px, #{canvasY}px, 0px)"
+    # console.log "Moving canvas to translate3d(#{canvasX}px, #{canvasY}px, 0px)"
+
+  #
+  # Touchmove moves circle
+
+  circleX = 0
+  circleY = 0
+
+  window.Engine.circle.on "touchstart touchmove", (event) ->
+    event.preventDefault()
+    touch = event.originalEvent.targetTouches[0]
+    canvasWidth  = window.Engine.canvas[0].offsetWidth
+    canvasHeight = window.Engine.canvas[0].offsetHeight
+    newCircleX = touch.pageX - viewportWidth  + (viewportWidth  / 2)
+    newCircleY = touch.pageY - viewportHeight + (viewportHeight / 2)
+    newCanvasX = touch.pageX / viewportWidth  * canvasWidth  * -0.5
+    newCanvasY = touch.pageY / viewportHeight * canvasHeight * -0.5
+    circleX = newCircleX
+    circleY = newCircleY
+    canvasX = newCanvasX
+    canvasY = newCanvasY
+    requestAnimFrame( moveCircleAndCanvas )
+
+  moveCircleAndCanvas = ->
+    moveCircle()
+    moveCanvas()
+
+  moveCircle = ->
+    window.Engine.circle[0].style.webkitTransform =
+    window.Engine.circle[0].style.msTransform =
+    window.Engine.circle[0].style.transform = "translate3d(#{circleX}px, #{circleY}px, 0px)"
+
+  #
+  # Hide and disable circle on mousemove
 
   window.Engine.canvas.on "mousemove", (event) ->
-    # requestAnimFrame( moveCircle )
-    moveCircle(event)
+    window.Engine.htmlTag.addClass("mouse-mode")
+    setTimeout ->
+      window.Engine.origo[0].style.display = "none"
+    , window.Engine.baseTransitionTime * 1000
+    window.Engine.canvas.off "mousemove"
+    window.Engine.circle.off "touchstart touchmove"

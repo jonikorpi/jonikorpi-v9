@@ -101,8 +101,8 @@ $hue-021: $hue-main + (360 * 0.021);
 $hue-586: $hue-main + (360 * 0.586);
 $hue-414: $hue-main + (360 * 0.414);
 
-$background: hsl($hue-618, 14.6%, 14.6%);
-$highlight:  hsl($hue-764, 38.2%, 9%);
+$background: hsl($hue-618, 38.2%, 9%);
+$highlight:  hsl($hue-764, 14.6%, 14.6%);
 $offset:     hsl($hue-618, 14.6%, 38.2%);
 $border:     hsl($hue-618, 9%, 38.2%);
 
@@ -286,19 +286,20 @@ del {
 }
 
 .site-canvas {
-  width: 100vw;
-  height: 100vh;
+  width: 200vw;
+  height: 200vh;
   position: relative;
-  transform: translate3d(0,0,0);
+  transform: translate3d(-25%, -25%, 0);
+  transition: all $baseTransitionTime / 5 ease-out;
   transform-origin: center top;
   z-index: 10;
-  background: linear-gradient(to top, $highlight, $background);
+  background: $highlight;
 }
 
 .zoomable {
   position: relative;
   float: left;
-  @include size(1/4);
+  @include size(1/2);
   overflow: hidden;
 
   .visited-zoomable {
@@ -306,19 +307,38 @@ del {
   }
 }
 
+#origo {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  margin: auto;
+  z-index: 2;
+  width: lines(10);
+  height: lines(10);
+  transition: all $baseTransitionTime ease-out;
+  opacity: 1;
+
+  .mouse-mode & {
+    opacity: 0;
+  }
+}
+
 #circle {
   width: lines(2);
   height: lines(2);
   position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  z-index: 2;
-  margin: auto;
+  left: 50%; top: 50%;
+  margin: lines(-1) 0 0 lines(-1);
   border: lines(0.25) solid rgba($emphasis, 0.91);
-  background: rgba($highlight, 0.382);
+  background: rgba($background, 0.382);
   border-radius: 50%;
   overflow: hidden;
   transform: translate3d(0,0,0);
-  transition: all 0.1618s ease;
+  transition: all $baseTransitionTime / 5 ease-out;
+  box-shadow: 0 0 lines(0.0625) rgba($background, 0.5);
+
+  &:hover {
+    border-color: $yellow;
+  }
 }
 
 #zoom-out {
@@ -382,12 +402,6 @@ del {
 .card-header {
   text-align: center;
 
-  .masthead & {
-    position: absolute;
-    left: 0; bottom: 0; right: 0;
-    color: $emphasis;
-  }
-
   h1 {
     font-weight: bold;
     font-style: italic;
@@ -406,6 +420,7 @@ del {
   height: 100vh;
   transform-origin: left top;
   position: absolute;
+  background: $background;
 
   .current-zoomable.zoomable-scrollable > & {
     overflow: auto;
@@ -415,45 +430,14 @@ del {
 
 .zoomable-anchor {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  left: 0; top: 0; right: 0; bottom: 0;
   z-index: 1000;
   display: block;
   // transition: all $baseTransitionTime ease-out;
+  border: lines(0.25) solid $highlight;
 
-  &.zoomable-anchor-scrollable {
-    top: 0;
-
-    & + .zoomable-content .header-section h1 {
-      color: $yellow;
-
-      .current-zoomable > & {
-        color: $emphasis;
-      }
-    }
-
-    &:hover + .zoomable-content .header-section h1 {
-      color: $yellow-highlight;
-    }
-
-    .current-zoomable > & {
-      display: none;
-    }
-  }
-
-  &.zoomable-anchor-not-scrollable {
-    z-index: 1010;
-
-    &:hover {
-      color: $yellow-highlight;
-    }
-
-    .current-zoomable > .zoomable-content > & {
-      pointer-events: none;
-
-      h1 {
-        color: $emphasis;
-      }
-    }
+  &:hover {
+    background: rgba($purple-highlight, 0.146);
   }
 
   // .visited-zoomable > & {
