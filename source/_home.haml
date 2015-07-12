@@ -4,8 +4,10 @@
     %h1.logo Joni Korpi
 
   .grid
-    - 4.times do
-      .row
-        - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished }.sort_by { |card| card.data.weight }.each do |card|
-          = partial "card", :locals => {card: card} do
-            = card.render({:layout => false})
+    - 13.times do |index|
+      - cardList = sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished && card.data.weight == index+1 }
+      - if cardList.any?
+        .row
+          - cardList.each do |card|
+            = partial "card", :locals => {card: card} do
+              = card.render({:layout => false})
