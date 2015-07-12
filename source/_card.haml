@@ -1,6 +1,5 @@
-%article.card.zoomable{id: card.url, "data-id" => card.url, "data-title" => card.data.title, class: card.data.scrollable ? "zoomable-scrollable" : "zoomable-not-scrollable"}
+%article.z{id: card.url, "data-id" => card.url, "data-title" => card.data.title}
 
-  - if card.data.scrollable
-    %a.card-link.zoomable-anchor.zoomable-anchor-scrollable{href: card.url}
-    .zoomable-content
-      = yield
+  %a.z-anchor{href: card.url}
+  .z-content
+    = yield

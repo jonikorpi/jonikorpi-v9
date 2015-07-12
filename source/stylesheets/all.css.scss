@@ -1,27 +1,218 @@
 @charset "utf-8";
+@viewport {width: device-width;}
+@import "fonts";
 
-@-ms-viewport {width: device-width;}
-    @viewport {width: device-width;}
+/////////////////////////////////////////////////////////
+// General variables
+/////////////////////////////////////////////////////////
 
-//
+$font-size-multiplier: 18/16;
+$line: 1.5rem;
+$max-width: none; //$line * 28;
+
+$in-quad:      cubic-bezier(0.550,  0.085, 0.680, 0.530);
+$in-cubic:     cubic-bezier(0.550,  0.055, 0.675, 0.190);
+$in-quart:     cubic-bezier(0.895,  0.030, 0.685, 0.220);
+$in-quint:     cubic-bezier(0.755,  0.050, 0.855, 0.060);
+$in-sine:      cubic-bezier(0.470,  0.000, 0.745, 0.715);
+$in-expo:      cubic-bezier(0.950,  0.050, 0.795, 0.035);
+$in-circ:      cubic-bezier(0.600,  0.040, 0.980, 0.335);
+$in-back:      cubic-bezier(0.600, -0.280, 0.735, 0.045);
+$out-quad:     cubic-bezier(0.250,  0.460, 0.450, 0.940);
+$out-cubic:    cubic-bezier(0.215,  0.610, 0.355, 1.000);
+$out-quart:    cubic-bezier(0.165,  0.840, 0.440, 1.000);
+$out-quint:    cubic-bezier(0.230,  1.000, 0.320, 1.000);
+$out-sine:     cubic-bezier(0.390,  0.575, 0.565, 1.000);
+$out-expo:     cubic-bezier(0.190,  1.000, 0.220, 1.000);
+$out-circ:     cubic-bezier(0.075,  0.820, 0.165, 1.000);
+$out-back:     cubic-bezier(0.175,  0.885, 0.320, 1.275);
+$in-out-quad:  cubic-bezier(0.455,  0.030, 0.515, 0.955);
+$in-out-cubic: cubic-bezier(0.645,  0.045, 0.355, 1.000);
+$in-out-quart: cubic-bezier(0.770,  0.000, 0.175, 1.000);
+$in-out-quint: cubic-bezier(0.860,  0.000, 0.070, 1.000);
+$in-out-sine:  cubic-bezier(0.445,  0.050, 0.550, 0.950);
+$in-out-expo:  cubic-bezier(1.000,  0.000, 0.000, 1.000);
+$in-out-circ:  cubic-bezier(0.785,  0.135, 0.150, 0.860);
+$in-out-back:  cubic-bezier(0.680, -0.550, 0.265, 1.550);
+
+/////////////////////////////////////////////////////////
+// Hues
+/////////////////////////////////////////////////////////
+
+$hue: 45;
+
+$hue-xxxxx-high: $hue + (360 * 0.979);
+$hue-xxxx-high: $hue + (360 * 0.965);
+$hue-xxx-high: $hue + (360 * 0.944);
+$hue-xx-high: $hue + (360 * 0.91);
+$hue-x-high: $hue + (360 * 0.854);
+$hue-high:  $hue + (360 * 0.764);
+
+$hue-quarter-high: $hue + (360 * 0.75);
+$hue-golden-high:  $hue + (360 * 0.618);
+$hue-sqrt-high:    $hue + (360 * 0.586);
+
+$hue-opposite:     $hue + (360 * 0.5);
+
+$hue-sqrt-low:     $hue + (360 * 0.414);
+$hue-golden-low:   $hue + (360 * 0.382);
+$hue-quarter-low:  $hue + (360 * 0.25);
+
+$hue-low:   $hue + (360 * 0.236);
+$hue-x-low:  $hue + (360 * 0.146);
+$hue-xx-low:  $hue + (360 * 0.09);
+$hue-xxx-low:  $hue + (360 * 0.056);
+$hue-xxxx-low:  $hue + (360 * 0.034);
+$hue-xxxxx-low:  $hue + (360 * 0.021);
+
+/////////////////////////////////////////////////////////
+// Media queries
+/////////////////////////////////////////////////////////
+
+$xs2:  "#{317 / 16 * 1em}";
+$xs:   "#{318 / 16 * 1em}";
+$s:    "#{478 / 16 * 1em}";
+$m:    "#{560 / 16 * 1em}";
+$l:    "#{740 / 16 * 1em}";
+$xl:   "#{960 / 16 * 1em}";
+$xl2: "#{1100 / 16 * 1em}";
+$xl3: "#{1200 / 16 * 1em}";
+$xl4: "#{1400 / 16 * 1em}";
+$xl5: "#{1700 / 16 * 1em}";
+$xl6: "#{1900 / 16 * 1em}";
+$xl7: "#{2300 / 16 * 1em}";
+
+$retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+
+/////////////////////////////////////////////////////////
 // Normalization & resets for annoyances
+/////////////////////////////////////////////////////////
 
-@import "normalize";
-
-html * {
+// Resets annoying things
+* {
   margin: 0;
   padding: 0;
-  font-size: 1em;
-  font-family: inherit;
-  line-height: inherit;
+  font: inherit;
+  color: inherit;
   vertical-align: baseline;
   box-sizing: border-box;
+  text-size-adjust: 100%;
 }
 
-textarea { resize: vertical; }
+// Owl selector spacing
+* + * {
+  margin-top: $line;
+}
 
-//
-// Touchable things (in addition to FastClick)
+li {
+  margin-top: 0;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-top: 0;
+  padding-left: $line;
+}
+
+// HTML5 element fixes
+article, aside, details,
+figcaption, figure, footer,
+header, hgroup,
+main, menu, nav,
+section, summary,
+video, audio, canvas {
+  display: block;
+}
+
+// Hides things that should be hidden
+[hidden],
+template,
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+// Misc element fixes
+a {
+  background-color: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+hr {
+  height: 0;
+}
+
+// Image fixes
+img {
+  border: none;
+  display: block;
+}
+
+// Buttons and forms
+button {
+  overflow: visible;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  appearance: none;
+  background: none;
+}
+
+[disabled] {
+  cursor: not-allowed !important;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+// Tables
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+/////////////////////////////////////////////////////////
+// Touchable things (used in addition to FastClick)
+/////////////////////////////////////////////////////////
 
 a,
 button,
@@ -32,642 +223,119 @@ textarea,
       touch-action: manipulation;
 }
 
-//
-// Em conversion functions
-// pixels to ems & baselines to ems
-
-$font-size: 16;
-$line-height: 24;
-
-@function em($pixels, $context-font-size: $font-size) {
-  @return ($pixels / $context-font-size) * 1em;
-}
-
-@function lines($lines, $context-font-size: $font-size,  $context-line-height: $line-height) {
-  @return $lines * ($context-line-height / $context-font-size) * 1em;
-}
-
-@function rem($factor, $context-font-size: $font-size) {
-  @return ($factor * $context-font-size) / $context-font-size * 1em;
-}
-
-//
-// General variables
-
-$max-width: lines(40);
-$max-content-width: lines(26);
-$baseTransitionTime: 0.414s;
-$zoom-out-size: lines(0.618);
-
-$ease-bounce-out: cubic-bezier(0.0, 0,    0.5, 1.5);
-$ease-bounce-in:  cubic-bezier(0.5, -0.5, 1.0, 1);
-$ease-smooth:     cubic-bezier(0.146, 0.0, 0.0, 0.236);
-
-//
-// Typography variables
-
-@import "fonts";
-
-@mixin text-font      { font-family: Elena, serif; }
-@mixin monospace-font { font-family: Menlo, Consolas, monospace, monospace; }
-
-//
-// Color variables
-
-$hue-main: 45;
-
-// quarters
-$hue-25: $hue-main + (360 * 0.25);
-$hue-50: $hue-main + (360 * 0.5);
-$hue-75: $hue-main + (360 * 0.75);
-
-// golden ratio ^n
-$hue-979: $hue-main + (360 * 0.979);
-$hue-965: $hue-main + (360 * 0.965);
-$hue-944: $hue-main + (360 * 0.944);
-$hue-910: $hue-main + (360 * 0.910);
-$hue-854: $hue-main + (360 * 0.854);
-$hue-764: $hue-main + (360 * 0.764);
-$hue-618: $hue-main + (360 * 0.618);
-$hue-382: $hue-main + (360 * 0.382);
-$hue-236: $hue-main + (360 * 0.236);
-$hue-146: $hue-main + (360 * 0.146);
-$hue-090: $hue-main + (360 * 0.090);
-$hue-056: $hue-main + (360 * 0.056);
-$hue-034: $hue-main + (360 * 0.034);
-$hue-021: $hue-main + (360 * 0.021);
-
-// sqrt(2)
-$hue-586: $hue-main + (360 * 0.586);
-$hue-414: $hue-main + (360 * 0.414);
-
-$background: hsl($hue-618, 38.2%, 9%);
-$highlight:  hsl($hue-764, 14.6%, 14.6%);
-$offset:     hsl($hue-618, 14.6%, 38.2%);
-$border:     hsl($hue-618, 9%, 38.2%);
-
-$aside:        hsl($hue-main, 14.6%, 50%);
-$purple-aside: hsl($hue-618,  14.6%, 50%);
-
-$body:        hsl($hue-main, 14.6%, 61.8%);
-$purple-body: hsl($hue-618,  14.6%, 61.8%);
-
-$emphasis:  hsl($hue-main, 23.6%, 76.4%);
-
-$purple:           hsl($hue-618, 61.8%, 23.6%);
-$purple-highlight: hsl($hue-618, 61.8%, 61.8%);
-
-$yellow:           hsl($hue-main, 76.4%, 61.8%);
-$yellow-highlight: hsl($hue-main, 100%, 85.4%);
-
-//
-// Media queries
-
-$xs2: "screen and (max-width:  317px)";
-$xs:  "screen and (min-width:  318px)";
-$s:   "screen and (min-width:  478px)";
-
-$m:   "screen and (min-width:  560px)";
-
-$l:   "screen and (min-width:  780px)";
-$xl:  "screen and (min-width:  960px)";
-$xl2: "screen and (min-width: 1100px)";
-$xl3: "screen and (min-width: 1200px)";
-$xl4: "screen and (min-width: 1400px)";
-$xl5: "screen and (min-width: 1700px)";
-$xl6: "screen and (min-width: 2500px)";
-
-$retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
-
-//
-// Basic styles
-
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-}
+/////////////////////////////////////////////////////////
+// Font families
+/////////////////////////////////////////////////////////
 
 html {
-  background: $background;
+  font-family: "Elena", serif;
+}
 
-  @media #{$xs2} { font-size: 6.000vw; }
-  @media #{$xs}  { font-size: 4.236vw; }
-  @media #{$s}   { font-size: 3.000vw; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Elena", serif;
+}
 
-  @media #{$m}   { font-size: 2.618vw; }
+code, pre {
+  font-family: "Nitti Basic", Menlo, Consolas, monospace, monospace;
+  letter-spacing: -0.5px;
+}
 
-  @media #{$l}   { font-size: 2.000vw; }
-  @media #{$xl}  { font-size: 1.618vw; }
-  @media #{$xl2} { font-size: 1.500vw; }
-  @media #{$xl3} { font-size: 1.382vw; }
-  @media #{$xl4} { font-size: 1.236vw; }
-  @media #{$xl5} { font-size: 1.056vw; }
-  @media #{$xl6} { font-size: 1.000vw; }
+/////////////////////////////////////////////////////////
+// Basic styles
+/////////////////////////////////////////////////////////
+
+html {
+  font-size: 100% * $font-size-multiplier;
+  line-height: $line;
+  background: hsl($hue-golden-high, 38.2%, 9%);
+  color: hsl($hue, 14.6%, 61.8%);
+  -webkit-tap-highlight-color: hsla($hue-golden-low, 100%, 61.8%, 0.5);
 }
 
 body {
-  @include text-font;
-  font-size: em($font-size, 16);
-  line-height: $line-height/$font-size;
-  color: $body;
-  -webkit-tap-highlight-color: transparentize($yellow, 0.5);
-  position: relative;
-  perspective: 1000;
+  max-width: $max-width;
+  margin: 0 auto;
 }
 
 a {
-  color: $yellow;
+  color: hsl($hue-opposite, 85.4%, 61.8%);
   text-decoration: none;
 
-  &:hover,
-  &:focus {
-    color: $emphasis;
+  &:hover {
+    color: hsl($hue-quarter-high, 85.4%, 61.8%);
   }
 
   &:active {
-    color: $aside;
+    color: hsl($hue-quarter-low, 85.4%, 61.8%);
   }
 }
 
 h1, h2, h3, h4, h5, h6,
 strong, b {
-  color: $emphasis;
+  color: hsl($hue, 23.6%, 76.4%);
+}
+
+hr {
+  border-color: hsl($hue-golden-high, 9%, 23.6%);
 }
 
 code {
-  @include monospace-font;
-  font-size: em(13);
-  line-height: lines(0.75, 13);
-  color: $purple-body;
+  color: hsl($hue-golden-high, 14.6%, 61.8%);
 }
 
-del {
-  color: $aside;
+::selection {
+  background: hsl($hue-opposite, 91%, 61.8%);
 }
 
-.card-header h1,
-.header-section h1 {
-  font-size: em(32);
-  line-height: lines(1.5, 32);
-  font-weight: normal;
-
-  @media #{$xs} {
-    font-size: em(42);
-    line-height: lines(2, 42);
-    letter-spacing: em(-1, 42);
-  }
-
-  @media #{$s} {
-    font-size: em(58);
-    line-height: lines(2.5, 58);
-    letter-spacing: em(-1, 58);
-  }
-
-  @media #{$m} {
-    font-size: em(68);
-    line-height: lines(3, 68);
-    letter-spacing: em(-1, 68);
-  }
-
-  @media #{$xl2} {
-    font-size: em(114);
-    line-height: lines(5, 114);
-    letter-spacing: em(-1, 114);
-  }
+::placeholder {
+  color: hsl($hue, 9%, 50%);
 }
-
-.card-header p,
-.header-section p {
-  margin-top: lines(1);
-  color: $aside;
-
-  @media #{$xs} {
-    font-size: em(22);
-    line-height: lines(1.25, 22);
-    margin-top: lines(1, 22);
-  }
-
-  @media #{$s} {
-    font-size: em(26);
-    line-height: lines(1.5, 26);
-    margin-top: lines(1, 26);
-  }
-
-  @media #{$xl2} {
-    font-size: em(42);
-    line-height: lines(2, 42);
-    margin-top: lines(1, 42);
-  }
-}
-
-::selection      { background: $purple-highlight; color: $emphasis; }
--moz-::selection { background: $purple-highlight; color: $emphasis; }
 
 /////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 
-@mixin size ($ratio, $w-size:1, $h-size:1) {
-  width:  100vw * $ratio * $w-size;
-  height: 100vh * $ratio * $h-size;
-  // height: 100vh;
-  // font-size: 3vmin * $ratio;
-
-  & > .zoomable-content {
-    transform: scale( $ratio );
-  }
-}
-
-.site-viewport {
-  position: absolute;
-  left: 0; top: 0; right: 0;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.site-canvas {
-  width: 200vw;
-  height: 200vh;
-  position: relative;
-  transform: translate3d(-25%, -25%, 0);
-  transition: all $baseTransitionTime / 5 ease-out;
-  transform-origin: center top;
-  z-index: 10;
-  background: $highlight;
-}
-
-.zoomable {
-  position: relative;
-  float: left;
-  @include size(1/2);
-  overflow: hidden;
-
-  .visited-zoomable {
-
-  }
-}
-
-#origo {
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  margin: auto;
-  z-index: 2;
-  width: lines(10);
-  height: lines(10);
-  transition: all $baseTransitionTime ease-out;
-  opacity: 1;
-
-  .mouse-mode & {
-    opacity: 0;
-  }
-}
-
-#circle {
-  width: lines(2);
-  height: lines(2);
-  position: absolute;
-  left: 50%; top: 50%;
-  margin: lines(-1) 0 0 lines(-1);
-  border: lines(0.25) solid rgba($emphasis, 0.91);
-  background: rgba($background, 0.382);
-  border-radius: 50%;
-  overflow: hidden;
-  transform: translate3d(0,0,0);
-  transition: all $baseTransitionTime / 5 ease-out;
-  box-shadow: 0 0 lines(0.0625) rgba($background, 0.5);
-
-  &:hover {
-    border-color: $yellow;
-  }
-}
-
-#zoom-out {
-  position: absolute;
-  left: 0; bottom: 0;
-  z-index: 2;
-  display: none;
-  transition: all $baseTransitionTime*2 $ease-bounce-out;
-  transform: translate(-50%, 50%) rotate(45deg) translate(0, -33.333%);
-  transform-origin: center center;
-  transition-delay: $baseTransitionTime;
-  -webkit-appearance: none;
-  background: none;
-  border: none;
-  color: $background;
-  background: $yellow;
-  width: $zoom-out-size * 15;
-  padding: $zoom-out-size * 0.625 0 $zoom-out-size * 2.375;
-  text-align: center;
-  white-space: nowrap;
-
-  &:hover {
-    background: lighten($purple, 9%);
-  }
-
-  &:after {
-    content: "ESC";
-    border: 1px solid $background;
-    font-weight: bold;
-    font-size: $zoom-out-size * 0.854;
-    line-height: 1;
-    padding: 0.392em 0.382em 0.372em;
-    border-radius: 0.236em;
-    display: inline-block;
-  }
-
-  .awesome & {
-    display: block;
-  }
-
-  .initial-zoom & {
-    transition: all $baseTransitionTime*2 $ease-bounce-in;
-    transform: translate(-50%, 50%) rotate(45deg) translate(0, 150%);
-  }
-}
-
-.home-link {
-  .awesome & {
-    display: none;
-  }
-}
-
-.initial-zoomable {
-  height: 100%;
-}
-
-.zoomables-container {
-  height: 100%;
-}
-
-.card-header {
-  text-align: center;
-
-  h1 {
-    font-weight: bold;
-    font-style: italic;
-    text-align: center;
-    padding: 0.236em;
-    color: inherit;
-  }
-}
-
-.card-header-wrapper {
+.canvas {
 
 }
-
-.zoomable-content {
-  width: 100vw;
-  height: 100vh;
-  transform-origin: left top;
-  position: absolute;
-  background: $background;
-
-  .current-zoomable.zoomable-scrollable > & {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-.zoomable-anchor {
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  z-index: 1000;
-  display: block;
-  // transition: all $baseTransitionTime ease-out;
-  border: lines(0.25) solid $highlight;
-
-  &:hover {
-    background: rgba($purple-highlight, 0.146);
-  }
-
-  // .visited-zoomable > & {
-  //   opacity: 0.618;
-  // }
-}
-
-//
-// Masthead
 
 .masthead {
-  display: table;
-  width: 100%;
-  height: 0.146vh;
-}
-
-.masthead-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  padding: lines(1);
-
-  h1, p {
-    display: inline-block;
-    vertical-align: bottom;
-  }
-}
-
-//
-// Card sections
-
-.padded-section {
-  padding: lines(0.5) lines(0.618);
-
-  @media #{$s}   { padding: lines(1) lines(1.618); }
-  @media #{$l}   { padding: lines(1) lines(2.618); }
-
-  &:first-child {
-    padding-top: lines(1.618);
-
-    @media #{$s}   { padding-top: lines(2.618); }
-    @media #{$l}   { padding-top: lines(3.618); }
-  }
-
-  &:last-child {
-    padding-bottom: lines(1.618);
-
-    @media #{$s}   { padding-bottom: lines(2.618); }
-    @media #{$l}   { padding-bottom: lines(3.618); }
-  }
-}
-
-.unpadded-section {
 
 }
 
-.header-section {
-  text-align: center;
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100vh;
+  will-change: contents;
+  transform: translate3d(0,0,0);
 }
 
-.centered-section {
-  text-align: center;
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-grow: 1;
+  transition: all 162ms ease-out;
+  flex-basis: 0;
+
+  &:hover {
+    flex-grow: 3;
+  }
 }
 
-//
-// Markdown content
+.z {
+  border: 1px solid white;
+  margin: 0 $line * 0.618 * 0.5;
+  flex-grow: 1;
+  transition: all 162ms ease-out;
+  overflow: hidden;
+  flex-basis: 0;
 
-.markdown-content {
-  h1, h2, h3, h4, h5, h6,
-  p, ul, ol, blockquote,
-  hr, pre,
-  figure {
-    margin: lines(1) auto;
-    max-width: $max-content-width;
-  }
-
-  figure,
-  hr {
-    margin: lines(2) auto;
-  }
-
-  a {
-    color: inherit;
-    border-bottom: 1px solid $aside;
-
-    &:hover {
-      color: $emphasis;
-      border-bottom-color: $purple-highlight;
-    }
-
-    &:active {
-      color: $purple-highlight;
-      border-bottom-color: $purple-highlight;
-    }
-
-    &[href^="/"] {
-      color: $yellow;
-
-      &:hover {
-        color: $emphasis;
-        border-bottom-color: $yellow;
-      }
-
-      &:active {
-        color: $aside;
-        border-bottom-color: $aside;
-      }
-    }
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-
-  }
-
-  h1 {
-
-  }
-
-  h2 {
-
-  }
-
-  h3 {  }
-  h4 {  }
-
-  h5 {
-
-  }
-
-  h6 {  }
-
-  ul, ol {
-    padding-left: 1.15em;
-
-    ul, ol { margin: 0; padding: 0; }
-  }
-
-  li li {
-    margin-left: 1.15em;
-  }
-
-  li p:first-child {
-    margin-top: 0;
-  }
-
-  pre {
-    position: relative;
-    overflow: visible;
-
-    code {
-      display: block;
-      overflow: auto;
-      background: $highlight;
-      overflow: auto;
-      padding: lines(1, 13);
-    }
-  }
-
-  blockquote {
-    position: relative;
-    font-style: italic;
-    text-align: center;
-    max-width: none;
-
-    em, i {
-      font-style: normal;
-    }
-
-    p {
-      max-width: none;
-      color: $purple-body;
-      font-size: em(22);
-      line-height: lines(1.25, 22);
-      margin: lines(1, 22) 0;
-
-      @media #{$m} {
-        font-size: em(26);
-        line-height: lines(1.5, 26);
-        margin: lines(1.5, 26) 0;
-      }
-
-      @media #{$xl} {
-        font-size: em(42);
-        line-height: lines(2, 42);
-        margin: lines(2, 42) 0;
-      }
-    }
-  }
-
-  figure {
-    position: relative;
-    text-align: center;
-    max-width: none;
-
-    &.small-figure {
-      max-width: $max-content-width;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    figcaption {
-      color: $aside;
-      font-style: italic;
-      margin-top: lines(1);
-    }
-  }
-
-  hr {
-    display: block;
-    color: $body;
-    text-align: center;
-    letter-spacing: em(2);
-    position: relative;
-    border: 0;
-    border-top: 1px solid transparent;
-    margin-top: lines(2);
-    margin-bottom: lines(2);
-
-    &:after {
-      content: "***";
-      display: block;
-      position: absolute;
-      left: 0; right: 0;
-      top: -0.25em;
-      font-size: lines(2);
-      line-height: 1;
-    }
+  &:hover {
+    flex-grow: 3;
+    background: red;
   }
 }

@@ -1,11 +1,11 @@
-.initial-zoomable{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
+.canvas{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
 
   .masthead
-    .card-header
-      .card-header-wrapper
-        %h1 Joni Korpi
+    %h1.logo Joni Korpi
 
-  .zoomables-container
-    - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished }.sort_by { |card| card.data.weight }.each do |card|
-      = partial "card", :locals => {card: card} do
-        = card.render({:layout => false})
+  .grid
+    - 4.times do
+      .row
+        - sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished }.sort_by { |card| card.data.weight }.each do |card|
+          = partial "card", :locals => {card: card} do
+            = card.render({:layout => false})

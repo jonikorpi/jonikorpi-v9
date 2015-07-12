@@ -44,14 +44,7 @@
     -# %meta{name: "format-detection", content: "telephone=no"}
 
   %body
-    .site-viewport
-      %nav.site-canvas
-        = partial "home"
-    #origo
-      #circle
-      -# %small Drag the circle to navigate.
-    %button#zoom-out{title: "Zoom out (ESC)"}
-    %a.home-link{href: "/"} Home
+    = partial "home"
 
     = javascript_include_tag "all"
     - if build?
