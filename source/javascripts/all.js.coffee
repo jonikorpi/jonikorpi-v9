@@ -7,7 +7,27 @@ window.requestAnimFrame = do ->
   window.requestAnimationFrame or window.webkitRequestAnimationFrame or window.mozRequestAnimationFrame or (callback) ->
     window.setTimeout callback, 1000 / 60
 
-# $ ->
+$ ->
+
+  #
+  # Fastclick
+
+  FastClick.attach document.body
+
+  $(".z").on "touchstart", ->
+    $(@).trigger("hover")
+
+  $(".z-anchor").on "click", (event) ->
+    event.preventDefault()
+    $(@).closest(".z").addClass("z-active")
+    $("body").addClass("z-open")
+
+  $(document).on "keyup", (event) ->
+    if event.keyCode == 27
+      # zoomOut()
+      $(".z-active").removeClass("z-active")
+      $("body").removeClass("z-open")
+
 #   #
 #   # Javascript srsly
 #
@@ -310,10 +330,6 @@ window.requestAnimFrame = do ->
 #   unless window.Engine.currentZoomableID == "/"
 #     queueZoom( window.Engine.currentZoomableID, "background" )
 #
-#   #
-#   # Fastclick
-#
-#   FastClick.attach document.body
 #
 #   #
 #   # Mousemove moves canvas

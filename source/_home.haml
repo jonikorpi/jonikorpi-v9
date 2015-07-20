@@ -1,13 +1,20 @@
-.canvas{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
+- tagOrder = ["New Work", "Work in 2012–2014", "Early Adaptive Grid Systems", "Writing in 2008–2012"]
+- tagAmount = blog.tags.size
+- newArticles = sitemap.where(:tags.include => "new").order_by(:date).all
 
-  .masthead
-    %h1.logo Joni Korpi
+-# - blog.tags.each do |tag, articles|
+-#   %li= tag
 
-  .grid
-    - 13.times do |index|
-      - cardList = sitemap.resources.select { |card| card.ext == ".html" && !card.data.root && !card.data.unpublished && card.data.weight == index+1 }
-      - if cardList.any?
-        .row
-          - cardList.each do |card|
-            = partial "card", :locals => {card: card} do
-              = card.render({:layout => false})
+.grid{"data-id" => "/", "data-title" => "Joni Korpi", class: data.page.root ? 'current-zoomable' : ''}
+
+  .masthead.no-margins.row
+    = image_tag "avatar.png", class: "avatar"
+    %h1.name Joni Korpi
+    %span.title.mono Web Designer
+    .links
+      = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
+      = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
+
+  -# All other posts
+  - tagOrder.each do |tagName|
+    = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}

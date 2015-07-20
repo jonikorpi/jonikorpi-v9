@@ -53,6 +53,13 @@ end
 set :markdown_engine, :redcarpet
 set :markdown, :fenced_code_blocks => true, :smartypants => true
 
+activate :blog do |blog|
+  blog.sources = "posts/{title}.html"
+  blog.permalink = "{title}"
+  blog.tag_template = "tag.html"
+  blog.taglink = "{tag}"
+end
+
 activate :autoprefixer
 activate :directory_indexes
 

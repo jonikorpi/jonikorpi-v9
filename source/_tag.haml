@@ -1,0 +1,7 @@
+- articles = sitemap.where(:tags.include => tag).order_by(date: :desc).all
+
+.tag.row
+  %h1.tag-heading.centered= tag
+  .columns
+    - articles.each do |article|
+      = partial "article", :locals => {:article => article, :size => articles.size}
