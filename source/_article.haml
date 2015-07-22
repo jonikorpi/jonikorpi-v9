@@ -1,4 +1,5 @@
-%article.z{"data-id" => article.url, "data-title" => article.data.title}
+%article.z{"data-id" => article.url, "data-title" => article.data.title, class: "size-#{size}"}
   .z-content
+    %h1.article-title= article.title
     = article.body
   %a.z-anchor{href: article.url}

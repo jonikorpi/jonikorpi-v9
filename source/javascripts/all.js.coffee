@@ -7,6 +7,50 @@ window.requestAnimFrame = do ->
   window.requestAnimationFrame or window.webkitRequestAnimationFrame or window.mozRequestAnimationFrame or (callback) ->
     window.setTimeout callback, 1000 / 60
 
+#
+# Rounding function
+
+round = (value, decimals) ->
+  Number Math.round(value + "e" + decimals) + "e-" + decimals
+
+#
+# Zooms
+
+zoomIn = (target) ->
+  # target = $("[data-id='#{target}']")
+  $(".z-current").removeClass("z-current")
+  target.addClass("z-active z-current")
+  $("body").addClass("z-open")
+  setHistoryToTarget(target)
+
+zoomOut = ->
+  currentZ = $(".z-current")
+  parentZ = currentZ.parent().closest(".z-active")
+  if parentZ.length > 0
+    currentZ.removeClass("z-active z-current")
+    parentZ.addClass("z-current")
+    setHistoryToTarget(parentZ)
+  else
+    $("body").removeClass("z-open")
+    currentZ.removeClass("z-active z-current")
+    setHistoryToRoot()
+
+#
+# Set history to target
+setHistoryToTarget = (target) ->
+  history.pushState({ "targetID" : target.data("id") }, target.data("title"), target.data("id"))
+
+#
+# Set history to root
+
+setHistoryToRoot = ->
+  title = $("#root").data("title")
+  history.pushState({ "targetID" : "/" }, title, "/")
+  document.title = title
+
+#
+# On document ready
+
 $ ->
 
   #
@@ -14,36 +58,68 @@ $ ->
 
   FastClick.attach document.body
 
+  #
+  # Emulate hover on touch
+
   $(".z").on "touchstart", ->
     $(@).trigger("hover")
 
+  #
+  # Bind zoom in
+
   $(".z-anchor").on "click", (event) ->
     event.preventDefault()
-    $(@).closest(".z").addClass("z-active")
-    $("body").addClass("z-open")
+    thisZ = $(@).closest(".z")
+    # zoomIn( thisZ.data("id") )
+    zoomIn(thisZ)
+
+  #
+  # Bind zoom out
 
   $(document).on "keyup", (event) ->
     if event.keyCode == 27
-      # zoomOut()
-      $(".z-active").removeClass("z-active")
-      $("body").removeClass("z-open")
+      zoomOut()
 
-#   #
-#   # Javascript srsly
-#
-#   # Feature tests
-#   console.log("Viewport Units supported? " + feature.viewportUnits)
-#   console.log("History API supported? " + feature.historyAPI)
-#   console.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
-#
-#   if !feature.viewportUnits || !feature.historyAPI || !feature.css3Dtransforms
-#     console.log("Browser doesn't support one of the features needed, stopping…")
-#     return
-#   else
-#     $("html").addClass("awesome")
-#
-#   round = (value, decimals) ->
-#     Number Math.round(value + "e" + decimals) + "e-" + decimals
+  #
+  # Support history state changes
+
+  # history.replaceState({ "targetID" : window.Engine.currentZoomableID }, document.title, window.Engine.currentZoomableID)
+  #
+  # $(window).on "popstate", (event) ->
+  #   console.log "POPSTATE"
+  #   if event.originalEvent.state && event.originalEvent.state.targetID
+  #     console.log "POPSTATE TARGETID: #{event.originalEvent.state.targetID}"
+  #     zoomIn(event.originalEvent.state.targetID)
+
+  #
+  # Set history API stuff
+
+  # unless statelessZoom
+  #   if targetID == window.Engine.initialZoomable.data("id")
+  #     history.pushState({ "targetID" : window.Engine.initialZoomable.data("id") }, $("html head title").text(), "/")
+  #     console.log "Clearing hash"
+  #   else
+  #     history.pushState({ "targetID" : targetID }, $target.data("title"), targetID)
+  #     console.log "Setting hash to #{targetID} with #{$target.data("title")}"
+  # document.title = $target.data("title")
+
+
+  #
+  # Javascript srsly
+
+  # Feature tests
+  # console.log("Viewport Units supported? " + feature.viewportUnits)
+  # console.log("History API supported? " + feature.historyAPI)
+  # console.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
+  #
+  # if !feature.viewportUnits || !feature.historyAPI || !feature.css3Dtransforms
+  #   console.log("Browser doesn't support one of the features needed, stopping…")
+  #   return
+  # else
+  #   $("html").addClass("awesome")
+
+
+
 #
 #   #
 #   # Config
@@ -282,11 +358,6 @@ $ ->
 #     # queueZoom( null, "out" )
 #     queueZoom( targetID )
 #
-#   #
-#   # Zoom out
-#
-#   zoomOut = ->
-#     queueZoom( null, "out" )
 #
 #   #
 #   # Zoom out button
@@ -313,16 +384,6 @@ $ ->
 #   $(window).bind "resizeEnd", ->
 #     queueZoom( null, "refocus" )
 #
-#   #
-#   # Support history state changes
-#
-#   history.replaceState({ "targetID" : window.Engine.currentZoomableID }, document.title, window.Engine.currentZoomableID)
-#
-#   $(window).on "popstate", (event) ->
-#     console.log "POPSTATE"
-#     if event.originalEvent.state && event.originalEvent.state.targetID
-#       console.log "POPSTATE TARGETID: #{event.originalEvent.state.targetID}"
-#       queueZoom( event.originalEvent.state.targetID, "stateless" )
 #
 #   #
 #   # Initial zoom (when not loading the root page)

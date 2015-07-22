@@ -10,7 +10,9 @@ $font-size-multiplier: 16/16;
 $line: 1.382rem;
 $max-width: none; //$line * 28;
 
-$home-padding: $line * 0.5;
+$card-padding: $line * 0.25;
+$grid-header-height: $line*1 + $card-padding*3;
+$home-grid-header-height: $line*2 + $card-padding*3;
 
 $in-quad:      cubic-bezier(0.550,  0.085, 0.680, 0.530);
 $in-cubic:     cubic-bezier(0.550,  0.055, 0.675, 0.190);
@@ -68,7 +70,7 @@ $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
 $background: hsl($hue-golden-high, 23.6%, 23.6%);
-$card-background: hsl($hue-golden-high, 38.2%, 9%);
+$card-background: hsl($hue-golden-high, 38.2%, 14.6%);
 
 $shadow: hsl($hue-golden-high, 50%, 5.6%);
 $border: hsl($hue-golden-high, 14.6%, 38.2%);
@@ -317,27 +319,29 @@ body {
 }
 
 .grid {
-  background: $background;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  will-change: contents;
-  transform: translate3d(0,0,0);
+  // will-change: contents;
+  // transform: translate3d(0,0,0);
   margin: 0;
-  padding: $home-padding / 2 0;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  padding: $card-padding;
+  padding-top: $grid-header-height;
 }
 
-.row {
-  transition: all 262ms $out-expo;
-  margin: 0;
-  position: relative;
+.home-grid {
+  padding-top: $home-grid-header-height;
+}
+
+.grid-header {
+  height: $grid-header-height;
+  padding: $card-padding*2;
+  padding-bottom: $card-padding;
+  position: absolute;
+  left: 0; top: 0; right: 0;
 }
 
 .masthead {
-  padding: $home-padding;
-  overflow: hidden;
-  height: $line * 3;
+  height: $home-grid-header-height;
 }
 
 .avatar {
@@ -367,76 +371,96 @@ body {
   }
 }
 
-.tag {
-  flex-grow: 2;
-  flex-basis: 0;
+.row {
+  margin: 0;
+  height: 50%;
 
-  &:hover {
-    flex-grow: 4;
-    background: hsl($hue-golden-high, 23.6%, 14.6%);
+  .z & {
+    height: 100%;
   }
 }
 
 .tag-heading {
-  font-size: 1.618rem;
-  font-weight: bold;
-  color: hsl($hue, 38.2%, 76.4%);
-  transition: opacity 162ms ease-out;
-  transition-delay: 262ms;
-  opacity: 1;
 
-  .tag:hover & {
-    opacity: 0;
-  }
-}
-
-.columns {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  margin: 0 $home-padding / 2;
 }
 
 .z {
   margin: 0;
   position: relative;
-  flex-basis: 0;
-  flex-grow: 1;
+  height: 100%;
+  float: left;
 }
 
-.z-active {
+.size-2 { width: 50%; }
+.size-3 { width: 33.333%; }
+.size-4 { width: 50%; height: 50%; }
+
+.size-5 {
+  width: 50%; height: 50%;
+
+  &:nth-child(3),
+  &:nth-child(4),
+  &:nth-child(5) {
+    width: 33.333%;
+  }
+}
+
+.size-6 { width: 33.333%; height: 50%; }
+
+.z-active.z-active {
   position: static;
-  overflow: visible;
 }
 
 .z-anchor {
   display: block;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  margin: 0;
+  margin: $card-padding;
+  border: 1px solid transparent;
 
   &:hover {
-
+    border-color: $main-highlight;
   }
 
-  .z-active & {
+  .z-active > & {
     display: none;
   }
 }
 
 .z-content {
   position: absolute;
-  left: $home-padding / 2; top: $home-padding / 2; right: $home-padding / 2; bottom: $home-padding / 2;
+  left: 0; top: 0; right: 0; bottom: 0;
   overflow: hidden;
+  transition: all 162ms ease-out;
+  border: 1px solid $border;
+  margin: $card-padding;
+  background: $background;
 
   .z:hover & {
 
   }
 
-  .z-active & {
+  .z-active > & {
+    border: none;
+    margin: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+  }
+
+  .z-current > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+.article-title {
+  padding: $card-padding * 2;
+}
+
+.active-content {
+  visibility: hidden;
+
+  .z-current > .z-content > & {
+    visibility: visible;
   }
 }

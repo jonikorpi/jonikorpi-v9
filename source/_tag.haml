@@ -1,7 +1,11 @@
 - articles = sitemap.where(:tags.include => tag).order_by(date: :desc).all
 
-.tag.row
-  %h1.tag-heading.centered= tag
-  .columns
-    - articles.each do |article|
-      = partial "article", :locals => {:article => article, :size => articles.size}
+%section.z.tag{class: "size-#{tagAmount}", "data-title" => tag, "data-id" => "/TODO"}
+  .z-content
+    .grid
+      .grid-header
+        %h1.tag-heading= tag
+      .row
+        - articles.each do |article|
+          = partial "article", :locals => {:article => article, :size => articles.size}
+  %a.z-anchor{href: "/TODO"}

@@ -1,18 +1,13 @@
 ---
 title: Leaving Old Internet Explorer Behind
-tags: "Writing in 2008–2012"
+tags: "Writing (2008-2012)"
 date: 2011/07/17
 ---
 
-%header.header-section.padded-section
-  %h1 Leaving Old Internet Explorer Behind
-  %p Using media queries to make a clean break from legacy browsers.
-
-%section.padded-section.centered-section
-  %em This is an old post, written in 2011.
-
-%section.padded-section.markdown-content
+.active-content
   :markdown
+    Using media queries to make a clean break from legacy browsers.
+
     This site was designed [Mobile First](http://www.lukew.com/ff/entry.asp?933). The styles that make up the mobile version of its layout, which I'll call the Narrow Layout from now on, are not inside a media query, while the styles that make up the wider versions are. As a result, browsers with no support for media queries will only see the Narrow Layout. This is a good thing.
 
     Instead of enabling media queries in the browsers that don't support them, like Internet Explorer 6–8, I chose to simply serve them the Narrow Layout, slightly enhanced with Paul Irish's [IE conditional classes](http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/).
