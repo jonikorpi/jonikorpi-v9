@@ -5,8 +5,6 @@
 %article.z{"data-id" => article.url, "data-title" => article.data.title, class: classes}
   .z-content
     %h1.article-title= article.title
-    - if article.data.thumb
-      = partial "thumbs/#{article.data.thumb}"
     .article-content
       - if article.title == current_page.data.title
         = article.body
