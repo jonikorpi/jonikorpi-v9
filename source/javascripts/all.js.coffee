@@ -17,6 +17,7 @@ round = (value, decimals) ->
 # Zooms
 
 targetContent = null
+endedTransitions = []
 
 zoomIn = (target) ->
   # target = $("[data-id='#{target}']")
@@ -25,11 +26,9 @@ zoomIn = (target) ->
   targetContent = content
   window.setTimeout ->
     $(".z-current").removeClass("z-current")
-    target.addClass("z-active")
+    target.addClass("z-active z-current")
     $("body").addClass("z-open")
     requestAnimFrame(positionsToZero)
-    content.on "transitionend webkitTransitionEnd", ->
-      target.addClass("z-current")
   , 1
   setHistoryToTarget(target)
 
@@ -39,7 +38,6 @@ positionsToParent = (target, content) ->
   right = $("html").outerWidth() - target.outerWidth() - left
   bottom = $("html").outerHeight() - target.outerHeight() - top
   content.css
-    "position": "absolute"
     "left": left
     "top": top
     "right": right
@@ -54,19 +52,24 @@ positionsToZero = ->
 
 zoomOut = ->
   currentZ = $(".z-current")
-  currentContent = currentZ.children(".z-content")
-  positionsToParent(currentZ, currentContent)
-  parentZ = currentZ.parent().closest(".z-active")
-  if parentZ.length > 0
-    parentZ.addClass("z-current")
-    setHistoryToTarget(parentZ)
-  else
-    $("body").removeClass("z-open")
-    setHistoryToRoot()
-  currentContent.on "transitionend webkitTransitionEnd", ->
-    currentZ.removeClass("z-active z-current")
-    currentContent.removeAttr("style")
-    currentContent.off "transitionend webkitTransitionEnd"
+  endedTransitions = []
+  if currentZ.length > 0
+    currentContent = currentZ.children(".z-content")
+    positionsToParent(currentZ, currentContent)
+    parentZ = currentZ.parent().closest(".z-active")
+    if parentZ.length > 0
+      parentZ.addClass("z-current")
+      setHistoryToTarget(parentZ)
+    else
+      $("body").removeClass("z-open")
+      setHistoryToRoot()
+    currentContent.on "transitionend webkitTransitionEnd", (event) ->
+      endedTransitions.push event.originalEvent.propertyName
+      if $.inArray("left", endedTransitions) != -1 && $.inArray("top", endedTransitions) != -1 && $.inArray("right", endedTransitions) != -1 && $.inArray("bottom", endedTransitions) != -1
+        targetContent = currentContent
+        positionsToZero()
+        currentZ.removeClass("z-active z-current")
+        currentContent.off "transitionend webkitTransitionEnd"
 
 #
 # Set history to target

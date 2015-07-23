@@ -445,14 +445,14 @@ body {
     height: auto;
     margin: 0;
     z-index: 10;
-    transition: 262ms ease-out;
-    transition-property: left, top, right, bottom, width, height, margin;
-    transition-delay:    0,    0,   0,     0,      162ms, 162ms,  162ms;
   }
 
   .z-current > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    transition: 262ms ease-out;
+    transition-property: left, top, right, bottom, width, height, margin;
+    transition-delay:    0ms  ,0ms, 0ms,   0ms,    162ms, 162ms,  162ms;
   }
 }
 
