@@ -48,6 +48,22 @@ helpers do
     html = markdown.render(source)
     Redcarpet::Render::SmartyPants.render html
   end
+
+  def pseudo_host
+    if build?
+      "http://www.kiskolabs.com"
+    else
+      "http://localhost:4567"
+    end
+  end
+
+  def image_url(*args)
+    pseudo_host + image_path(*args)
+  end
+
+  def current_page_url
+    pseudo_host + current_page.url
+  end
 end
 
 set :markdown_engine, :redcarpet

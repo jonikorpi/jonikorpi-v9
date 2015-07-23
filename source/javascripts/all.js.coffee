@@ -28,6 +28,7 @@ zoomIn = (target) ->
     if $(".z-zooming-out").length > 0
       endZoomOut( zoomingZ, zoomingZ.children(".z-content") )
     content = target.children(".z-content")
+    loadContent( content, target.data("id") )
     positionsToParent(target, content)
     targetContent = content
     window.setTimeout ->
@@ -39,6 +40,7 @@ zoomIn = (target) ->
       content.on "transitionend webkitTransitionEnd", (event) ->
         endedOpeningTransitions.push event.originalEvent.propertyName
         if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
+          content.off "transitionend webkitTransitionEnd"
           target.removeClass("z-zooming-in")
     , 1
     setHistoryToTarget(target)
@@ -61,10 +63,27 @@ positionsToZero = ->
     "right": "0"
     "bottom": "0"
 
+loadContent = (content, id) ->
+  loadHere = content.children(".article-content")
+  loadHere.append("<strong>Loading…</strong>")
+  $.ajax
+    url: id
+    error: ->
+      loadHere.append("<strong>Loading failed. Try refreshing? :(</strong>")
+    success: (data) ->
+      loadHere.replaceWith( $(data).find(".z-current .article-content") )
+    type: 'GET'
+
+flushContentFrom = (target) ->
+  flushThis = target.find(".article-content")
+  if flushThis.length > 0
+    flushThis.empty()
+
 zoomOut = ->
   currentZ = $(".z-current")
   if currentZ.length > 0
     currentContent = currentZ.children(".z-content")
+    flushContentFrom( currentZ )
     positionsToParent(currentZ, currentContent)
     parentZ = currentZ.parent().closest(".z-active")
     currentZ.addClass("z-zooming-out")

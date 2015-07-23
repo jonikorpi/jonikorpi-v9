@@ -1,5 +1,5 @@
 !!! 5
-%html{lang: "en", class: "#{page_classes} #{data.page.root ? 'initial-zoom' : ''}", "data-current-zoomable" => current_page.url}
+%html{lang: "en", class: "#{page_classes}"}
   %head
     %meta{charset: "utf-8"}
     %title= data.page.title
@@ -12,24 +12,24 @@
     /[if lt IE 9]
       = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"
 
-    -# = favicon_tag "images/favicon.ico"
-    -# = favicon_tag "images/apple-touch-icon.png", rel: "apple-touch-icon", type: "image/png"
+    = favicon_tag image_url("avatar.png")
+    = favicon_tag image_url("avatar.png"), rel: "apple-touch-icon", type: "image/png"
     -# %meta{name: "msapplication-TileColor", content: "#000000"}
-    -# %meta{name: "msapplication-TileImage", content: image_url("apple-touch-icon.png")}
+    %meta{name: "msapplication-TileImage", content: image_url("avatar.png")}
 
     / "Social icons"
-    -# %meta{property: "og:image",      content: image_url("social-icon.png")}
-    -# %meta{property: "twitter:image", content: image_url("social-icon.png")}
+    %meta{property: "og:image",      content: image_url("avatar.png")}
+    %meta{property: "twitter:image", content: image_url("avatar.png")}
 
     / URLs
-    -# %meta{property: "og:url",       content: current_page_url}
-    -# %link{rel: "canonical",         href:    current_page_url}
-    -# %meta{property: "twitter:url",  content: current_page_url}
+    %meta{property: "og:url",       content: current_page_url}
+    %link{rel: "canonical",         href:    current_page_url}
+    %meta{property: "twitter:url",  content: current_page_url}
 
     / Titles
-    -# %meta{property: "og:title",      content: ""}
-    -# %meta{property: "og:site_name",  content: ""}
-    -# %meta{property: "twitter:title", content: ""}
+    %meta{property: "og:title",      content: data.page.title}
+    %meta{property: "og:site_name",  content: "Joni Korpi"}
+    %meta{property: "twitter:title", content: data.page.title}
 
     / Descriptions
     -# %meta{property: "og:description",      content: ""}
@@ -37,11 +37,11 @@
     -# %meta{property: "twitter:description", content: ""}
 
     / Other crap
-    -# %meta{property: "og:type",      content: "website" }
-    -# %meta{property: "og:locale",    content: "en_GB" }
-    -# %meta{content: "summary",      property: "twitter:card"}
-    -# %meta{content: "@jonikorpi",   property: "twitter:site"}
-    -# %meta{name: "format-detection", content: "telephone=no"}
+    %meta{property: "og:type",      content: "website" }
+    %meta{property: "og:locale",    content: "en_GB" }
+    %meta{content: "summary",      property: "twitter:card"}
+    %meta{content: "@jonikorpi",   property: "twitter:site"}
+    %meta{name: "format-detection", content: "telephone=no"}
 
   %body
     = partial "home"

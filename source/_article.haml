@@ -1,5 +1,13 @@
-%article.z{"data-id" => article.url, "data-title" => article.data.title, class: "size-#{size}"}
+- classes = "size-#{size} "
+- if article.title == current_page.data.title
+  - classes += "z-current z-active "
+
+%article.z{"data-id" => article.url, "data-title" => article.data.title, class: classes}
   .z-content
     %h1.article-title= article.title
-    = article.body
+    - if article.data.thumb
+      = partial "thumbs/#{article.data.thumb}"
+    .article-content
+      - if article.title == current_page.data.title
+        = article.body
   %a.z-anchor{href: article.url}

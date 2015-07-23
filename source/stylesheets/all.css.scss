@@ -468,15 +468,26 @@ body {
   padding: $card-padding * 2;
 }
 
-.active-content {
-  visibility: hidden;
-  transition: $short-time $main-easing;
-  transition-property: opacity, visibility;
-  opacity: 0;
+.article-content {
+  // display: none;
 
-  .z-current > .z-content > & {
-    visibility: visible;
-    transition-delay: 0, $short-time;
-    opacity: 1;
+  // .z-current > .z-content > & {
+  //   display: block;
+  // }
+
+  .z-zooming-in > .z-content > & {
+    display: none;
+  }
+}
+
+.canvas {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  z-index: 100;
+  margin: 0;
+  background: $background;
+
+  .index & {
+    display: none;
   }
 }

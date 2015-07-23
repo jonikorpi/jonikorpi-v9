@@ -1,6 +1,15 @@
 - articles = sitemap.where(:tags.include => tag).order_by(date: :desc).all
 
-%section.z.tag{class: "size-#{tagAmount}", "data-title" => tag, "data-id" => "/TODO"}
+- containsActiveArticle = false
+- articles.each do |article|
+  - if article.title == current_page.data.title
+    - containsActiveArticle = true
+
+- classes = "size-#{tagAmount} "
+- if containsActiveArticle
+  - classes += "z-active "
+
+%section.z.tag{class: classes, "data-title" => tag}
   .z-content
     .grid
       .grid-header
