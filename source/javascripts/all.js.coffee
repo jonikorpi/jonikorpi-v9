@@ -16,24 +16,57 @@ round = (value, decimals) ->
 #
 # Zooms
 
+targetContent = null
+
 zoomIn = (target) ->
   # target = $("[data-id='#{target}']")
-  $(".z-current").removeClass("z-current")
-  target.addClass("z-active z-current")
-  $("body").addClass("z-open")
+  content = target.children(".z-content")
+  positionsToParent(target, content)
+  targetContent = content
+  window.setTimeout ->
+    $(".z-current").removeClass("z-current")
+    target.addClass("z-active")
+    $("body").addClass("z-open")
+    requestAnimFrame(positionsToZero)
+    content.on "transitionend webkitTransitionEnd", ->
+      target.addClass("z-current")
+  , 1
   setHistoryToTarget(target)
+
+positionsToParent = (target, content) ->
+  left = target.offset().left
+  top = target.offset().top
+  right = $("html").outerWidth() - target.outerWidth() - left
+  bottom = $("html").outerHeight() - target.outerHeight() - top
+  content.css
+    "position": "absolute"
+    "left": left
+    "top": top
+    "right": right
+    "bottom": bottom
+
+positionsToZero = ->
+  targetContent.css
+    "left": "0"
+    "top": "0"
+    "right": "0"
+    "bottom": "0"
 
 zoomOut = ->
   currentZ = $(".z-current")
+  currentContent = currentZ.children(".z-content")
+  positionsToParent(currentZ, currentContent)
   parentZ = currentZ.parent().closest(".z-active")
   if parentZ.length > 0
-    currentZ.removeClass("z-active z-current")
     parentZ.addClass("z-current")
     setHistoryToTarget(parentZ)
   else
     $("body").removeClass("z-open")
-    currentZ.removeClass("z-active z-current")
     setHistoryToRoot()
+  currentContent.on "transitionend webkitTransitionEnd", ->
+    currentZ.removeClass("z-active z-current")
+    currentContent.removeAttr("style")
+    currentContent.off "transitionend webkitTransitionEnd"
 
 #
 # Set history to target

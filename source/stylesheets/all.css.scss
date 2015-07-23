@@ -319,8 +319,6 @@ body {
 }
 
 .grid {
-  // will-change: contents;
-  // transform: translate3d(0,0,0);
   margin: 0;
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -430,21 +428,26 @@ body {
 .z-content {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  overflow: hidden;
-  transition: all 162ms ease-out;
-  border: 1px solid $border;
   margin: $card-padding;
-  background: $background;
+  overflow: hidden;
+  border: 1px solid $border;
+  background: $card-background;
+  will-change: contents;
+  transform: translate3d(0,0,0);
 
   .z:hover & {
 
   }
 
   .z-active > & {
-    border: none;
+    // border: none;
+    width: auto;
+    height: auto;
     margin: 0;
-    width: 100%; height: 100%;
     z-index: 10;
+    transition: 262ms ease-out;
+    transition-property: left, top, right, bottom, width, height, margin;
+    transition-delay:    0,    0,   0,     0,      162ms, 162ms,  162ms;
   }
 
   .z-current > & {
@@ -458,9 +461,9 @@ body {
 }
 
 .active-content {
-  visibility: hidden;
+  display: none;
 
   .z-current > .z-content > & {
-    visibility: visible;
+    display: block;
   }
 }
