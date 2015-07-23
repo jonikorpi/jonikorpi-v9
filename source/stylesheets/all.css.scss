@@ -39,6 +39,11 @@ $in-out-expo:  cubic-bezier(1.000,  0.000, 0.000, 1.000);
 $in-out-circ:  cubic-bezier(0.785,  0.135, 0.150, 0.860);
 $in-out-back:  cubic-bezier(0.680, -0.550, 0.265, 1.550);
 
+$main-easing: $in-back;
+$reverse-easing: $out-back;
+$main-time: 333ms;
+$short-time: 205ms;
+
 /////////////////////////////////////////////////////////
 // Hues
 /////////////////////////////////////////////////////////
@@ -336,6 +341,7 @@ body {
   padding-bottom: $card-padding;
   position: absolute;
   left: 0; top: 0; right: 0;
+  white-space: nowrap;
 }
 
 .masthead {
@@ -394,12 +400,10 @@ body {
 .size-4 { width: 50%; height: 50%; }
 
 .size-5 {
-  width: 50%; height: 50%;
+  width: 33.333%; height: 50%;
 
-  &:nth-child(3),
-  &:nth-child(4),
-  &:nth-child(5) {
-    width: 33.333%;
+  &:first-child {
+    width: 66.666%;
   }
 }
 
@@ -433,7 +437,7 @@ body {
   border: 1px solid $border;
   background: $card-background;
   will-change: contents;
-  transform: translate3d(0,0,0);
+  // transform: translate3d(0,0,0);
 
   .z:hover & {
 
@@ -445,14 +449,18 @@ body {
     height: auto;
     margin: 0;
     z-index: 10;
+    transition: $main-time $main-easing;
+    transition-property: left, top, right, bottom, width, height, margin;
+    transition-delay:    0ms  ,0ms, 0ms,   0ms,    $short-time, $short-time,  $short-time;
+  }
+
+  .z-zooming-out > & {
+    transition-timing-function: $reverse-easing;
   }
 
   .z-current > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    transition: 262ms ease-out;
-    transition-property: left, top, right, bottom, width, height, margin;
-    transition-delay:    0ms  ,0ms, 0ms,   0ms,    162ms, 162ms,  162ms;
   }
 }
 
@@ -461,9 +469,14 @@ body {
 }
 
 .active-content {
-  display: none;
+  visibility: hidden;
+  transition: $short-time $main-easing;
+  transition-property: opacity, visibility;
+  opacity: 0;
 
   .z-current > .z-content > & {
-    display: block;
+    visibility: visible;
+    transition-delay: 0, $short-time;
+    opacity: 1;
   }
 }

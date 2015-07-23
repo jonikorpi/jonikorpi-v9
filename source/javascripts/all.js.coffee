@@ -17,20 +17,31 @@ round = (value, decimals) ->
 # Zooms
 
 targetContent = null
-endedTransitions = []
+endedOpeningTransitions = []
+endedClosingTransitions = []
 
 zoomIn = (target) ->
   # target = $("[data-id='#{target}']")
-  content = target.children(".z-content")
-  positionsToParent(target, content)
-  targetContent = content
-  window.setTimeout ->
-    $(".z-current").removeClass("z-current")
-    target.addClass("z-active z-current")
-    $("body").addClass("z-open")
-    requestAnimFrame(positionsToZero)
-  , 1
-  setHistoryToTarget(target)
+  unless $(".z-zooming-in").length > 0
+    target.addClass("z-zooming-in")
+    zoomingZ = $(".z-zooming-out")
+    if $(".z-zooming-out").length > 0
+      endZoomOut( zoomingZ, zoomingZ.children(".z-content") )
+    content = target.children(".z-content")
+    positionsToParent(target, content)
+    targetContent = content
+    window.setTimeout ->
+      $(".z-current").removeClass("z-current")
+      target.addClass("z-active z-current")
+      $("body").addClass("z-open")
+      requestAnimFrame(positionsToZero)
+      endedClosingTransitions = []
+      content.on "transitionend webkitTransitionEnd", (event) ->
+        endedOpeningTransitions.push event.originalEvent.propertyName
+        if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
+          target.removeClass("z-zooming-in")
+    , 1
+    setHistoryToTarget(target)
 
 positionsToParent = (target, content) ->
   left = target.offset().left
@@ -52,24 +63,28 @@ positionsToZero = ->
 
 zoomOut = ->
   currentZ = $(".z-current")
-  endedTransitions = []
   if currentZ.length > 0
     currentContent = currentZ.children(".z-content")
     positionsToParent(currentZ, currentContent)
     parentZ = currentZ.parent().closest(".z-active")
+    currentZ.addClass("z-zooming-out")
     if parentZ.length > 0
       parentZ.addClass("z-current")
       setHistoryToTarget(parentZ)
     else
       $("body").removeClass("z-open")
       setHistoryToRoot()
+    endedClosingTransitions = []
     currentContent.on "transitionend webkitTransitionEnd", (event) ->
-      endedTransitions.push event.originalEvent.propertyName
-      if $.inArray("left", endedTransitions) != -1 && $.inArray("top", endedTransitions) != -1 && $.inArray("right", endedTransitions) != -1 && $.inArray("bottom", endedTransitions) != -1
-        targetContent = currentContent
-        positionsToZero()
-        currentZ.removeClass("z-active z-current")
-        currentContent.off "transitionend webkitTransitionEnd"
+      endedClosingTransitions.push event.originalEvent.propertyName
+      if $.inArray("left", endedClosingTransitions) != -1 && $.inArray("top", endedClosingTransitions) != -1 && $.inArray("right", endedClosingTransitions) != -1 && $.inArray("bottom", endedClosingTransitions) != -1
+        endZoomOut(currentZ, currentContent)
+
+endZoomOut = (currentZ, currentContent) ->
+  targetContent = currentContent
+  positionsToZero()
+  currentZ.removeClass("z-active z-current z-zooming-out")
+  currentContent.off "transitionend webkitTransitionEnd"
 
 #
 # Set history to target
