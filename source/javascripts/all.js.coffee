@@ -17,6 +17,7 @@ round = (value, decimals) ->
 # Zooms
 
 targetContent = null
+loadedContent = false
 endedOpeningTransitions = []
 endedClosingTransitions = []
 
@@ -28,7 +29,10 @@ zoomIn = (target) ->
     if $(".z-zooming-out").length > 0
       endZoomOut( zoomingZ, zoomingZ.children(".z-content") )
     content = target.children(".z-content")
-    loadContent( content, target.data("id") )
+    loadHere = content.children(".article-content")
+    if loadHere.length > 0
+      loadedContent = false
+      loadContent( content, target.data("id") )
     positionsToParent(target, content)
     targetContent = content
     window.setTimeout ->
@@ -42,6 +46,15 @@ zoomIn = (target) ->
         if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
           content.off "transitionend webkitTransitionEnd"
           target.removeClass("z-zooming-in")
+          if loadHere.length > 0
+            if loadedContent
+              console.log "content already here"
+              loadHere.replaceWith( loadedContent )
+            else
+              console.log "content coming later"
+              loadHere.one "contentLoaded", ->
+                console.log "content arrived"
+                loadHere.replaceWith( loadedContent )
     , 1
     setHistoryToTarget(target)
 
@@ -69,9 +82,13 @@ loadContent = (content, id) ->
   $.ajax
     url: id
     error: ->
-      loadHere.append("<strong>Loading failed. Try refreshing? :(</strong>")
+      loadedContent = "<div class='article-content'><strong>Loading failed. Try refreshing? :(</strong></div>"
+      loadHere.trigger("contentLoaded")
+      console.log "triggering contentLoaded on failure"
     success: (data) ->
-      loadHere.replaceWith( $(data).find(".z-current .article-content") )
+      loadedContent = $(data).find(".z-current .article-content")
+      loadHere.trigger("contentLoaded")
+      console.log "triggering contentLoaded"
     type: 'GET'
 
 flushContentFrom = (target) ->
