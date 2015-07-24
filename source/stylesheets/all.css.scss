@@ -424,7 +424,8 @@ body {
     border-color: $main-highlight;
   }
 
-  .z-active > & {
+  .z-zooming-in &,
+  .z-zooming-out & {
     display: none;
   }
 }

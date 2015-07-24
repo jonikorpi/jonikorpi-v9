@@ -14,51 +14,73 @@ round = (value, decimals) ->
   Number Math.round(value + "e" + decimals) + "e-" + decimals
 
 #
-# Zooms
+# Globals
 
 targetContent = null
 loadedContent = false
 endedOpeningTransitions = []
 endedClosingTransitions = []
 
+#
+# Zooming in
+
 zoomIn = (target) ->
-  # target = $("[data-id='#{target}']")
-  unless $(".z-zooming-in").length > 0
-    target.addClass("z-zooming-in")
-    zoomingZ = $(".z-zooming-out")
-    if $(".z-zooming-out").length > 0
-      endZoomOut( zoomingZ, zoomingZ.children(".z-content") )
-    content = target.children(".z-content")
-    loadHere = content.children(".article-content")
-    if loadHere.length > 0
-      loadedContent = false
-      loadContent( content, target.data("id") )
-    positionsToParent(target, content)
+  console.log "starting a zoomIn"
+
+  # Cancel ongoing zooms
+  zoomingIn = $(".z-zooming-in")
+  if zoomingIn.length > 0
+    cancelZoomIns(zoomingIn)
+
+  # Find pertinent elements
+  content = target.children(".z-content")
+  loadHere = content.children(".article-content")
+
+  # AJAX-load more content, if needed
+  if loadHere.length > 0
+    loadedContent = false
+    loadContent( content, target.data("id") )
+
+  # Set history
+  setHistoryToTarget(target)
+
+  # Set positions to current location
+  target.addClass("z-zooming-in")
+  positionsToParent(target, content)
+
+  # Wait a moment and…
+  window.setTimeout ->
+    # Set classes
+    $(".z-current").removeClass("z-current")
+    target.addClass("z-active z-current")
+    $("body").addClass("z-open")
+
+    # Set positions to 0 (zoom in)
     targetContent = content
-    window.setTimeout ->
-      $(".z-current").removeClass("z-current")
-      target.addClass("z-active z-current")
-      $("body").addClass("z-open")
-      requestAnimFrame(positionsToZero)
-      endedClosingTransitions = []
-      content.on "transitionend webkitTransitionEnd", (event) ->
-        endedOpeningTransitions.push event.originalEvent.propertyName
-        if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
-          content.off "transitionend webkitTransitionEnd"
-          target.removeClass("z-zooming-in")
-          if loadHere.length > 0
-            if loadedContent
-              console.log "content already here"
+    requestAnimFrame(positionsToZero)
+
+    # After all positions have been transitioned, finish the zoom
+    endedOpeningTransitions = []
+
+    content.on "transitionend webkitTransitionEnd", (event) ->
+      endedOpeningTransitions.push event.originalEvent.propertyName
+      if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
+        content.off "transitionend webkitTransitionEnd"
+        # Append content when it's loaded
+        if loadHere.length > 0
+          if loadedContent
+            console.log "content already here"
+            loadHere.replaceWith( loadedContent )
+          else
+            console.log "content coming later"
+            loadHere.one "contentLoaded", ->
+              console.log "content arrived"
               loadHere.replaceWith( loadedContent )
-            else
-              console.log "content coming later"
-              loadHere.one "contentLoaded", ->
-                console.log "content arrived"
-                loadHere.replaceWith( loadedContent )
-    , 1
-    setHistoryToTarget(target)
+        target.removeClass("z-zooming-in")
+  , 1
 
 positionsToParent = (target, content) ->
+  # Set positions to match parent's position (needed for the zoom transitions to work)
   left = target.offset().left
   top = target.offset().top
   right = $("html").outerWidth() - target.outerWidth() - left
@@ -70,6 +92,7 @@ positionsToParent = (target, content) ->
     "bottom": bottom
 
 positionsToZero = ->
+  # Set positions to 0 (makes the zoom happen)
   targetContent.css
     "left": "0"
     "top": "0"
@@ -77,8 +100,9 @@ positionsToZero = ->
     "bottom": "0"
 
 loadContent = (content, id) ->
+  # Load content via AJAX and notify about it
   loadHere = content.children(".article-content")
-  loadHere.append("<strong>Loading…</strong>")
+  console.log "trying to load content"
   $.ajax
     url: id
     error: ->
@@ -91,46 +115,107 @@ loadContent = (content, id) ->
       console.log "triggering contentLoaded"
     type: 'GET'
 
-flushContentFrom = (target) ->
-  flushThis = target.find(".article-content")
-  if flushThis.length > 0
-    flushThis.empty()
+cancelZoomIns = (zoomingIn) ->
+  zoomingIn.each ->
+    console.log "canceling a zoomIn"
 
-zoomOut = ->
-  currentZ = $(".z-current")
-  if currentZ.length > 0
-    currentContent = currentZ.children(".z-content")
-    flushContentFrom( currentZ )
-    positionsToParent(currentZ, currentContent)
-    parentZ = currentZ.parent().closest(".z-active")
-    currentZ.addClass("z-zooming-out")
-    if parentZ.length > 0
-      parentZ.addClass("z-current")
-      setHistoryToTarget(parentZ)
+    # Find pertinent elements
+    target = $(@)
+    parent = target.parent().closest(".z-active")
+    content = target.children(".z-content")
+    loadHere = content.children(".article-content")
+
+    # Cancel zooms stuff
+    target.removeClass("z-active z-current z-zooming-in")
+    targetContent = content
+    requestAnimFrame(positionsToZero)
+
+    # Reverse parent-related stuff
+    if parent.length > 0
+      parent.addClass("z-current")
+      setHistoryToTarget(parent)
     else
       $("body").removeClass("z-open")
       setHistoryToRoot()
-    endedClosingTransitions = []
-    currentContent.on "transitionend webkitTransitionEnd", (event) ->
-      endedClosingTransitions.push event.originalEvent.propertyName
-      if $.inArray("left", endedClosingTransitions) != -1 && $.inArray("top", endedClosingTransitions) != -1 && $.inArray("right", endedClosingTransitions) != -1 && $.inArray("bottom", endedClosingTransitions) != -1
-        endZoomOut(currentZ, currentContent)
+
+
+    # Remove zoom ending stuff
+    content.off "transitionend webkitTransitionEnd"
+
+    # Remove AJAX loading
+    loadHere.off "contentLoaded"
+    endedOpeningTransitions = []
+
+#
+# Zooming out
+
+zoomOut = ->
+  zoomingIn = $(".z-zooming-in")
+
+  # If there's a zoom going on, cancel it
+  if zoomingIn.length > 0
+    console.log "there are zooms going on -> not zooming out"
+    cancelZoomIns(zoomingIn)
+
+  # Otherwise, zoom out
+  else
+    # If there's anything to zoom out from…
+    currentZ = $(".z-current")
+    if currentZ.length > 0
+      console.log "zooming out"
+      # Find pertinent elements
+      currentContent = currentZ.children(".z-content")
+      parentZ = currentZ.parent().closest(".z-active")
+
+      # Flush content and start zooming out
+      currentZ.addClass("z-zooming-out")
+      flushContentFrom( currentZ )
+      positionsToParent(currentZ, currentContent)
+
+      # If there's a zoomable parent, set it current and history to it
+      if parentZ.length > 0
+        parentZ.addClass("z-current")
+        setHistoryToTarget(parentZ)
+
+      # Else go to root
+      else
+        $("body").removeClass("z-open")
+        setHistoryToRoot()
+
+      # After the transition ends, end zooming
+      endedClosingTransitions = []
+      currentContent.on "transitionend webkitTransitionEnd", (event) ->
+        endedClosingTransitions.push event.originalEvent.propertyName
+        if $.inArray("left", endedClosingTransitions) != -1 && $.inArray("top", endedClosingTransitions) != -1 && $.inArray("right", endedClosingTransitions) != -1 && $.inArray("bottom", endedClosingTransitions) != -1
+          endZoomOut(currentZ, currentContent)
+    else
+      console.log "nothing to zoom out from"
 
 endZoomOut = (currentZ, currentContent) ->
+  console.log "ending zoomOut"
   targetContent = currentContent
   positionsToZero()
   currentZ.removeClass("z-active z-current z-zooming-out")
   currentContent.off "transitionend webkitTransitionEnd"
 
+flushContentFrom = (target) ->
+  console.log "flushing content"
+  # Remove AJAX-loaded content
+  flushThis = target.find(".article-content")
+  if flushThis.length > 0
+    flushThis.empty()
+
 #
 # Set history to target
 setHistoryToTarget = (target) ->
+  console.log "setting history to target"
   history.pushState({ "targetID" : target.data("id") }, target.data("title"), target.data("id"))
 
 #
 # Set history to root
 
 setHistoryToRoot = ->
+  console.log "setting history to root"
   title = $("#root").data("title")
   history.pushState({ "targetID" : "/" }, title, "/")
   document.title = title
