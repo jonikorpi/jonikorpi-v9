@@ -39,10 +39,12 @@ $in-out-expo:  cubic-bezier(1.000,  0.000, 0.000, 1.000);
 $in-out-circ:  cubic-bezier(0.785,  0.135, 0.150, 0.860);
 $in-out-back:  cubic-bezier(0.680, -0.550, 0.265, 1.550);
 
-$main-easing: $in-back;
-$reverse-easing: $out-back;
+$main-easing: $out-cubic;
+$reverse-easing: $out-cubic;
+$zoomEffects-easing: $in-out-cubic;
+
 $main-time: 333ms;
-$short-time: 205ms;
+$short-time: 166ms;
 
 /////////////////////////////////////////////////////////
 // Hues
@@ -80,6 +82,7 @@ $card-background: hsl($hue-golden-high, 38.2%, 14.6%);
 $shadow: hsl($hue-golden-high, 50%, 5.6%);
 $border: hsl($hue-golden-high, 14.6%, 38.2%);
 $main-highlight: hsl($hue, 50%, 50%);
+$purple-highlight: hsl($hue-golden-high, 85.4%, 76.4%);
 
 /////////////////////////////////////////////////////////
 // Media queries
@@ -329,6 +332,7 @@ body {
   top: 0; left: 0; right: 0; bottom: 0;
   padding: $card-padding;
   padding-top: $grid-header-height;
+  perspective: 100vh;
 }
 
 .home-grid {
@@ -417,11 +421,11 @@ body {
   display: block;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  margin: $card-padding;
-  border: 1px solid transparent;
+  margin: 0;
+  transition: background $short-time $main-easing;
 
   &:hover {
-    border-color: $main-highlight;
+    background-color: hsla($hue-golden-high, 76.4%, 61.8%, 0.146);
   }
 
   .z-zooming-in &,
@@ -435,33 +439,53 @@ body {
   left: 0; top: 0; right: 0; bottom: 0;
   margin: $card-padding;
   overflow: hidden;
-  border: 1px solid $border;
   background: $card-background;
+  border: 2px solid transparent;
   will-change: contents;
-  // transform: translate3d(0,0,0);
-
-  .z:hover & {
-
-  }
+  transform: translate3d(0,0,0);
+  transition: border $short-time $main-easing;
 
   .z-active > & {
-    // border: none;
     width: auto;
     height: auto;
     margin: 0;
     z-index: 10;
-    transition: $main-time $main-easing;
-    transition-property: left, top, right, bottom, width, height, margin;
-    transition-delay:    0ms  ,0ms, 0ms,   0ms,    $short-time, $short-time,  $short-time;
-  }
-
-  .z-zooming-out > & {
-    transition-timing-function: $reverse-easing;
+    transition:
+      all $main-time $main-easing,
+      left $main-time $main-easing $short-time,
+      right $main-time $main-easing $short-time,
+      left $main-time $main-easing $short-time,
+    ;
   }
 
   .z-current > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    // border-width: 0;
+  }
+
+  .z-zooming-in > & {
+    animation: zoomEffects $main-time $zoomEffects-easing;
+  }
+
+  .z-zooming-out > & {
+    animation: zoomEffects $main-time $zoomEffects-easing reverse;
+    transition-timing-function: $reverse-easing;
+  }
+}
+
+@keyframes zoomEffects {
+  5%  {
+    // transform: translate3d(0,0,0);
+    border-color: $purple-highlight;
+  }
+  76% {
+    // transform: rotateX(-26deg);
+    border-color: $purple-highlight;
+  }
+  85% {
+    // transform: translate3d(0,0,0);
+    border-color: transparent;
   }
 }
 
