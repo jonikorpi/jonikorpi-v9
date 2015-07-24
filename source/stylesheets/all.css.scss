@@ -396,6 +396,7 @@ body {
   margin: 0;
   position: relative;
   height: 100%;
+  padding: $card-padding;
   float: left;
 }
 
@@ -413,8 +414,15 @@ body {
 
 .size-6 { width: 33.333%; height: 50%; }
 
+.z-wrapper {
+  position: relative;
+  height: 100%;
+}
+
 .z-active.z-active {
   position: static;
+
+  .z-wrapper { position: static; }
 }
 
 .z-anchor {
@@ -437,15 +445,14 @@ body {
 .z-content {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  margin: $card-padding;
   overflow: hidden;
   background: $card-background;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   will-change: contents;
   transform: translate3d(0,0,0);
   transition: border $short-time $main-easing;
 
-  .z-active > & {
+  .z-active > .z-wrapper > & {
     width: auto;
     height: auto;
     margin: 0;
@@ -453,29 +460,28 @@ body {
     transition:
       all $main-time $main-easing,
       left $main-time $main-easing $short-time,
-      right $main-time $main-easing $short-time,
-      left $main-time $main-easing $short-time,
+      right $main-time $main-easing $short-time
     ;
   }
 
-  .z-current > & {
+  .z-current > .z-wrapper > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     // border-width: 0;
   }
 
-  .z-zooming-in > & {
+  .z-zooming-in > .z-wrapper > & {
     animation: zoomEffects $main-time $zoomEffects-easing;
   }
 
-  .z-zooming-out > & {
+  .z-zooming-out > .z-wrapper > & {
     animation: zoomEffects $main-time $zoomEffects-easing reverse;
     transition-timing-function: $reverse-easing;
   }
 }
 
 @keyframes zoomEffects {
-  5%  {
+  0%  {
     // transform: translate3d(0,0,0);
     border-color: $purple-highlight;
   }
@@ -494,13 +500,7 @@ body {
 }
 
 .article-content {
-  // display: none;
-
-  // .z-current > .z-content > & {
-  //   display: block;
-  // }
-
-  .z-zooming-in > .z-content > & {
+  .z-zooming-in > .z-wrapper > .z-content > & {
     display: none;
   }
 }

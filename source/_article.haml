@@ -3,9 +3,10 @@
   - classes += "z-current z-active "
 
 %article.z{"data-id" => article.url, "data-title" => article.data.title, class: classes}
-  .z-content
-    %h1.article-title= article.title
-    .article-content
-      - if article.title == current_page.data.title
-        = article.body
-  %a.z-anchor{href: article.url}
+  .z-wrapper
+    .z-content
+      %h1.article-title= article.title
+      .article-content
+        - if article.title == current_page.data.title
+          = article.body
+    %a.z-anchor{href: article.url}

@@ -10,11 +10,12 @@
   - classes += "z-active "
 
 %section.z.tag{class: classes, "data-title" => tag}
-  .z-content
-    .grid
-      .grid-header
-        %h1.tag-heading= tag
-      .row
-        - articles.each do |article|
-          = partial "article", :locals => {:article => article, :size => articles.size}
-  %a.z-anchor{href: "/TODO"}
+  .z-wrapper
+    .z-content
+      .grid
+        .grid-header
+          %h1.tag-heading= tag
+        .row
+          - articles.each do |article|
+            = partial "article", :locals => {:article => article, :size => articles.size}
+    %a.z-anchor{href: "/"}
