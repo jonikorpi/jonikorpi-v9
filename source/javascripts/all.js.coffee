@@ -34,7 +34,7 @@ zoomIn = (target) ->
 
   # Find pertinent elements
   content = target.children(".z-wrapper").children(".z-content")
-  loadHere = content.children(".z-wrapper").children(".article-content")
+  loadHere = content.children(".article-content")
 
   # AJAX-load more content, if needed
   if loadHere.length > 0
