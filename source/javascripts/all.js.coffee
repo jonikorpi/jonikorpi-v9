@@ -53,7 +53,7 @@ zoomIn = (target) ->
     # Set classes
     $(".z-current").removeClass("z-current")
     target.addClass("z-active z-current")
-    $("body").addClass("z-open")
+    $("html").addClass("z-open")
 
     # Set positions to 0 (zoom in)
     targetContent = content
@@ -137,7 +137,7 @@ cancelZoomIns = (zoomingIn) ->
       parent.addClass("z-current")
       setHistoryToTarget(parent)
     else
-      $("body").removeClass("z-open")
+      $("html").removeClass("z-open")
       setHistoryToRoot()
 
 
@@ -181,7 +181,7 @@ zoomOut = ->
 
       # Else go to root
       else
-        $("body").removeClass("z-open")
+        $("html").removeClass("z-open")
         setHistoryToRoot()
 
       # After the transition ends, end zooming
@@ -254,6 +254,10 @@ $ ->
     if event.keyCode == 27
       zoomOut()
 
+  $(".zoom-out").on "click", (event) ->
+    event.preventDefault()
+    zoomOut()
+
   #
   # Support history state changes
 
@@ -300,7 +304,7 @@ $ ->
 #
 #   window.Engine =
 #     htmlTag: $("html")
-#     viewport: $("body")
+#     viewport: $("html")
 #     canvas: $(".site-canvas")
 #     initialZoomable: $(".initial-zoomable")
 #     zoomableAnchor: ".zoomable-anchor"
@@ -521,12 +525,12 @@ $ ->
 #   #
 #   # Anchors on zoomables
 #
-#   $("body").on "click", window.Engine.zoomableAnchor, (event) ->
+#   $("html").on "click", window.Engine.zoomableAnchor, (event) ->
 #     event.preventDefault()
 #     targetID = $(this).attr("href")
 #     queueZoom( targetID )
 #
-#   $("body").on "click", window.Engine.zoomableLink, (event) ->
+#   $("html").on "click", window.Engine.zoomableLink, (event) ->
 #     event.preventDefault()
 #     targetID = $(this).attr("href")
 #     # queueZoom( null, "out" )

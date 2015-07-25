@@ -1,5 +1,10 @@
+- z_open_class = ""
+- blog.articles.each do |article|
+  - if article.title == current_page.data.title
+    - z_open_class += " z-open"
+
 !!! 5
-%html{lang: "en", class: "#{page_classes}"}
+%html{lang: "en", class: "#{page_classes} #{z_open_class}"}
   %head
     %meta{charset: "utf-8"}
     %title= data.page.title
@@ -45,6 +50,9 @@
 
   %body
     = partial "home"
+    %a.zoom-out.mono{href: "/"}
+      %span.arrow &#8601;
+      %span.esc ESC
 
     = javascript_include_tag "all"
     - if build?
