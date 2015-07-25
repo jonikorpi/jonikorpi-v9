@@ -1,6 +1,6 @@
 - classes = "size-#{size} "
 - if article.title == current_page.data.title
-  - classes += "z-current z-active "
+  - classes += "z-current z-active z-loaded "
 
 %article.z.article{"data-id" => article.url, "data-title" => article.data.title, class: classes}
   .z-wrapper
