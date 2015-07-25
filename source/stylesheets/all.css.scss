@@ -397,7 +397,7 @@ body {
 .z-active.z-active {
   position: static;
 
-  .z-wrapper { position: static; }
+  & > .z-wrapper { position: static; }
 }
 
 .z-anchor {
