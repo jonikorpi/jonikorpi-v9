@@ -375,19 +375,18 @@ body {
   float: left;
 }
 
-.size-2 { width: 50%; }
-.size-3 { width: 33.333%; }
-.size-4 { width: 50%; height: 50%; }
+.size-2 { width: 50%;   }
+.size-3 { width: 33.3%; }
+.size-4 { width: 50%;   height: 50%; }
+.size-6 { width: 33.3%; height: 50%; }
 
 .size-5 {
-  width: 33.333%; height: 50%;
+  width: 33.3%; height: 50%;
 
   &:first-child {
-    width: 66.666%;
+    width: 66.6%;
   }
 }
-
-.size-6 { width: 33.333%; height: 50%; }
 
 .z-wrapper {
   position: relative;
@@ -406,6 +405,8 @@ body {
   left: 0; top: 0; right: 0; bottom: 0;
   margin: 0;
   transition: background $short-time $main-easing;
+  // animation: anchorGlow $main-time*10 $main-easing infinite;
+  // background-image: linear-gradient(to bottom, rgba($purple-highlight, 0.236) 0%, rgba($purple-highlight, 0) 100%);
 
   .z-visited & {
     // background-color: hsla($hue-golden-high, 38.2%, 5.6%, 0.236);
@@ -421,12 +422,21 @@ body {
   }
 }
 
+// @keyframes anchorGlow {
+//   0% {
+//     background-position: left top;
+//   }
+//   100% {
+//     background-position: left 100%;
+//   }
+// }
+
 .z-content {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   overflow: hidden;
   background: $card-background;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   will-change: contents;
   transform: translate3d(0,0,0);
   transition: border $short-time $main-easing;
@@ -467,13 +477,12 @@ body {
 }
 
 @keyframes zoomEffects {
-  0%  {
+  0%, 91%  {
     // transform: translate3d(0,0,0);
     border-color: $purple-highlight;
-  }
-  91% {
-    // transform: rotateX(-26deg);
-    border-color: $purple-highlight;
+    // border-image: linear-gradient(to right, $main-highlight 0%, $purple-highlight 100%);
+    // border-image-slice: 1;
+    // box-shadow: 0 0 $card-padding*0.5 $purple-highlight;
   }
   100% {
     // transform: translate3d(0,0,0);
