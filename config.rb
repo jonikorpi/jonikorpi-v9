@@ -76,7 +76,10 @@ activate :blog do |blog|
   blog.taglink = "{tag}"
 end
 
-activate :autoprefixer
+activate :autoprefixer do |config|
+  config.remove = false
+end
+
 activate :directory_indexes
 
 set :css_dir, 'stylesheets'

@@ -8,7 +8,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    autoprefixer-rails (5.2.1)
+    autoprefixer-rails (5.2.1.1)
       execjs
       json
     celluloid (0.16.0)
@@ -136,7 +136,7 @@ PLATFORMS
 
 DEPENDENCIES
   middleman (~> 3.3.12)
-  middleman-autoprefixer
+  middleman-autoprefixer (~> 2.5.0)
   middleman-blog (~> 3.5.3)
   middleman-livereload (~> 3.1.0)
   redcarpet

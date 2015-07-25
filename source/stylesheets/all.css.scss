@@ -432,6 +432,10 @@ body {
   margin: 0;
   transition: background $short-time $main-easing;
 
+  .z-visited & {
+    // background-color: hsla($hue-golden-high, 38.2%, 5.6%, 0.236);
+  }
+
   &:hover {
     background-color: hsla($hue-golden-high, 76.4%, 61.8%, 0.146);
   }
@@ -452,7 +456,14 @@ body {
   transform: translate3d(0,0,0);
   transition: border $short-time $main-easing;
 
+  .z-visited & {
+    -webkit-filter: grayscale(61.8%);
+    filter: grayscale(61.8%);
+  }
+
   .z-active > .z-wrapper > & {
+    -webkit-filter: none;
+    filter: none;
     width: auto;
     height: auto;
     margin: 0;

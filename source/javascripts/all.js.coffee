@@ -66,6 +66,7 @@ zoomIn = (target) ->
       endedOpeningTransitions.push event.originalEvent.propertyName
       if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
         content.off "transitionend webkitTransitionEnd"
+        target.addClass("z-visited")
         # Append content when it's loaded
         if loadHere.length > 0
           if loadedContent
