@@ -66,7 +66,7 @@ zoomIn = (target) ->
       endedOpeningTransitions.push event.originalEvent.propertyName
       if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
         content.off "transitionend webkitTransitionEnd"
-        target.addClass("z-visited")
+        target.addClass("z-visited z-loaded")
         # Append content when it's loaded
         if loadHere.length > 0
           if loadedContent
@@ -128,7 +128,7 @@ cancelZoomIns = (zoomingIn) ->
     loadHere = content.children(".article-content")
 
     # Cancel zooms stuff
-    target.removeClass("z-active z-current z-zooming-in")
+    target.removeClass("z-active z-current z-zooming-in z-loaded")
     targetContent = content
     requestAnimFrame(positionsToZero)
 
@@ -170,7 +170,7 @@ zoomOut = ->
       parentZ = currentZ.parent().closest(".z-active")
 
       # Flush content and start zooming out
-      currentZ.addClass("z-zooming-out")
+      currentZ.addClass("z-zooming-out").removeClass("z-loaded")
       flushContentFrom( currentZ )
       positionsToParent(currentZ, currentContent)
 

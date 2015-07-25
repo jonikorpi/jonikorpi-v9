@@ -51,8 +51,11 @@ $hue-xxx-low:  $hue + (360 * 0.056);
 $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
-$background: hsl($hue-golden-high, 23.6%, 23.6%);
-$card-background: hsl($hue-golden-high, 38.2%, 14.6%);
+$background:      hsl($hue-golden-high, 38.2%, 14.6%);
+$card-background: hsl($hue-golden-high, 50%, 9%);
+
+$bright: hsl($hue, 23.6%, 76.4%);
+$body:   hsl($hue, 5.6%, 61.8%);
 
 $shadow: hsl($hue-golden-high, 50%, 5.6%);
 $border: hsl($hue-golden-high, 14.6%, 38.2%);
@@ -244,7 +247,7 @@ html {
   font-size: 100% * $font-size-multiplier;
   line-height: $line;
   background: $background;
-  color: hsl($hue-golden-high, 14.6%, 76.4%);
+  color: $body;
   -webkit-tap-highlight-color: hsla($hue-golden-low, 100%, 61.8%, 0.5);
 }
 
@@ -254,6 +257,10 @@ body {
 
 .z-open {
   overflow: visible;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $bright;
 }
 
 a {
@@ -463,7 +470,7 @@ body {
   .z-current > .z-wrapper > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    // border-width: 0;
+    border-width: 0;
   }
 
   .z-zooming-in > .z-wrapper > & {
@@ -490,12 +497,37 @@ body {
   }
 }
 
-.article-title {
-  padding: $card-padding * 2;
+.tag-heading {
+  font-style: italic;
+}
+
+.article-header {
+  margin: $line*0.5;
+  min-height: 61.8%;
+  transition: all $main-time $main-easing;
+
+  .article.z-loaded & {
+    margin: $line*3 $line*2 0;
+    border-bottom: 2px solid $bright;
+  }
+
+  h1 {
+    line-height: 1.146;
+    transition: all $main-time*1.5 $main-easing;
+    font-size: 2vw;
+
+    .article.z-loaded & {
+      font-size: 8vw;
+    }
+  }
 }
 
 .article-content {
-  .z-zooming-in > .z-wrapper > .z-content > & {
+  max-width: $line*24;
+  padding: $line*2 $line*0.5 $line*5;
+  margin: 0 auto;
+
+  .article.z-zooming-in {
     display: none;
   }
 }
