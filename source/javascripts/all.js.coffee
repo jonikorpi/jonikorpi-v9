@@ -250,11 +250,17 @@ $ ->
   #
   # Bind zoom out
 
+  zoomOutButton = $(".zoom-out")
+
   $(document).on "keyup", (event) ->
     if event.keyCode == 27
+      zoomOutButton.addClass("hover")
       zoomOut()
+      window.setTimeout ->
+        zoomOutButton.removeClass("hover")
+      , 85
 
-  $(".zoom-out").on "click", (event) ->
+  zoomOutButton.on "click", (event) ->
     event.preventDefault()
     zoomOut()
 

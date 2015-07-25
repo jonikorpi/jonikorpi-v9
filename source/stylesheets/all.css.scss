@@ -517,16 +517,19 @@ body {
   margin: 0;
   transform: translateY(200%);
   transition:
+    all $short-time $main-easing,
     transform $main-time*1.5 $main-easing $short-time
   ;
 
   .z-open & {
     transform: translateY(0%);
     transition:
+      all $short-time*0.25 $main-easing,
       transform $main-time*1.5 $main-easing $main-time*2,
     ;
   }
 
+  &.hover,
   &:hover {
     background: $main-highlight;
     color: $background;
