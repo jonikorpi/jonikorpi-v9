@@ -71,12 +71,12 @@ zoomIn = (target) ->
         if loadHere.length > 0
           if loadedContent
             console.log "content already here"
-            loadHere.replaceWith( loadedContent )
+            loadHere.html( loadedContent )
           else
             console.log "content coming later"
             loadHere.one "contentLoaded", ->
               console.log "content arrived"
-              loadHere.replaceWith( loadedContent )
+              loadHere.html( loadedContent )
         target.removeClass("z-zooming-in")
   , 1
 
@@ -108,11 +108,11 @@ loadContent = (content, id) ->
   $.ajax
     url: id
     error: ->
-      loadedContent = "<div class='article-content'><strong>Loading failed. Try refreshing? :(</strong></div>"
+      loadedContent = "<strong>Loading failed. Try refreshing? :(</strong>"
       loadHere.trigger("contentLoaded")
       console.log "triggering contentLoaded on failure"
     success: (data) ->
-      loadedContent = $(data).find(".z-current .article-content")
+      loadedContent = $(data).find(".article.z-current .article-content").html()
       loadHere.trigger("contentLoaded")
       console.log "triggering contentLoaded"
     type: 'GET'
@@ -169,9 +169,9 @@ zoomOut = ->
       currentContent = currentZ.children(".z-wrapper").children(".z-content")
       parentZ = currentZ.parent().closest(".z-active")
 
-      # Flush content and start zooming out
+      # Scroll up & start zooming out
+      currentContent.scrollTop(0)
       currentZ.addClass("z-zooming-out").removeClass("z-loaded")
-      flushContentFrom( currentZ )
       positionsToParent(currentZ, currentContent)
 
       # If there's a zoomable parent, set it current and history to it
@@ -194,7 +194,8 @@ zoomOut = ->
       console.log "nothing to zoom out from"
 
 endZoomOut = (currentZ, currentContent) ->
-  console.log "ending zoomOut"
+  console.log "flushing & ending zoomOut"
+  flushContentFrom( currentZ )
   targetContent = currentContent
   positionsToZero()
   currentZ.removeClass("z-active z-current z-zooming-out")

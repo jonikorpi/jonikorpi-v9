@@ -465,11 +465,6 @@ body {
     ;
   }
 
-  .z-current > .z-wrapper > & {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
   .z-zooming-in > .z-wrapper > &,
   .z-zooming-out > .z-wrapper > & {
     // transform: translate3d(0,0,0);
@@ -486,6 +481,8 @@ body {
   .z-loaded.article & {
     border-color: transparent;
     border-width: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -498,7 +495,7 @@ body {
   min-height: 61.8%;
   transition: all $main-time $main-easing;
 
-  .article.z-loaded & {
+  .article.z-active & {
     margin: $line*3 $line*2 0;
     border-bottom: 2px solid $bright;
   }
@@ -518,9 +515,12 @@ body {
   max-width: $line*24;
   padding: $line*2 $line*0.5 $line*5;
   margin: 0 auto;
+  will-change: transform;
+  transform: translateY(50vh);
+  transition: transform $main-time $main-easing $short-time;
 
-  .article.z-zooming-in {
-    display: none;
+  .article.z-loaded & {
+    transform: translateY(0);
   }
 }
 
