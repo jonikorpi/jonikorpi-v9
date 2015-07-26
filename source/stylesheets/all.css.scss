@@ -444,9 +444,9 @@ body {
   overflow: hidden;
   background: $card-background;
   border: 2px solid transparent;
-  will-change: contents;
-  transform: translate3d(0,0,0);
-  transition: border $short-time $main-easing;
+  will-change: contents, left, top, right, bottom;
+  // transform: translate3d(0,0,0);
+  transition: border $main-time $main-easing;
 
   .article.z-visited & {
     -webkit-filter: grayscale(61.8%);
@@ -456,8 +456,6 @@ body {
   .z-active > .z-wrapper > & {
     -webkit-filter: none;
     filter: none;
-    width: auto;
-    height: auto;
     margin: 0;
     z-index: 10;
     transition:
@@ -470,30 +468,24 @@ body {
   .z-current > .z-wrapper > & {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    border-width: 0;
   }
 
-  .z-zooming-in > .z-wrapper > & {
-    animation: zoomEffects $main-time $zoomEffects-easing;
-  }
-
+  .z-zooming-in > .z-wrapper > &,
   .z-zooming-out > .z-wrapper > & {
-    animation: zoomEffects $main-time $zoomEffects-easing reverse;
-    transition-timing-function: $reverse-easing;
-  }
-}
-
-@keyframes zoomEffects {
-  0%, 91%  {
     // transform: translate3d(0,0,0);
     border-color: $purple-highlight;
     // border-image: linear-gradient(to right, $main-highlight 0%, $purple-highlight 100%);
     // border-image-slice: 1;
     // box-shadow: 0 0 $card-padding*0.5 $purple-highlight;
   }
-  100% {
-    // transform: translate3d(0,0,0);
+
+  .z-zooming-out > .z-wrapper > & {
+    transition-timing-function: $reverse-easing;
+  }
+
+  .z-loaded.article & {
     border-color: transparent;
+    border-width: 0;
   }
 }
 
