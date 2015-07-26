@@ -16,48 +16,57 @@ date: 2011/07/17
 
     I had to make sure no text elements on the page would show until the fonts have finished loading. To accomplish this, I simply set the opacity of all text on the page to zero using the `.wf-loading` class provided by the Typekit snippet. I also added a fallback for versions of IE that don't support opacity.
 
-    	.wf-loading h1,
-    	.wf-loading h2,
-    	.wf-loading h3,
-    	.wf-loading p,
-    	.wf-loading li {
-    		opacity: 0;
-    	}
+  :code
+    # lang: scss
+    .wf-loading h1,
+    .wf-loading h2,
+    .wf-loading h3,
+    .wf-loading p,
+    .wf-loading li {
+      opacity: 0;
+    }
 
-    	.ie.wf-loading h1,
-    	.ie.wf-loading h2,
-    	.ie.wf-loading h3,
-    	.ie.wf-loading p,
-    	.ie.wf-loading li {
-    		visibility: hidden; /* Old IE */
-    	}
+    .ie.wf-loading h1,
+    .ie.wf-loading h2,
+    .ie.wf-loading h3,
+    .ie.wf-loading p,
+    .ie.wf-loading li {
+      visibility: hidden; /* Old IE */
+    }
 
+  :markdown
     While playing around with this, I realised I could also control how the text eventually appears after the fonts have finished loading. By adding a very short CSS transition, I could make it fade in.
 
-    	h1, h2, h3, p, li {
-    		opacity: 1;
-    		visibility: visible; /* Old IE */
-    		-webkit-transition: opacity 0.24s ease-in-out;
-    		   -moz-transition: opacity 0.24s ease-in-out;
-    		        transition: opacity 0.24s ease-in-out;
-    	}
+  :code
+    # lang: scss
+    h1, h2, h3, p, li {
+      opacity: 1;
+      visibility: visible; /* Old IE */
+      -webkit-transition: opacity 0.24s ease-in-out;
+         -moz-transition: opacity 0.24s ease-in-out;
+              transition: opacity 0.24s ease-in-out;
+    }
 
+  :markdown
     This should work in most modern desktop and mobile browsers, including IE9. The fade-in might feel a bit laggy on underpowered computers and mobile devices that don't use GPU rendering, but that's okay, since it'll feel more or less just like a regular blinking-into-existence page load.
 
     There was one downside though: hiding the content made the initial load seem slower. Even though the site is progressively rendering into existence in the background, we can't see it, which makes the load time _feel_ longer.
 
     To alleviate this effect, I added a little loading spinner as a GIF image. Since the spinner needed to appear immediately, I embedded it into my stylesheet using a [data URI](http://css-tricks.com/5970-data-uris/). I used Opinionated Geek's [Base 64 encoder](http://www.opinionatedgeek.com/dotnet/tools/base64encode/) to encode image and embedded it as follows:
 
-    	.wf-loading #content header {
-    		background:
-    			url(data:image/gif;base64,lots-of-base64…)
-    			center center no-repeat
-    		;
-    	}
+  :code
+    # lang: scss
+    .wf-loading #content header {
+      background:
+        url(data:image/gif;base64,lots-of-base64…)
+        center center no-repeat
+      ;
+    }
 
+  :markdown
     <figure>
-    	<img src="/images/old-posts/a-smoother-page-load.png" alt="Loading spinner vs. no loading spinner"/>
-    	<figcaption>Before and after. The spinner makes it clear something is happening.</figcaption>
+      <img src="/images/old-posts/a-smoother-page-load.png" alt="Loading spinner vs. no loading spinner"/>
+      <figcaption>Before and after. The spinner makes it clear something is happening.</figcaption>
     </figure>
 
     This should work just fine in all modern browsers, including IE8–9. IE6–7 will simply ignore it, which is fine by me. This is just a minor detail after all.

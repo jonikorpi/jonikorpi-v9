@@ -14,22 +14,25 @@ date: 2011/07/17
 
     For example, I gave the layout a static width to make sure the content never stretches uncomfortably wide, and made sure images always display at full size, since I had halved their maximum sizes in the Narrow Layout.
 
-    	body {
-    		width: auto;
-    	}
-    		.ie body {width: 540px;}
+  :code
+    # lang: scss
+    body {
+      width: auto;
+    }
+      .ie body {width: 540px;}
 
-    	#content figure {
-    		width: 240px;
-    		max-width: 100%;
-    	}
-    		.ie #content figure {width: 480px;}
+    #content figure {
+      width: 240px;
+      max-width: 100%;
+    }
+      .ie #content figure {width: 480px;}
 
+  :markdown
     As a result, old mobile browsers will see a fluid single-column layout, and IE6–8 will see a similar static-width layout, perfectly comfortable for reading even on larger screens.
 
     <figure>
-    	<img src="/images/old-posts/leaving-old-IE-behind.jpg" alt="This site in IE7"/>
-    	<figcaption>This is roughly what this site looks like in IE7.</figcaption>
+      <img src="/images/old-posts/leaving-old-IE-behind.jpg" alt="This site in IE7"/>
+      <figcaption>This is roughly what this site looks like in IE7.</figcaption>
     </figure>
 
     So that's old IE and old mobile browsers taken care of. Now comes the fun part. Since I can be sure that legacy browsers won't be seeing any of the wider versions of my layout, I'm free to design them with the assumption that they'll be viewed in a browser that supports such [luxuries](http://caniuse.com/#eras=now,near,far&cats=CSS) as…

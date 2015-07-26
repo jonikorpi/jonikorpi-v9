@@ -56,6 +56,16 @@ $card-background: hsl($hue-golden-high, 50%, 9%);
 
 $bright: hsl($hue, 23.6%, 76.4%);
 $body:   hsl($hue, 5.6%, 61.8%);
+$dim:    hsl($hue, 3.4%, 50%);
+
+$purple-body: hsl($hue-golden-high, 14.6%, 61.8%);
+
+$yellow: hsl($hue,          41.4%, 50%);
+$orange: hsl($hue-xxx-high, 41.4%, 50%);
+$red:    hsl($hue-x-high,   38.2%, 50%);
+$blue:   hsl($hue-opposite, 61.8%, 61.8%);
+$cyan:   hsl($hue-sqrt-low, 38.2%, 50%);
+$green:  hsl($hue-low,      23.6%, 50%);
 
 $shadow: hsl($hue-golden-high, 50%, 5.6%);
 $border: hsl($hue-golden-high, 14.6%, 38.2%);
@@ -578,3 +588,8 @@ body {
   font-size: 0.91rem;
   vertical-align: middle;
 }
+
+//
+// Import code highlighting styles
+
+@import "syntax-highlighting.scss";
