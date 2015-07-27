@@ -1,0 +1,66 @@
+$f-loop-time: $loop-time*0.5;
+$f-column-color: hsl(0, 0%, 38.2%);
+
+.frameless .article-title {
+  color: $bright;
+}
+
+.frameless .c-column {
+  animation: none $f-loop-time $loop-easing infinite alternate;
+
+  &:nth-child(1) { background: $f-column-color; }
+  &:nth-child(2) { animation-name: fColumnHighlight2 }
+  &:nth-child(3) { animation-name: fColumnHighlight3 }
+  &:nth-child(4) { animation-name: fColumnHighlight4 }
+  &:nth-child(5) { animation-name: fColumnHighlight5 }
+  &:nth-child(6) { animation-name: fColumnHighlight6 }
+  &:nth-child(7) { animation-name: fColumnHighlight7 }
+  &:nth-child(8) { animation-name: fColumnHighlight8 }
+  &:nth-child(9) { animation-name: fColumnHighlight9 }
+  &:nth-child(10){ animation-name: fColumnHighlight10 }
+}
+
+@keyframes fColumnHighlight2 {
+  0%, 8%   { background: $off-background; }
+  12%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight3 {
+  0%, 18%  { background: $off-background; }
+  22%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight4 {
+  0%, 28%  { background: $off-background; }
+  32%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight5 {
+  0%, 38%  { background: $off-background; }
+  42%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight6 {
+  0%, 48%  { background: $off-background; }
+  52%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight7 {
+  0%, 58%  { background: $off-background; }
+  62%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight8 {
+  0%, 68%  { background: $off-background; }
+  72%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight9 {
+  0%, 78%  { background: $off-background; }
+  82%,100% { background: $f-column-color; }
+}
+
+@keyframes fColumnHighlight10 {
+  0%, 88%  { background: $off-background; }
+  92%,100% { background: $f-column-color; }
+}

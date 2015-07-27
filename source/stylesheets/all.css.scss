@@ -14,10 +14,12 @@ $home-grid-header-height: $line*2 + $card-padding*3;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     $main-easing;
+$loop-easing:        ease-in-out;
 $zoomEffects-easing: cubic-bezier(0.000, 0.000, 0.854, 1.000);
 
 $main-time: 262ms;
 $short-time: 162ms;
+$loop-time: 6000ms;
 
 //
 // Hues
@@ -49,6 +51,7 @@ $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
 $background:      hsl($hue-golden-high, 38.2%, 14.6%);
+$off-background:  hsl($hue-golden-high, 9%, 23.6%);
 $card-background: hsl($hue-golden-high, 50%, 9%);
 
 $bright: hsl($hue, 23.6%, 76.4%);
@@ -93,6 +96,7 @@ $retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 @import "reset";
 @import "fonts";
 @import "syntax";
+@import "covers-shared";
 @import "covers/*";
 
 //
@@ -129,6 +133,10 @@ body {
 
 .z-open {
   overflow: visible;
+
+  // Pause animations elsewhere when zoomed in somewhere
+  .z-content * { animation-play-state: paused; }
+  .z-current .z-content * { animation-play-state: running; }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -164,10 +172,16 @@ code {
   color: hsl($hue, 9%, 50%);
 }
 
-.centered {
+.centered-translate {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.centered-margin {
+  position: absolute;
+  left: 0; top: 0; bottom: 0; right: 0;
+  margin: auto;
 }
 
 /////////////////////////////////////////////////////////
@@ -184,7 +198,6 @@ body {
   margin: 0;
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  padding: $card-padding;
   padding-top: $grid-header-height;
   perspective: 100vh;
 }
@@ -283,7 +296,8 @@ body {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   margin: 0;
-  transition: background $short-time $main-easing;
+  transition: border $short-time $main-easing;
+  // border: $line*0.25 solid transparent;
   // animation: anchorGlow $main-time*10 $main-easing infinite;
   // background-image: linear-gradient(to bottom, rgba($purple-highlight, 0.236) 0%, rgba($purple-highlight, 0) 100%);
 
@@ -292,7 +306,7 @@ body {
   }
 
   &:hover {
-    background-color: hsla($hue-golden-high, 76.4%, 61.8%, 0.146);
+    // border-color: $orange;
   }
 
   .z-zooming-in &,
@@ -350,7 +364,7 @@ body {
     transition-timing-function: $reverse-easing;
   }
 
-  .z-loaded.article & {
+  .z-loaded & {
     border-color: transparent;
     border-width: 0;
     overflow: auto;
@@ -362,24 +376,28 @@ body {
   font-style: italic;
 }
 
-.article-header {
-  margin: $line*0.5;
-  min-height: 61.8%;
+.article-cover {
+  position: relative;
+  height: 100%;
   transition: all $main-time $main-easing;
 
   .article.z-active & {
-    margin: $line*3 $line*2 0;
-    border-bottom: 2px solid $bright;
+    height: 61.8%;
+    min-height: $line*10;
+    max-height: $line*30;
   }
+}
 
-  h1 {
-    line-height: 1.146;
-    transition: all $main-time*1.5 $main-easing;
-    font-size: 2vw;
+.article-title {
+  line-height: 1.146;
+  transition: all $main-time*1.5 $main-easing;
+  font-size: 2.362vw;
+  z-index: 2;
+  text-align: center;
+  width: 91%;
 
-    .article.z-loaded & {
-      font-size: 8vw;
-    }
+  .article.z-loaded & {
+    font-size: 8vw;
   }
 }
 
@@ -393,18 +411,6 @@ body {
 
   .article.z-loaded & {
     transform: translateY(0);
-  }
-}
-
-.canvas {
-  position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  z-index: 100;
-  margin: 0;
-  background: $background;
-
-  .index & {
-    display: none;
   }
 }
 
