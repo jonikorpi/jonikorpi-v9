@@ -1,0 +1,139 @@
+/////////////////////////////////////////////////////////
+// Normalization & resets for annoyances
+/////////////////////////////////////////////////////////
+
+// Resets annoying things
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  text-size-adjust: 100%;
+}
+
+// Owl selector spacing
+* + * {
+  margin-top: $line;
+}
+
+.no-margins * + *,
+li {
+  margin-top: 0;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-top: 0;
+  padding-left: $line;
+}
+
+// HTML5 element fixes
+article, aside, details,
+figcaption, figure, footer,
+header, hgroup,
+main, menu, nav,
+section, summary,
+video, audio, canvas {
+  display: block;
+}
+
+// Hides things that should be hidden
+[hidden],
+template,
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+// Misc element fixes
+a {
+  background-color: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+hr {
+  height: 0;
+}
+
+// Image fixes
+img {
+  border: none;
+  display: block;
+}
+
+// Buttons and forms
+button {
+  overflow: visible;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  appearance: none;
+  background: none;
+}
+
+[disabled] {
+  cursor: not-allowed !important;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+// Tables
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+/////////////////////////////////////////////////////////
+// Touchable things (used in addition to FastClick)
+/////////////////////////////////////////////////////////
+
+a,
+button,
+input,
+textarea,
+.touchable {
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+}

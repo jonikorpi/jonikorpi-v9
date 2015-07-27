@@ -1,10 +1,8 @@
 @charset "utf-8";
 @viewport {width: device-width;}
-@import "fonts";
 
-/////////////////////////////////////////////////////////
+//
 // General variables
-/////////////////////////////////////////////////////////
 
 $font-size-multiplier: 16/16;
 $line: 1.382rem;
@@ -21,9 +19,8 @@ $zoomEffects-easing: cubic-bezier(0.000, 0.000, 0.854, 1.000);
 $main-time: 262ms;
 $short-time: 162ms;
 
-/////////////////////////////////////////////////////////
+//
 // Hues
-/////////////////////////////////////////////////////////
 
 $hue: 45;
 
@@ -72,9 +69,8 @@ $border: hsl($hue-golden-high, 14.6%, 38.2%);
 $main-highlight: hsl($hue, 50%, 50%);
 $purple-highlight: hsl($hue-golden-high, 85.4%, 76.4%);
 
-/////////////////////////////////////////////////////////
+//
 // Media queries
-/////////////////////////////////////////////////////////
 
 $xs2:  "#{317 / 16 * 1em}";
 $xs:   "#{318 / 16 * 1em}";
@@ -91,149 +87,16 @@ $xl7: "#{2300 / 16 * 1em}";
 
 $retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 
-/////////////////////////////////////////////////////////
-// Normalization & resets for annoyances
-/////////////////////////////////////////////////////////
+//
+// Imports
 
-// Resets annoying things
-* {
-  margin: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  vertical-align: baseline;
-  box-sizing: border-box;
-  text-size-adjust: 100%;
-}
+@import "reset";
+@import "fonts";
+@import "syntax";
+@import "covers/*";
 
-// Owl selector spacing
-* + * {
-  margin-top: $line;
-}
-
-.no-margins * + *,
-li {
-  margin-top: 0;
-}
-
-ul ul, ul ol, ol ol, ol ul {
-  margin-top: 0;
-  padding-left: $line;
-}
-
-// HTML5 element fixes
-article, aside, details,
-figcaption, figure, footer,
-header, hgroup,
-main, menu, nav,
-section, summary,
-video, audio, canvas {
-  display: block;
-}
-
-// Hides things that should be hidden
-[hidden],
-template,
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-// Misc element fixes
-a {
-  background-color: transparent;
-}
-
-a:active,
-a:hover {
-  outline: 0;
-}
-
-b, strong {
-  font-weight: bold;
-}
-
-sub, sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-}
-
-sup { top: -0.5em; }
-sub { bottom: -0.25em; }
-
-hr {
-  height: 0;
-}
-
-// Image fixes
-img {
-  border: none;
-  display: block;
-}
-
-// Buttons and forms
-button {
-  overflow: visible;
-  cursor: pointer;
-}
-
-button[type="button"] {
-  appearance: none;
-  background: none;
-}
-
-[disabled] {
-  cursor: not-allowed !important;
-}
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-input[type="search"] {
-  -webkit-appearance: textfield;
-}
-
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-textarea {
-  overflow: auto;
-  resize: vertical;
-}
-
-// Tables
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 0;
-}
-
-/////////////////////////////////////////////////////////
-// Touchable things (used in addition to FastClick)
-/////////////////////////////////////////////////////////
-
-a,
-button,
-input,
-textarea,
-.touchable {
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-}
-
-/////////////////////////////////////////////////////////
+//
 // Font families
-/////////////////////////////////////////////////////////
 
 html {
   font-family: "Elena", "Times New Roman", serif;
@@ -249,9 +112,8 @@ code, pre {
   letter-spacing: -0.5px;
 }
 
-/////////////////////////////////////////////////////////
+//
 // Basic styles
-/////////////////////////////////////////////////////////
 
 html {
   font-size: 100% * $font-size-multiplier;
@@ -591,76 +453,3 @@ body {
   font-size: 0.91rem;
   vertical-align: middle;
 }
-
-//
-// Code highlighting styles
-
-.highlight { background-color: transparent; color: $purple-body }
-.highlight .c { color: $dim } /* Comment */
-.highlight .err { color: $purple-body } /* Error */
-.highlight .g { color: $purple-body } /* Generic */
-.highlight .k { color: $green } /* Keyword */
-.highlight .l { color: $purple-body } /* Literal */
-.highlight .n { color: $red } /* Name */
-.highlight .o { color: $green } /* Operator */
-.highlight .x { color: $orange } /* Other */
-.highlight .p { color: $purple-body } /* Punctuation */
-.highlight .cm { color: $dim } /* Comment.Multiline */
-.highlight .cp { color: $green } /* Comment.Preproc */
-.highlight .c1 { color: $dim } /* Comment.Single */
-.highlight .cs { color: $green } /* Comment.Special */
-.highlight .gd { color: $cyan } /* Generic.Deleted */
-.highlight .ge { color: $purple-body; font-style: italic } /* Generic.Emph */
-.highlight .gr { color: $red } /* Generic.Error */
-.highlight .gh { color: $orange } /* Generic.Heading */
-.highlight .gi { color: $green } /* Generic.Inserted */
-.highlight .go { color: $purple-body } /* Generic.Output */
-.highlight .gp { color: $purple-body } /* Generic.Prompt */
-.highlight .gs { color: $purple-body; font-weight: bold } /* Generic.Strong */
-.highlight .gu { color: $orange } /* Generic.Subheading */
-.highlight .gt { color: $purple-body } /* Generic.Traceback */
-.highlight .kc { color: $orange } /* Keyword.Constant */
-.highlight .kd { color: $blue } /* Keyword.Declaration */
-.highlight .kn { color: $green } /* Keyword.Namespace */
-.highlight .kp { color: $green } /* Keyword.Pseudo */
-.highlight .kr { color: $blue } /* Keyword.Reserved */
-.highlight .kt { color: $red } /* Keyword.Type */
-.highlight .ld { color: $purple-body } /* Literal.Date */
-.highlight .m { color: $cyan } /* Literal.Number */
-.highlight .s { color: $cyan } /* Literal.String */
-.highlight .na { color: $blue } /* Name.Attribute */
-.highlight .nb { color: $yellow } /* Name.Builtin */
-.highlight .nc { color: $orange } /* Name.Class */
-.highlight .no { color: $orange } /* Name.Constant */
-.highlight .nd { color: $blue } /* Name.Decorator */
-.highlight .ni { color: $orange } /* Name.Entity */
-.highlight .ne { color: $orange } /* Name.Exception */
-.highlight .nf { color: $blue } /* Name.Function */
-.highlight .nl { color: $blue } /* Name.Label */
-.highlight .nn { color: $orange } /* Name.Namespace */
-.highlight .nx { color: $purple-body } /* Name.Other */
-.highlight .py { color: $purple-body } /* Name.Property */
-.highlight .nt { color: $yellow } /* Name.Tag */
-.highlight .nv { color: $blue } /* Name.Variable */
-.highlight .ow { color: $green } /* Operator.Word */
-.highlight .w { color: $purple-body } /* Text.Whitespace */
-.highlight .mf { color: $cyan } /* Literal.Number.Float */
-.highlight .mh { color: $cyan } /* Literal.Number.Hex */
-.highlight .mi { color: $cyan } /* Literal.Number.Integer */
-.highlight .mo { color: $cyan } /* Literal.Number.Oct */
-.highlight .sb { color: $dim } /* Literal.String.Backtick */
-.highlight .sc { color: $cyan } /* Literal.String.Char */
-.highlight .sd { color: $purple-body } /* Literal.String.Doc */
-.highlight .s2 { color: $cyan } /* Literal.String.Double */
-.highlight .se { color: $orange } /* Literal.String.Escape */
-.highlight .sh { color: $purple-body } /* Literal.String.Heredoc */
-.highlight .si { color: $cyan } /* Literal.String.Interpol */
-.highlight .sx { color: $cyan } /* Literal.String.Other */
-.highlight .sr { color: $red } /* Literal.String.Regex */
-.highlight .s1 { color: $cyan } /* Literal.String.Single */
-.highlight .ss { color: $cyan } /* Literal.String.Symbol */
-.highlight .bp { color: $blue } /* Name.Builtin.Pseudo */
-.highlight .vc { color: $blue } /* Name.Variable.Class */
-.highlight .vg { color: $blue } /* Name.Variable.Global */
-.highlight .vi { color: $blue } /* Name.Variable.Instance */
-.highlight .il { color: $cyan } /* Literal.Number.Integer.Long */
