@@ -1,6 +1,19 @@
 #= require_tree .
 
 #
+# Feature tests
+
+console.log("Viewport Units supported? " + feature.viewportUnits)
+console.log("History API supported? " + feature.historyAPI)
+console.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
+
+if !feature.historyAPI
+  console.log("Browser doesn't support one of the features needed, stopping…")
+  return
+else
+  $("html").addClass("awesome")
+
+#
 # Shim layer for requestAnimationFrame with setTimeout fallback
 
 window.requestAnimFrame = do ->
@@ -78,6 +91,7 @@ zoomIn = (target) ->
               console.log "content arrived"
               loadHere.html( loadedContent )
         target.removeClass("z-zooming-in")
+        bindZoomIns()
   , 1
 
 positionsToParent = (target, content) ->
@@ -140,6 +154,8 @@ cancelZoomIns = (zoomingIn) ->
       $("html").removeClass("z-open")
       setHistoryToRoot()
 
+    # Reset history to root
+    setHistoryToRoot()
 
     # Remove zoom ending stuff
     content.off "transitionend webkitTransitionEnd"
@@ -147,6 +163,14 @@ cancelZoomIns = (zoomingIn) ->
     # Remove AJAX loading
     loadHere.off "contentLoaded"
     endedOpeningTransitions = []
+
+bindZoomIns = ->
+  links = $("a[href^='/']")
+  links.off "click"
+  links.on "click", (event) ->
+    event.preventDefault()
+    target = $(@).attr("href")
+    zoomIn( $("[data-id='#{target}']") )
 
 #
 # Zooming out
@@ -212,7 +236,10 @@ flushContentFrom = (target) ->
 # Set history to target
 setHistoryToTarget = (target) ->
   console.log "setting history to target"
-  history.pushState({ "targetID" : target.data("id") }, target.data("title"), target.data("id"))
+  title = target.data("title")
+  targetID = target.data("id")
+  history.pushState({ "targetID" : targetID }, title, targetID)
+  document.title = title
 
 #
 # Set history to root
@@ -245,9 +272,9 @@ $ ->
   $(window).on "popstate", (event) ->
     targetID = event.originalEvent.state.targetID
     if event.originalEvent.state && targetID
-      unless targetID == "/"
-        console.log "setting history to #{targetID}"
-        zoomIn( $("[data-id='#{targetID}']") )
+      # unless targetID == "/"
+      console.log "setting history to #{targetID}"
+      zoomIn( $("[data-id='#{targetID}']") )
 
   #
   # Fastclick
@@ -261,13 +288,9 @@ $ ->
     $(@).trigger("hover")
 
   #
-  # Bind zoom in
+  # Bind zoomIn links
 
-  $(".z-anchor").on "click", (event) ->
-    event.preventDefault()
-    thisZ = $(@).closest(".z")
-    # zoomIn( thisZ.data("id") )
-    zoomIn(thisZ)
+  bindZoomIns()
 
   #
   # Bind zoom out
