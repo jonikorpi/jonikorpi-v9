@@ -156,7 +156,7 @@ a {
     color: hsl($hue-quarter-low, 85.4%, 61.8%);
   }
 
-  &[href^="/"]:after {
+  &[href^="http"]:after {
     content: "↗";
     margin-left: 2px;
   }
