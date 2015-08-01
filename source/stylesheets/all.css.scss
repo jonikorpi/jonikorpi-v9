@@ -111,7 +111,8 @@ html {
 // }
 
 .mono,
-code, pre {
+code, pre,
+a:after {
   font-family: "Nitti Basic", Menlo, Consolas, monospace, monospace;
   letter-spacing: -0.5px;
 }
@@ -153,6 +154,11 @@ a {
 
   &:active {
     color: hsl($hue-quarter-low, 85.4%, 61.8%);
+  }
+
+  &[href^="/"]:after {
+    content: "↗";
+    margin-left: 2px;
   }
 }
 
