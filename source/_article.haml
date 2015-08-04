@@ -4,8 +4,9 @@
 %article.z.article{"data-id" => article.url, "data-title" => article.data.title, class: classes}
   .z-wrapper
     .z-content
+      %header.chunk-header.no-margins
+        %h1.chunk-title= article.title
       %header.article-cover.no-margins
-        %h1.article-title.centered-translate= article.title
         = partial "covers/#{article.slug}" if article.data.cover
       .article-content
         = article.body if article.title == current_page.data.title

@@ -1,6 +1,13 @@
 #= require_tree .
 
 #
+# Globals
+
+targetContent = null
+loadedContent = false
+$html = $("html")
+
+#
 # Feature tests
 
 console.log("Viewport Units supported? " + feature.viewportUnits)
@@ -11,7 +18,7 @@ if !feature.historyAPI
   console.log("Browser doesn't support one of the features needed, stopping…")
   return
 else
-  $("html").addClass("awesome")
+  $html.addClass("awesome")
 
 #
 # Shim layer for requestAnimationFrame with setTimeout fallback
@@ -21,18 +28,19 @@ window.requestAnimFrame = do ->
     window.setTimeout callback, 1000 / 60
 
 #
-# Rounding function
+# Misc function
 
 round = (value, decimals) ->
   Number Math.round(value + "e" + decimals) + "e-" + decimals
 
-#
-# Globals
-
-targetContent = null
-loadedContent = false
-endedOpeningTransitions = []
-endedClosingTransitions = []
+arraysEqual = (arr1, arr2) ->
+  if arr1.length != arr2.length
+    return false
+  i = arr1.length
+  while i--
+    if arr1[i] != arr2[i]
+      return false
+  true
 
 #
 # Zooming in
@@ -66,46 +74,71 @@ zoomIn = (target) ->
     # Set classes
     $(".z-current").removeClass("z-current")
     target.addClass("z-active z-current")
-    $("html").addClass("z-open")
+    $html.addClass("z-open")
 
     # Set positions to 0 (zoom in)
     targetContent = content
     requestAnimFrame(positionsToZero)
 
     # After all positions have been transitioned, finish the zoom
-    endedOpeningTransitions = []
-
     content.on "transitionend webkitTransitionEnd", (event) ->
-      endedOpeningTransitions.push event.originalEvent.propertyName
-      if $.inArray("left", endedOpeningTransitions) != -1 && $.inArray("top", endedOpeningTransitions) != -1 && $.inArray("right", endedOpeningTransitions) != -1 && $.inArray("bottom", endedOpeningTransitions) != -1
-        content.off "transitionend webkitTransitionEnd"
-        target.addClass("z-visited z-loaded")
-        # Append content when it's loaded
-        if loadHere.length > 0
-          if loadedContent
-            console.log "content already here"
-            loadHere.html( loadedContent )
-          else
-            console.log "content coming later"
-            loadHere.one "contentLoaded", ->
-              console.log "content arrived"
+      eName = event.originalEvent.propertyName
+      if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
+        if positionsMatchZero(content)
+          content.off "transitionend webkitTransitionEnd"
+          target.addClass("z-visited z-loaded")
+          # Append content when it's loaded
+          if loadHere.length > 0
+            if loadedContent
+              console.log "content already here"
               loadHere.html( loadedContent )
-        target.removeClass("z-zooming-in")
-        bindZoomIns()
+            else
+              console.log "content coming later"
+              loadHere.one "contentLoaded", ->
+                console.log "content arrived"
+                loadHere.html( loadedContent )
+          target.removeClass("z-zooming-in")
+          bindZoomIns()
   , 1
 
-positionsToParent = (target, content) ->
+getParentPositions = (target) ->
   targetWrapper = target.children(".z-wrapper")
-  # Set positions to match parent's position (needed for the zoom transitions to work)
   left = targetWrapper.offset().left
   top = targetWrapper.offset().top
-  right = $("html").outerWidth() - targetWrapper.outerWidth() - left
-  bottom = $("html").outerHeight() - targetWrapper.outerHeight() - top
+  right = $html.outerWidth() - targetWrapper.outerWidth() - left
+  bottom = $html.outerHeight() - targetWrapper.outerHeight() - top
+  return [
+    parseInt(left),
+    parseInt(top),
+    parseInt(right),
+    parseInt(bottom)
+  ]
+
+getContentPositions = (content) ->
+  return [
+    parseInt( content.css("left") ),
+    parseInt( content.css("top") ),
+    parseInt( content.css("right") ),
+    parseInt( content.css("bottom") )
+  ]
+
+positionsToParent = (target, content) ->
+  # Set positions to match parent's position (needed for the zoom transitions to work)
+  parentPositions = getParentPositions(target)
   content.css
-    "left": left
-    "top": top
-    "right": right
-    "bottom": bottom
+    "left":   parentPositions[0]
+    "top":    parentPositions[1]
+    "right":  parentPositions[2]
+    "bottom": parentPositions[3]
+
+positionsMatchParent = (content, target) ->
+  parentPositions = getParentPositions(target)
+  contentPositions = getContentPositions(content)
+  console.log "do positions match parent?"
+  if arraysEqual(parentPositions, contentPositions)
+    return true
+  else
+    return false
 
 positionsToZero = ->
   # Set positions to 0 (makes the zoom happen)
@@ -114,6 +147,14 @@ positionsToZero = ->
     "top": "0"
     "right": "0"
     "bottom": "0"
+
+positionsMatchZero = (content) ->
+  contentPositions = getContentPositions(content)
+  console.log "do positions match zero?"
+  if arraysEqual([0,0,0,0], contentPositions)
+    return true
+  else
+    return false
 
 loadContent = (content, id) ->
   # Load content via AJAX and notify about it
@@ -151,7 +192,7 @@ cancelZoomIns = (zoomingIn) ->
       parent.addClass("z-current")
       setHistoryToTarget(parent)
     else
-      $("html").removeClass("z-open")
+      $html.removeClass("z-open")
       setHistoryToRoot()
 
     # Reset history to root
@@ -205,15 +246,15 @@ zoomOut = ->
 
       # Else go to root
       else
-        $("html").removeClass("z-open")
+        $html.removeClass("z-open")
         setHistoryToRoot()
 
       # After the transition ends, end zooming
-      endedClosingTransitions = []
       currentContent.on "transitionend webkitTransitionEnd", (event) ->
-        endedClosingTransitions.push event.originalEvent.propertyName
-        if $.inArray("left", endedClosingTransitions) != -1 && $.inArray("top", endedClosingTransitions) != -1 && $.inArray("right", endedClosingTransitions) != -1 && $.inArray("bottom", endedClosingTransitions) != -1
-          endZoomOut(currentZ, currentContent)
+        eName = event.originalEvent.propertyName
+        if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
+          if positionsMatchParent(currentContent, currentZ)
+            endZoomOut(currentZ, currentContent)
     else
       console.log "nothing to zoom out from"
 

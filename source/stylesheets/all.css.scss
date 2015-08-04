@@ -8,9 +8,7 @@ $font-size-multiplier: 16/16;
 $line: 1.382rem;
 $max-width: none; //$line * 28;
 
-$card-padding: $line * 0.25;
-$grid-header-height: $line*1 + $card-padding*3;
-$home-grid-header-height: $line*2 + $card-padding*3;
+$card-paddings: 0;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     $main-easing;
@@ -50,9 +48,9 @@ $hue-xxx-low:  $hue + (360 * 0.056);
 $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
-$background:      hsl($hue-golden-high, 38.2%, 14.6%);
-$off-background:  hsl($hue-golden-high, 9%, 23.6%);
-$card-background: hsl($hue-golden-high, 50%, 9%);
+$background:      hsl($hue-golden-high, 50%, 9%);
+$off-background:  hsl($hue-golden-high, 14.6%, 14.6%);
+$card-background: $off-background;
 
 $bright: hsl($hue, 23.6%, 76.4%);
 $body:   hsl($hue, 5.6%, 61.8%);
@@ -178,13 +176,13 @@ code {
   color: hsl($hue, 9%, 50%);
 }
 
-.centered-translate {
+@mixin centered-translate {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
 }
 
-.centered-margin {
+@mixin centered-margin {
   position: absolute;
   left: 0; top: 0; bottom: 0; right: 0;
   margin: auto;
@@ -204,25 +202,41 @@ body {
   margin: 0;
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  padding-top: $grid-header-height;
-  perspective: 100vh;
+  padding: $card-paddings;
 }
 
 .home-grid {
-  padding-top: $home-grid-header-height;
+
 }
 
-.grid-header {
-  height: $grid-header-height;
-  padding: $card-padding*2;
-  padding-bottom: $card-padding;
-  position: absolute;
-  left: 0; top: 0; right: 0;
-  white-space: nowrap;
+.chunk-header {
+  z-index: 2;
+  @include centered-translate;
+  text-align: center;
+  transition: all $main-time $main-easing;
+
+  .z-loaded > .z-wrapper > .z-content > & {
+    transform: none;
+    left: 0; top: 0;
+    text-align: left;
+  }
 }
 
-.masthead {
-  height: $home-grid-header-height;
+.chunk-title {
+  line-height: 1.146;
+  transition: all $main-time $main-easing;
+  font-size: 2.362vw;
+  z-index: 2;
+  width: 91%;
+  color: $yellow;
+
+  .z .z & {
+    opacity: 0;
+  }
+
+  .z-loaded .z & {
+    opacity: 1;
+  }
 }
 
 .avatar {
@@ -252,15 +266,6 @@ body {
   }
 }
 
-.row {
-  margin: 0;
-  height: 50%;
-
-  .z & {
-    height: 100%;
-  }
-}
-
 .tag-heading {
 
 }
@@ -268,12 +273,12 @@ body {
 .z {
   margin: 0;
   position: relative;
-  height: 100%;
-  padding: $card-padding;
+  height: 50%;
+  padding: $card-paddings;
   float: left;
 }
 
-.size-2 { width: 50%;   }
+.size-2 { width: 50%;  }
 .size-3 { width: 33.3%; }
 .size-4 { width: 50%;   height: 50%; }
 .size-6 { width: 33.3%; height: 50%; }
@@ -303,6 +308,7 @@ body {
   left: 0; top: 0; right: 0; bottom: 0;
   margin: 0;
   transition: border $short-time $main-easing;
+  z-index: 3;
   // border: $line*0.25 solid transparent;
   // animation: anchorGlow $main-time*10 $main-easing infinite;
   // background-image: linear-gradient(to bottom, rgba($purple-highlight, 0.236) 0%, rgba($purple-highlight, 0) 100%);
@@ -334,15 +340,19 @@ body {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   overflow: hidden;
-  background: $card-background;
-  border: 2px solid transparent;
+  background: $background;
+  border: 1px solid $border;
   will-change: contents, left, top, right, bottom;
   // transform: translate3d(0,0,0);
   transition: border $main-time $main-easing;
 
   .article.z-visited & {
-    -webkit-filter: grayscale(61.8%);
-    filter: grayscale(61.8%);
+    -webkit-filter: blur($line*0.09);
+    filter: blur($line*0.09);
+  }
+
+  .article > .z-wrapper > & {
+    background: $card-background;
   }
 
   .z-active > .z-wrapper > & {
@@ -363,7 +373,7 @@ body {
     border-color: $purple-highlight;
     // border-image: linear-gradient(to right, $main-highlight 0%, $purple-highlight 100%);
     // border-image-slice: 1;
-    // box-shadow: 0 0 $card-padding*0.5 $purple-highlight;
+    // box-shadow: 0 0 $card-paddings*0.5 $purple-highlight;
   }
 
   .z-zooming-out > .z-wrapper > & {
@@ -378,10 +388,6 @@ body {
   }
 }
 
-.tag-heading {
-  font-style: italic;
-}
-
 .article-cover {
   position: relative;
   height: 100%;
@@ -391,19 +397,6 @@ body {
     height: 61.8%;
     min-height: $line*10;
     max-height: $line*30;
-  }
-}
-
-.article-title {
-  line-height: 1.146;
-  transition: all $main-time*1.5 $main-easing;
-  font-size: 2.362vw;
-  z-index: 2;
-  text-align: center;
-  width: 91%;
-
-  .article.z-loaded & {
-    font-size: 8vw;
   }
 }
 

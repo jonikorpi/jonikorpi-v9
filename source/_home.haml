@@ -7,7 +7,7 @@
 
 %nav.grid.home-grid#root{"data-id" => "/", "data-title" => "Joni Korpi"}
 
-  .masthead.grid-header.no-margins
+  %header.chunk-header.masthead.no-margins
     = image_tag "avatar.png", class: "avatar"
     %h1.name Joni Korpi
     %span.title.mono Web Designer
@@ -15,13 +15,11 @@
       = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
       = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
 
-  .row
-    -# New posts
-    - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
-    - articles.each do |article|
-      = partial "article", :locals => {:article => article, :size => articles.size}
+  -# New posts
+  - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
+  - articles.each do |article|
+    = partial "article", :locals => {:article => article, :size => articles.size}
 
-  .row
-    -# All other posts
-    - tagOrder.each do |tagName|
-      = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}
+  -# All other posts
+  - tagOrder.each do |tagName|
+    = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}
