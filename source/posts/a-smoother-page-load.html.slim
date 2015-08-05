@@ -1,0 +1,81 @@
+---
+title: A Smoother Page Load
+tags: "Writing (2008-2012)"
+date: 2011/07/17
+---
+
+markdown:
+  An unexpected opportunity to control how the page loads, using Typekit.
+
+  I finally have a blog. For the longest time I haven't been able to let out the endless rambles about all the little design detail and theories bouncing around in my head. Now I can, and _will._
+
+  I'm going to start by going over a little trick I discovered when designing this site. When you opened this page, you may noticed that it took a moment longer to load than usual, and that it didn't just blink into existence, but _faded in._
+
+  The culprit behind the extra loading time is the [asynchronous Typekit snippet](http://blog.typekit.com/2011/05/25/loading-typekit-fonts-asynchronously/), which loads the web fonts used on this site. Unlike the regular Typekit snippet, the asynchronous one doesn't automatically protect you against the Flash of Unstyled Content that can happen if the fonts don't load quickly enough, so I had to take care of that manually.
+
+  I had to make sure no text elements on the page would show until the fonts have finished loading. To accomplish this, I simply set the opacity of all text on the page to zero using the `.wf-loading` class provided by the Typekit snippet. I also added a fallback for versions of IE that don't support opacity.
+
+= code("scss") do
+  |
+    .wf-loading h1,
+    .wf-loading h2,
+    .wf-loading h3,
+    .wf-loading p,
+    .wf-loading li {
+      opacity: 0;
+    }
+
+    .ie.wf-loading h1,
+    .ie.wf-loading h2,
+    .ie.wf-loading h3,
+    .ie.wf-loading p,
+    .ie.wf-loading li {
+      visibility: hidden; /* Old IE */
+    }
+
+markdown:
+  While playing around with this, I realised I could also control how the text eventually appears after the fonts have finished loading. By adding a very short CSS transition, I could make it fade in.
+
+= code("scss") do
+  |
+    h1, h2, h3, p, li {
+      opacity: 1;
+      visibility: visible; /* Old IE */
+      -webkit-transition: opacity 0.24s ease-in-out;
+         -moz-transition: opacity 0.24s ease-in-out;
+              transition: opacity 0.24s ease-in-out;
+    }
+
+markdown:
+  This should work in most modern desktop and mobile browsers, including IE9. The fade-in might feel a bit laggy on underpowered computers and mobile devices that don't use GPU rendering, but that's okay, since it'll feel more or less just like a regular blinking-into-existence page load.
+
+  There was one downside though: hiding the content made the initial load seem slower. Even though the site is progressively rendering into existence in the background, we can't see it, which makes the load time _feel_ longer.
+
+  To alleviate this effect, I added a little loading spinner as a GIF image. Since the spinner needed to appear immediately, I embedded it into my stylesheet using a [data URI](http://css-tricks.com/5970-data-uris/). I used Opinionated Geek's [Base 64 encoder](http://www.opinionatedgeek.com/dotnet/tools/base64encode/) to encode image and embedded it as follows:
+
+= code("scss") do
+  |
+    .wf-loading #content header {
+      background:
+        url(data:image/gif;base64,lots-of-base64…)
+        center center no-repeat
+      ;
+    }
+
+markdown:
+  <figure>
+    <img src="/images/old-posts/a-smoother-page-load.png" alt="Loading spinner vs. no loading spinner"/>
+    <figcaption>Before and after. The spinner makes it clear something is happening.</figcaption>
+  </figure>
+
+  This should work just fine in all modern browsers, including IE8–9. IE6–7 will simply ignore it, which is fine by me. This is just a minor detail after all.
+
+  The resulting effect is pretty interesting, isn't it? It doesn't feel like a regular HTML page load, but not exactly like an AJAX load either.
+
+  This technique could also be applied to images or even the entire page. Theoretically you could even create all sorts of Powerpoint-esque transitions using CSS transforms. It's good to practice restraint though, as these effects can be quite performance-intensive. Also, the simpler and faster the transition is, the less likely it is to annoy anyone — good transitions are felt, not noticed. Personally, I think this one turned out pretty good, but I'd love to hear your opinions about it [on Twitter](http://twitter.com/jonikorpi).
+
+  **Update on 23 Jul 2011:** The IE fallback was causing the fade-in to feel jerky in Safari, so I split it off into a separate declaration using an [IE conditional class](http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/). It will probably not work in IE6, but will in IE7–8.
+
+  **Update on 2 Aug 2011:** The fade-in on this site is currently disabled while I'm investigating whether it has something to do with the mysterious plummeting of this site's Google ranking.
+
+  **Update on 10 Aug 2011:** The fade-in is back in action. It doesn't seem to have caused my ranking problems.

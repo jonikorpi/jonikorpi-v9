@@ -1,0 +1,37 @@
+---
+title: Golden Grid System
+tags: "Responsive Layout Systems"
+date: 2011/08/01
+cover: true
+---
+
+markdown:
+  A _folding_ grid system for responsive design (2011).
+
+  _GGS_ was my next step after [Less Framework](/less-framework/). Instead of a fixed-width grid, it used a fully fluid-width one, without even a maximum width. The resources it was published with are still [available on GitHub](https://github.com/jonikorpi/Golden-Grid-System).
+
+  # Folding columns
+
+  The idea was to take a 18-column grid, use the outermost columns as margins, and use the remaining 16 to lay elements out. On smaller screens the 16 columns could be _folded_ into 8, 4 and 2. This behaviour was inspired by Massimo Vignelli's [Unigrid system](http://www.aisleone.net/2010/design/massimo-vignellis-unigrid-system/).
+
+  # Elastic gutters
+
+  While the grid's columns were fluid — proportional to the screen's width — the gutters (spaces between the columns) were proportional to the font-size being used. This decision was an attempt to mitigate a big issue with fluid-width grids: no link between the proportions of the columns and the proportions of the text inside them.
+
+  # Zoomable baseline grid
+
+  GGS also contained a set of typographic presets, strictly to a baseline grid. As long as all font-sizes, margins, paddings and other measurements that affected the page's flow were set in ems and properly aligned, the page would retain a perfect vertical rhythm. The abovementioned _elastic gutters_ were also proportional to this rhythm. Since all of these measurements were set in ems, every element on the page could be zoomed in or out to better fit inside the fluid-width columns as needed.
+
+  # Golden Gridlet
+
+  Correctly setting all of these measurements is difficult, of course. I tried helping this issue by creating a little script that overlaid the Golden Grid System on the page, along with its baseline grid.
+
+  # Reception
+
+  When published, GGS gained a lot of attention, as the web design community was searching ways to work with fluid-width grids, which have always been troublesome, running counter to many graphic design principles. In practise, however, GGS didn't work very well. Using fully fluid-width columns for text is impractical. Without a maximum width of some sort, you'll always end up with either text blocks too wide or a font-size too large.
+
+  Many people trying to use GGS were also confused by the lack of predefined code for working with the grid. Like in [Less Framework](/less-framework/), I tried to advocate forgoing predefined layout code and only offered measurements and visual templates for using the grid system. That wasn't enough. The result was an avalanche of requests for tutorials on Twitter and various web development forums, which I failed to address while trying to focus on finishing my degree.
+
+  Later on I developed [Frameless](/frameless/), the last entry in my early CSS grid system saga.
+
+  Oh well! This project certainly taught me to spend more resources on communicating my ideas, even after they're published and done.

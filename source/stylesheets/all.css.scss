@@ -182,11 +182,15 @@ code {
   transform: translate(-50%, -50%);
 }
 
+.centered-translate { @include centered-translate; }
+
 @mixin centered-margin {
   position: absolute;
   left: 0; top: 0; bottom: 0; right: 0;
   margin: auto;
 }
+
+.centered-margin { @include centered-margin; }
 
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
@@ -198,6 +202,10 @@ body {
   height: 100%;
 }
 
+.masthead {
+
+}
+
 .grid {
   margin: 0;
   position: absolute;
@@ -205,20 +213,13 @@ body {
   padding: $card-paddings;
 }
 
-.home-grid {
-
-}
-
 .chunk-header {
+  position: absolute;
+  left: 0; top: 0;
   z-index: 2;
-  @include centered-translate;
-  text-align: center;
-  transition: all $main-time $main-easing;
 
   .z-loaded > .z-wrapper > .z-content > & {
-    transform: none;
-    left: 0; top: 0;
-    text-align: left;
+
   }
 }
 

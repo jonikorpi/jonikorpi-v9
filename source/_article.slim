@@ -1,13 +1,13 @@
 - classes = "size-#{size} #{article.slug} "
 - classes += "z-current z-active z-loaded " if article.title == current_page.data.title
 
-%article.z.article{"data-id" => article.url, "data-title" => article.data.title, class: classes}
+article.z.article data-id=article.url data-title=article.data.title class=classes 
   .z-wrapper
     .z-content
-      %header.chunk-header.no-margins
-        %h1.chunk-title= article.title
-      %header.article-cover.no-margins
+      header.chunk-header.no-margins
+        h1.chunk-title= article.title
+      header.article-cover.no-margins
         = partial "covers/#{article.slug}" if article.data.cover
       .article-content
         = article.body if article.title == current_page.data.title
-    %a.z-anchor{href: article.url}
+    a.z-anchor href=article.url 

@@ -2,24 +2,24 @@
 - tagAmount = blog.tags.size - 1
 - newArticles = sitemap.where(:tags.include => "new").order_by(:date).all
 
--# - blog.tags.each do |tag, articles|
--#   %li= tag
+/ - blog.tags.each do |tag, articles|
+/   %li= tag
 
-%nav.grid.home-grid#root{"data-id" => "/", "data-title" => "Joni Korpi"}
+nav.grid.home-grid#root data-id="/" data-title=("Joni Korpi") 
 
-  %header.chunk-header.masthead.no-margins
+  header.masthead.no-margins.centered-translate
     = image_tag "avatar.png", class: "avatar"
-    %h1.name Joni Korpi
-    %span.title.mono Web Designer
+    h1.name Joni Korpi
+    span.title.mono Web Designer
     .links
       = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
       = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
 
-  -# New posts
+  / New posts
   - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
   - articles.each do |article|
     = partial "article", :locals => {:article => article, :size => articles.size}
 
-  -# All other posts
+  / All other posts
   - tagOrder.each do |tagName|
     = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}
