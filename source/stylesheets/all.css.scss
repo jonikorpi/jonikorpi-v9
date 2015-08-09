@@ -200,6 +200,8 @@ code {
 html,
 body {
   height: 100%;
+  perspective: 1000px;
+  perspective: 100vw;
 }
 
 .masthead {
@@ -344,8 +346,11 @@ body {
   background: $background;
   border: 1px solid $border;
   will-change: contents, left, top, right, bottom;
-  // transform: translate3d(0,0,0);
-  transition: border $main-time $main-easing;
+  transform: scale3d(1, 1, 1);
+  transition:
+    border $main-time $main-easing,
+    transform $main-time $main-easing
+  ;
 
   .article.z-visited & {
     // -webkit-filter: blur($line*0.09);
@@ -377,11 +382,16 @@ body {
     // box-shadow: 0 0 $card-paddings*0.5 $purple-highlight;
   }
 
-  .z-zooming-out > .z-wrapper > & {
-    transition-timing-function: $reverse-easing;
+  .z-zooming-in > .z-wrapper > & {
+    // transform: scale(0.764);
   }
 
-  .z-loaded & {
+  .z-zooming-out > .z-wrapper > & {
+    transition-timing-function: $reverse-easing;
+    // transform: scale(0.764);
+  }
+
+  .z-loaded > .z-wrapper > & {
     border-color: transparent;
     border-width: 0;
     overflow: auto;
