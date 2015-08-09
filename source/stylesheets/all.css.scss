@@ -348,8 +348,8 @@ body {
   transition: border $main-time $main-easing;
 
   .article.z-visited & {
-    -webkit-filter: blur($line*0.09);
-    filter: blur($line*0.09);
+    // -webkit-filter: blur($line*0.09);
+    // filter: blur($line*0.09);
   }
 
   .article > .z-wrapper > & {
