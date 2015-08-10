@@ -10,12 +10,12 @@ $html = $("html")
 #
 # Feature tests
 
-console.log("Viewport Units supported? " + feature.viewportUnits)
-console.log("History API supported? " + feature.historyAPI)
-console.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
+console?.log("Viewport Units supported? " + feature.viewportUnits)
+console?.log("History API supported? " + feature.historyAPI)
+console?.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
 
 if !feature.historyAPI
-  console.log("Browser doesn't support one of the features needed, stopping…")
+  console?.log("Browser doesn't support one of the features needed, stopping…")
   return
 else
   $html.addClass("awesome")
@@ -46,7 +46,7 @@ arraysEqual = (arr1, arr2) ->
 # Zooming in
 
 zoomIn = (target) ->
-  console.log "starting a zoomIn"
+  console?.log "starting a zoomIn"
 
   # Cancel ongoing zooms
   zoomingIn = $(".z-zooming-in")
@@ -90,12 +90,12 @@ zoomIn = (target) ->
           # Append content when it's loaded
           if loadHere.length > 0
             if loadedContent
-              console.log "content already here"
+              console?.log "content already here"
               loadHere.html( loadedContent )
             else
-              console.log "content coming later"
+              console?.log "content coming later"
               loadHere.one "contentLoaded", ->
-                console.log "content arrived"
+                console?.log "content arrived"
                 loadHere.html( loadedContent )
           target.removeClass("z-zooming-in")
           bindZoomIns()
@@ -134,7 +134,7 @@ positionsToParent = (target, content) ->
 positionsMatchParent = (content, target) ->
   parentPositions = getParentPositions(target)
   contentPositions = getContentPositions(content)
-  console.log "do positions match parent?"
+  console?.log "do positions match parent?"
   if arraysEqual(parentPositions, contentPositions)
     return true
   else
@@ -150,7 +150,7 @@ positionsToZero = ->
 
 positionsMatchZero = (content) ->
   contentPositions = getContentPositions(content)
-  console.log "do positions match zero?"
+  console?.log "do positions match zero?"
   if arraysEqual([0,0,0,0], contentPositions)
     return true
   else
@@ -159,22 +159,22 @@ positionsMatchZero = (content) ->
 loadContent = (content, id) ->
   # Load content via AJAX and notify about it
   loadHere = content.children(".article-content")
-  console.log "trying to load content"
+  console?.log "trying to load content"
   $.ajax
     url: id
     error: ->
       loadedContent = "<strong>Loading failed. Try refreshing? :(</strong>"
       loadHere.trigger("contentLoaded")
-      console.log "triggering contentLoaded on failure"
+      console?.log "triggering contentLoaded on failure"
     success: (data) ->
       loadedContent = $(data).find(".article.z-current .article-content").html()
       loadHere.trigger("contentLoaded")
-      console.log "triggering contentLoaded"
+      console?.log "triggering contentLoaded"
     type: 'GET'
 
 cancelZoomIns = (zoomingIn) ->
   zoomingIn.each ->
-    console.log "canceling a zoomIn"
+    console?.log "canceling a zoomIn"
 
     # Find pertinent elements
     target = $(@)
@@ -221,7 +221,7 @@ zoomOut = ->
 
   # If there's a zoom going on, cancel it
   if zoomingIn.length > 0
-    console.log "there are zooms going on -> not zooming out"
+    console?.log "there are zooms going on -> not zooming out"
     cancelZoomIns(zoomingIn)
 
   # Otherwise, zoom out
@@ -229,7 +229,7 @@ zoomOut = ->
     # If there's anything to zoom out from…
     currentZ = $(".z-current")
     if currentZ.length > 0
-      console.log "zooming out"
+      console?.log "zooming out"
       # Find pertinent elements
       currentContent = currentZ.children(".z-card")
       parentZ = currentZ.parent().closest(".z-active")
@@ -256,10 +256,10 @@ zoomOut = ->
           if positionsMatchParent(currentContent, currentZ)
             endZoomOut(currentZ, currentContent)
     else
-      console.log "nothing to zoom out from"
+      console?.log "nothing to zoom out from"
 
 endZoomOut = (currentZ, currentContent) ->
-  console.log "flushing & ending zoomOut"
+  console?.log "flushing & ending zoomOut"
   flushContentFrom( currentZ )
   targetContent = currentContent
   positionsToZero()
@@ -267,7 +267,7 @@ endZoomOut = (currentZ, currentContent) ->
   currentContent.off "transitionend webkitTransitionEnd"
 
 flushContentFrom = (target) ->
-  console.log "flushing content"
+  console?.log "flushing content"
   # Remove AJAX-loaded content
   flushThis = target.find(".article-content")
   if flushThis.length > 0
@@ -276,7 +276,7 @@ flushContentFrom = (target) ->
 #
 # Set history to target
 setHistoryToTarget = (target) ->
-  console.log "setting history to target"
+  console?.log "setting history to target"
   title = target.data("title")
   targetID = target.data("id")
   history.pushState({ "targetID" : targetID }, title, targetID)
@@ -286,7 +286,7 @@ setHistoryToTarget = (target) ->
 # Set history to root
 
 setHistoryToRoot = ->
-  console.log "setting history to root"
+  console?.log "setting history to root"
   title = $("#root").data("title")
   history.pushState({ "targetID" : "/" }, title, "/")
   document.title = title
@@ -304,7 +304,7 @@ $ ->
     activeZ = $(".z-current")
     activeZTitle = activeZ.data("title")
     activeZID = activeZ.data("id")
-    console.log "setting history to #{activeZID} & #{activeZTitle}"
+    console?.log "setting history to #{activeZID} & #{activeZTitle}"
     history.replaceState({ "targetID" : activeZID }, document.title, activeZID)
   else
     activeZTitle = document.title
@@ -314,7 +314,7 @@ $ ->
     targetID = event.originalEvent.state.targetID
     if event.originalEvent.state && targetID
       # unless targetID == "/"
-      console.log "setting history to #{targetID}"
+      console?.log "setting history to #{targetID}"
       zoomIn( $("[data-id='#{targetID}']") )
 
   #
