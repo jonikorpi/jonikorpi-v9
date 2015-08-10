@@ -12,7 +12,7 @@ $masthead-height: 14.6%;
 $new-height:      38.2%;
 $tags-height:     100% - $masthead-height - $new-height;
 
-$card-padding: 3.4%;
+$card-padding: 5.6%;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     $main-easing;
@@ -439,12 +439,8 @@ $article-card-zoom: 1.056;
 
 }
 
-.tag.z-active > .z-card {
+.tag.z-active:not(.z-zooming-out) > .z-card {
   background: $background;
-}
-
-.tag.z-zooming-out > .z-card {
-  background: transparent;
 }
 
 .tag-grid {
@@ -465,24 +461,28 @@ $article-card-zoom: 1.056;
 
 .tag-header {
   position: absolute;
-  left: 0; top: 50%; right: 0;
-  transform: translateY(-50%);
+  left: 50%; bottom: 50%;
+  transform: translate3d(-50%, 50%, 0);
   z-index: 2;
-  text-align: center;
-  padding: 0 $line*0.5;
-  margin: auto;
-  transition: all $short-time $main-easing;
-  font-size: 2rem;
-  line-height: $line*2;
+  transition: all $main-time $main-easing;
+  font-size: 2.618rem;
+  line-height: $line*2.5;
 
   @media (max-width: #{$l}) {
-    font-size: 1.618rem;
-    line-height: $line*1.5;
+    font-size: 2rem;
+    line-height: $line*2;
   }
 
   @media (max-width: #{$m}) {
-    font-size: 0.91rem;
-    line-height: $line*0.875;
+    font-size: 1rem;
+    line-height: $line;
+  }
+
+  .tag.z-active:not(.z-zooming-out) & {
+    bottom: 0;
+    left: $line * 3.5;
+    transform: none;
+    line-height: $line * 2.5;
   }
 }
 
@@ -497,12 +497,8 @@ $article-card-zoom: 1.056;
     color: $bright;
   }
 
-  .tag.z-active > .z-card > .tag-header & {
+  .tag.z-active:not(.z-zooming-out) > .z-card > .tag-header & {
     // transform: scale(2);
-  }
-
-  .tag.z-zooming-out & {
-    transform: none !important;
   }
 }
 
@@ -547,21 +543,13 @@ $article-card-zoom: 1.056;
     transform: scale(0);
   }
 
-  .tag.z-active .z & {
+  .tag.z-active:not(.z-zooming-out) .z & {
     transition:
       all $main-time $main-easing $main-time,
       visibility 0ms linear
     ;
     transform: none;
     visibility: visible;
-  }
-
-  .tag.z-zooming-out .z & {
-    transform: scale(0);
-    transition:
-      all $short-time $main-easing,
-      visibility 0ms linear $short-time
-    ;
   }
 }
 
@@ -616,7 +604,7 @@ $article-card-zoom: 1.056;
     transform: translateY(0%);
     transition:
       all $short-time*0.25 $main-easing,
-      transform $main-time*1.5 $main-easing $main-time*3,
+      transform $main-time*1.5 $main-easing $main-time*2,
     ;
   }
 
