@@ -8,27 +8,7 @@ loadedContent = false
 $html = $("html")
 
 #
-# Feature tests
-
-console?.log("Viewport Units supported? " + feature.viewportUnits)
-console?.log("History API supported? " + feature.historyAPI)
-console?.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
-
-if !feature.historyAPI
-  console?.log("Browser doesn't support one of the features needed, stopping…")
-  return
-else
-  $html.addClass("awesome")
-
-#
-# Shim layer for requestAnimationFrame with setTimeout fallback
-
-window.requestAnimFrame = do ->
-  window.requestAnimationFrame or window.webkitRequestAnimationFrame or window.mozRequestAnimationFrame or (callback) ->
-    window.setTimeout callback, 1000 / 60
-
-#
-# Misc function
+# Misc functions
 
 round = (value, decimals) ->
   Number Math.round(value + "e" + decimals) + "e-" + decimals
@@ -41,6 +21,42 @@ arraysEqual = (arr1, arr2) ->
     if arr1[i] != arr2[i]
       return false
   true
+
+get = ((a) ->
+  if a == ''
+    return {}
+  b = {}
+  i = 0
+  while i < a.length
+    p = a[i].split('=', 2)
+    if p.length == 1
+      b[p[0]] = ''
+    else
+      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, ' '))
+    ++i
+  b
+)(window.location.search.substr(1).split('&'))
+
+#
+# Feature tests
+
+console?.log("Viewport Units supported? " + feature.viewportUnits)
+console?.log("History API supported? " + feature.historyAPI)
+console?.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
+console?.log "Motion enabled? " + get["disablemotion"]
+
+if !feature.historyAPI || get["disablemotion"]
+  console?.log("Browser doesn't support one of the features needed, stopping…")
+  return
+else
+  $html.addClass("awesome")
+
+#
+# Shim layer for requestAnimationFrame with setTimeout fallback
+
+window.requestAnimFrame = do ->
+  window.requestAnimationFrame or window.webkitRequestAnimationFrame or window.mozRequestAnimationFrame or (callback) ->
+    window.setTimeout callback, 1000 / 60
 
 #
 # Zooming in
