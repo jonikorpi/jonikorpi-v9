@@ -1,12 +1,13 @@
 - classes = "size-#{size} #{article.slug} "
 - classes += "z-current z-active z-loaded " if article.title == current_page.data.title
+- classes += "z-scrollable " if current_page.data.scrollable?
 
 article.z.article data-id=article.url data-title=article.data.title class=classes 
   .z-card
     a.z-anchor href=article.url
-    header.article-header.no-margins.centered-translate
-      h1.article-title= article.title
     header.article-cover.no-margins
+      header.article-header.no-margins.centered-translate
+        h1.article-title= article.title
       = partial "covers/#{article.slug}" if article.data.cover
     .article-content
       = article.body if article.title == current_page.data.title 
