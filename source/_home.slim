@@ -1,4 +1,4 @@
-- tagOrder = ["Responsive Layout Systems", "Writing (2008-2012)"]
+- tagOrder = ["Grid Systems", "Old Writing"]
 - tagAmount = blog.tags.size - 1
 - newArticles = sitemap.where(:tags.include => "new").order_by(:date).all
 
@@ -7,19 +7,21 @@
 
 nav.grid.home-grid#root data-id="/" data-title=("Joni Korpi") 
 
-  header.masthead.no-margins.centered-translate
+  header.masthead.no-margins
     = image_tag "avatar.png", class: "avatar"
     h1.name Joni Korpi
     span.title.mono Web Designer
     .links
       = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
       = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
+  
+  section.new
+    / New posts
+    - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
+    - articles.each do |article|
+      = partial "article", :locals => {:article => article, :size => articles.size}
 
-  / New posts
-  - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
-  - articles.each do |article|
-    = partial "article", :locals => {:article => article, :size => articles.size}
-
-  / All other posts
-  - tagOrder.each do |tagName|
-    = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}
+  section.tags
+    / All other posts
+    - tagOrder.each do |tagName|
+      = partial "tag", :locals => {:tag => tagName, :tagAmount => tagAmount}

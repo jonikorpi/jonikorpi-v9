@@ -234,9 +234,10 @@ zoomOut = ->
       currentContent = currentZ.children(".z-card")
       parentZ = currentZ.parent().closest(".z-active")
 
-      # Scroll up & start zooming out
+      # Scroll up, flush content & start zooming out
       currentContent.scrollTop(0)
       currentZ.addClass("z-zooming-out").removeClass("z-loaded")
+      flushContentFrom( currentZ )
       positionsToParent(currentZ, currentContent)
 
       # If there's a zoomable parent, set it current and history to it
@@ -259,8 +260,7 @@ zoomOut = ->
       console?.log "nothing to zoom out from"
 
 endZoomOut = (currentZ, currentContent) ->
-  console?.log "flushing & ending zoomOut"
-  flushContentFrom( currentZ )
+  console?.log "ending zoomOut"
   targetContent = currentContent
   positionsToZero()
   currentZ.removeClass("z-active z-current z-zooming-out")
