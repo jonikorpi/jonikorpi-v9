@@ -6,13 +6,14 @@
 
 $font-size-multiplier: 16/16;
 $line: 1.382rem;
-$max-width: none; //$line * 28;
+$narrower-word-spacing: -0.236em;
+$max-width: $line * 28;
 
 $masthead-height: 14.6%;
 $new-height:      38.2%;
 $tags-height:     100% - $masthead-height - $new-height;
 
-$card-padding: 5.6%;
+$card-padding: 3.4%;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     $main-easing;
@@ -53,14 +54,16 @@ $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
 $background:      hsl($hue-golden-high, 38.2%, 23.6%);
-$off-background:  hsl($hue-golden-high, 14.6%, 14.6%);
+$off-background:  hsl($hue-golden-high, 23.6%, 14.6%);
 $card-background: hsl($hue-golden-high, 50%, 9%);
 
 $bright: hsl($hue, 23.6%, 76.4%);
 $body:   hsl($hue, 5.6%, 61.8%);
 $dim:    hsl($hue, 3.4%, 50%);
 
-$purple-body: hsl($hue-golden-high, 14.6%, 61.8%);
+$purple-bright: hsl($hue-golden-high, 23.6%, 76.4%);
+$purple-body:   hsl($hue-golden-high, 14.6%, 61.8%);
+$purple-dim:    hsl($hue-golden-high, 9%, 50%);
 
 $yellow: hsl($hue,          41.4%, 50%);
 $orange: hsl($hue-xxx-high, 41.4%, 50%);
@@ -68,12 +71,13 @@ $red:    hsl($hue-x-high,   38.2%, 50%);
 $blue:   hsl($hue-opposite, 61.8%, 61.8%);
 $cyan:   hsl($hue-sqrt-low, 38.2%, 50%);
 $green:  hsl($hue-low,      23.6%, 50%);
+$purple: hsl($hue-golden-high, 50%, 66.6%);
 
 $shadow:      hsl($hue-golden-high, 50%, 5.6%);
 $border:      hsl($hue-golden-high, 14.6%, 38.2%);
 $card-border: hsl($hue-golden-high, 14.6%, 38.2%);
 
-$yellow-highlight: hsl($hue, 85.4%, 61.8%);
+$highlight: hsl($hue, 76.4%, 61.8%);
 $purple-highlight: hsl($hue-golden-high, 85.4%, 76.4%);
 
 //
@@ -110,15 +114,15 @@ html {
   font-family: "Elena", "Times New Roman", serif;
 }
 
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: "Elena", serif;
-// }
+@mixin mono {
+  font-family: "Nitti Light", Menlo, Consolas, monospace, monospace;
+  letter-spacing: -0.5px;
+}
 
 .mono,
 code, pre,
 a:after {
-  font-family: "Nitti Light", Menlo, Consolas, monospace, monospace;
-  letter-spacing: -0.5px;
+  @include mono;
 }
 
 //
@@ -129,7 +133,17 @@ html {
   line-height: $line;
   background: $background;
   color: $body;
-  -webkit-tap-highlight-color: hsla($hue-golden-low, 100%, 61.8%, 0.5);
+  -webkit-tap-highlight-color: hsla($hue-golden-high, 100%, 61.8%, 0.382);
+
+  @media (max-width: #{$s}) {
+    font-size: 100% * $font-size-multiplier * 0.91;
+    line-height: $line * 0.91;
+  }
+
+  @media (max-width: #{$xs2}) {
+    font-size: 100% * $font-size-multiplier * 0.764;
+    line-height: $line * 0.764;
+  }
 }
 
 body {
@@ -140,10 +154,6 @@ body {
 .z-card * { animation-play-state: paused !important; }
 .z-current .z-card * { animation-play-state: running !important; }
 .z-current .z-card .z-card * { animation-play-state: paused !important; }
-
-h1, h2, h3, h4, h5, h6 {
-  color: $bright;
-}
 
 a {
   color: inherit;
@@ -156,23 +166,18 @@ a {
   &:active {
     color: hsl($hue-quarter-low, 85.4%, 61.8%);
   }
-
-  &[href^="http"]:after {
-    content: "↗";
-    margin-left: 2px;
-  }
 }
 
 hr {
-  border-color: hsl($hue-golden-high, 9%, 23.6%);
+  border-color: $border;
 }
 
 code {
-  color: hsl($hue-golden-high, 14.6%, 61.8%);
+  color: $purple-body;
 }
 
 ::selection {
-  background: hsl($hue-opposite, 91%, 61.8%);
+  background: $purple-highlight;
 }
 
 ::placeholder {
@@ -215,10 +220,20 @@ body {
 
 .new {
   height: $new-height;
+  padding: 0 $card-padding;
+
+  @media (max-width: #{$l}) {
+    padding: 0 $card-padding*2;
+  }
 }
 
 .tags {
   height: $tags-height;
+  padding: $card-padding*0.5;
+
+  @media (max-width: #{$l}) {
+    padding: $card-padding;
+  }
 }
 
 .grid {
@@ -241,33 +256,51 @@ body {
 
 .masthead {
   height: $masthead-height;
-  color: $purple-body;
+  position: relative;
+  color: $purple-bright;
+}
+
+.masthead-wrapper {
+  padding-left: $line*2 + $line*0.5;
 }
 
 .avatar {
   display: block;
-  width: $line * 2;
+  width: $line*2.5;
   border: 1px solid hsl($hue, 91%, 5.6%);
-  float: left;
-  margin-right: $line * 0.5;
+  position: absolute;
+  left: $line * -0.5; top: $line * -0.25;
 }
 
 .name {
   display: inline;
   font-size: 1.146rem;
   line-height: $line;
-  margin-right: $line * 0.25;
+  margin-right: $line*0.25;
 }
 
 .title {
   font-size: 0.91rem;
   text-transform: uppercase;
-  word-spacing: -0.236rem;
+  word-spacing: $narrower-word-spacing;
+  color: $purple-body;
 }
 
 .links {
-  a {
+  font-style: italic;
 
+  a {
+    &:hover {
+      color: $highlight;
+    }
+
+    &:active {
+      color: $purple-highlight;
+    }
+  }
+
+  a + a {
+    margin-left: $line*0.25;
   }
 }
 
@@ -294,13 +327,16 @@ body {
 .tag.size-6 { width: 16.6%; height: 100%; }
 
 @media (max-width: #{$l}) {
-  .tags { padding: $card-padding 0; }
-
   .size-2 { width: 50%;   }
   .size-3 { width: 33.3%; }
   .size-4 { width: 25%;   height: 100%; }
   .size-5 { width: 20%;   height: 100%; }
   .size-6 { width: 16.6%; height: 100%; }
+
+  .tag.z-active {
+    .size-2, .size-3, .size-4 { width: 50%;   height: 50%;}
+    .size-5, .size-6          { width: 33.3%; height: 50%; }
+  }
 
   .tag.size-2 { width: 100%;  height: 50%;}
   .tag.size-3 { width: 100%;  height: 33.3%;}
@@ -367,11 +403,6 @@ body {
     padding $main-time $main-easing
   ;
 
-  .article.z-visited & {
-    // -webkit-filter: blur($line*0.09);
-    // filter: blur($line*0.09);
-  }
-
   .z-active > & {
     // -webkit-filter: none;
     // filter: none;
@@ -416,6 +447,11 @@ $article-card-zoom: 1.056;
   &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
 }
 
+.article.z-visited .z-card {
+  // -webkit-filter: blur($line*0.09);
+  // filter: blur($line*0.09);
+}
+
 .article > .z-card {
   background: $card-background;
   overflow: hidden;
@@ -427,7 +463,7 @@ $article-card-zoom: 1.056;
   transform: none;
 }
 
-.article.z-loaded > .z-card {
+.z-scrollable.z-loaded > .z-card {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -447,8 +483,12 @@ $article-card-zoom: 1.056;
   transition: padding $main-time $main-easing $main-time;
   padding: $card-padding;
 
-  .tag.z-active > .z-card & {
+  @media (max-width: #{$l}) {
+    padding: $card-padding;
 
+    .tag.z-active:not(.z-zooming-out) > .z-card & {
+      padding: $card-padding*2;
+    }
   }
 
   .tag.z-zooming-out > .z-card & {
@@ -464,7 +504,8 @@ $article-card-zoom: 1.056;
   left: 50%; bottom: 50%;
   transform: translate3d(-50%, 50%, 0);
   z-index: 2;
-  transition: all $main-time $main-easing;
+  transition: none $main-time $main-easing;
+  transition-property: left, bottom, transform;
   font-size: 2.618rem;
   line-height: $line*2.5;
 
@@ -480,14 +521,14 @@ $article-card-zoom: 1.056;
 
   .tag.z-active:not(.z-zooming-out) & {
     bottom: 0;
-    left: $line * 3.5;
+    left: $line * 4;
     transform: none;
-    line-height: $line * 2.5;
+    line-height: $line * 2.75;
   }
 }
 
 .tag-title {
-  color: $yellow-highlight;
+  color: $highlight;
   font-weight: bold;
   // font-style: italic;
   transition: all $main-time $main-easing;
@@ -509,7 +550,6 @@ $article-card-zoom: 1.056;
   width: 91%;
   text-align: center;
   z-index: 2;
-  padding: $line;
   visibility: visible;
   transition:
     all $short-time $main-easing,
@@ -517,10 +557,12 @@ $article-card-zoom: 1.056;
   ;
   font-size: 1.382rem;
   line-height: $line*1.25;
+  padding: $line;
 
   @media (max-width: #{$l}) {
     font-size: 1rem;
     line-height: $line;
+    padding: $line*0.5;
   }
 
   @media (max-width: #{$m}) {
@@ -530,7 +572,7 @@ $article-card-zoom: 1.056;
 }
 
 .article-title {
-  color: $yellow-highlight;
+  color: $highlight;
   transition: all $main-time $main-easing;
   // padding-right: 41.4%;
 
@@ -556,39 +598,108 @@ $article-card-zoom: 1.056;
 .article-cover {
   position: relative;
   height: 100%;
-  transition: all $main-time $main-easing;
+  transition: all $main-time*2 $main-easing;
+  will-change: transform;
   margin: 0;
 
-  // .article.z-active & {
-  //   height: 61.8%;
-  //   min-height: $line*10;
-  //   max-height: $line*30;
-  // }
+  .z-scrollable.z-loaded & {
+    transform: translateY(-23.6vh);
+  }
 }
 
 .article-content {
-  max-width: $line*24;
-  padding: $line*2 $line*0.5 $line*5;
-  margin: 0 auto;
   will-change: transform;
-  transform: translateY(50vh);
-  transition: transform $main-time $main-easing $short-time;
+  transition: transform $main-time*2 $main-easing $short-time;
+  margin: 0;
+  padding: $line*2 $line;
 
-  .article.z-loaded & {
-    transform: translateY(0);
+  .z-scrollable.z-loaded & {
+    transform: translateY(-23.6vh);
   }
 }
+
+//
+// Article content styles
+
+.article-content {
+  p,
+  h1, h2, h3, h4, h5, h6,
+  pre,
+  ul, ol,
+  hr {
+    max-width: $max-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  hr,
+  figure {
+    margin: $line*2 auto;
+  }
+
+  h1, h2, h3, h4, h5, h6 { color: $bright; }
+  h1, h4 { font-weight: bold; }
+  h3, h6 { font-style: italic; }
+  h1, h2, h3 { font-size: 1.618rem; line-height: $line*1.5; }
+  h4, h5, h6 { font-size: 1.236rem; line-height: $line*1.25; }
+
+  pre {
+    background: $off-background;
+    padding: $line;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  figure {
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+  }
+
+  figcaption {
+    font-style: italic;
+    color: $dim;
+  }
+
+  strong {
+    color: $bright;
+  }
+
+  a {
+    color: $bright;
+    background: linear-gradient($purple, $purple) left 87.5% repeat-x;
+    background-size: 1px;
+
+    &:hover {
+      color: $purple;
+    }
+
+    &:active {
+      color: $dim;
+    }
+
+    &[href^="http"]:after {
+      content: " ↗";
+      word-spacing: -0.475em;
+    }
+  }
+}
+
+//
+// Zoom out
 
 .zoom-out {
   position: fixed;
   left: $line * 0.5; bottom: $line * 0.5;
   z-index: 100;
-  padding: $line * 0.25 $line * 0.375;
+  padding: $line * 0.375 $line * 0.5;
   border-radius: $line * 0.25;
   background: $bright;
   box-shadow: 0 0 $line*0.25 $shadow;
   color: $background;
-  word-spacing: -0.236rem;
   line-height: 1;
   margin: 0;
   transform: translateY(200%);
@@ -604,7 +715,7 @@ $article-card-zoom: 1.056;
     transform: translateY(0%);
     transition:
       all $short-time*0.25 $main-easing,
-      transform $main-time*1.5 $main-easing $main-time*2,
+      transform $main-time*1.5 $main-easing $main-time,
     ;
   }
 
@@ -616,11 +727,11 @@ $article-card-zoom: 1.056;
 }
 
 .arrow {
-  font-size: 1.382rem;
+  font-size: 1.414rem;
   vertical-align: middle;
+  margin-right: 0.236rem;
 }
 
 .esc {
-  font-size: 0.91rem;
   vertical-align: middle;
 }

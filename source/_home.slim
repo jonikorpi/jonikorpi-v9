@@ -8,12 +8,13 @@
 nav.grid.home-grid#root data-id="/" data-title=("Joni Korpi") 
 
   header.masthead.no-margins
-    = image_tag "avatar.png", class: "avatar"
-    h1.name Joni Korpi
-    span.title.mono Web Designer
-    .links
-      = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
-      = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
+    .masthead-wrapper.centered-translate
+      = image_tag "avatar.png", class: "avatar"
+      h1.name Joni Korpi
+      span.title.mono Web Designer
+      .links
+        = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
+        = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
   
   section.new
     / New posts
