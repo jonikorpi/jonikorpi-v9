@@ -77,6 +77,7 @@ activate :blog do |blog|
 end
 
 activate :autoprefixer do |config|
+  config.browsers = ['last 3 versions']
   config.remove = false
 end
 
