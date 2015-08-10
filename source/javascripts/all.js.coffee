@@ -206,7 +206,7 @@ cancelZoomIns = (zoomingIn) ->
     endedOpeningTransitions = []
 
 bindZoomIns = ->
-  links = $("a[href^='/']")
+  links = $("a[href^='/']").not(".zoom-out")
   links.off "click"
   links.on "click", (event) ->
     event.preventDefault()
