@@ -54,7 +54,7 @@ zoomIn = (target) ->
     cancelZoomIns(zoomingIn)
 
   # Find pertinent elements
-  content = target.children(".z-wrapper").children(".z-content")
+  content = target.children(".z-card")
   loadHere = content.children(".article-content")
 
   # AJAX-load more content, if needed
@@ -102,7 +102,7 @@ zoomIn = (target) ->
   , 1
 
 getParentPositions = (target) ->
-  targetWrapper = target.children(".z-wrapper")
+  targetWrapper = target
   left = targetWrapper.offset().left
   top = targetWrapper.offset().top
   right = $html.outerWidth() - targetWrapper.outerWidth() - left
@@ -179,7 +179,7 @@ cancelZoomIns = (zoomingIn) ->
     # Find pertinent elements
     target = $(@)
     parent = target.parent().closest(".z-active")
-    content = target.children(".z-wrapper").children(".z-content")
+    content = target.children(".z-card")
     loadHere = content.children(".article-content")
 
     # Cancel zooms stuff
@@ -231,7 +231,7 @@ zoomOut = ->
     if currentZ.length > 0
       console.log "zooming out"
       # Find pertinent elements
-      currentContent = currentZ.children(".z-wrapper").children(".z-content")
+      currentContent = currentZ.children(".z-card")
       parentZ = currentZ.parent().closest(".z-active")
 
       # Scroll up & start zooming out

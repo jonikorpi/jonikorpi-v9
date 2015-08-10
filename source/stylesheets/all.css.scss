@@ -134,8 +134,8 @@ body {
   overflow: visible;
 
   // Pause animations elsewhere when zoomed in somewhere
-  .z-content * { animation-play-state: paused; }
-  .z-current .z-content * { animation-play-state: running; }
+  .z-card * { animation-play-state: paused; }
+  .z-current .z-card * { animation-play-state: running; }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -220,7 +220,7 @@ body {
   left: 0; top: 0;
   z-index: 2;
 
-  .z-loaded > .z-wrapper > .z-content > & {
+  .z-loaded > .z-card > & {
 
   }
 }
@@ -294,15 +294,8 @@ body {
   }
 }
 
-.z-wrapper {
-  position: relative;
-  height: 100%;
-}
-
 .z-active.z-active {
   position: static;
-
-  & > .z-wrapper { position: static; }
 }
 
 .z-anchor {
@@ -324,6 +317,7 @@ body {
     // border-color: $orange;
   }
 
+  .z-active > .z-card > &,
   .z-zooming-in &,
   .z-zooming-out & {
     display: none;
@@ -339,7 +333,7 @@ body {
 //   }
 // }
 
-.z-content {
+.z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   overflow: hidden;
@@ -357,11 +351,11 @@ body {
     // filter: blur($line*0.09);
   }
 
-  .article > .z-wrapper > & {
+  .article > & {
     background: $card-background;
   }
 
-  .z-active > .z-wrapper > & {
+  .z-active > & {
     -webkit-filter: none;
     filter: none;
     margin: 0;
@@ -373,8 +367,8 @@ body {
     ;
   }
 
-  .z-zooming-in > .z-wrapper > &,
-  .z-zooming-out > .z-wrapper > & {
+  .z-zooming-in > &,
+  .z-zooming-out > & {
     // transform: translate3d(0,0,0);
     border-color: $purple-highlight;
     // border-image: linear-gradient(to right, $main-highlight 0%, $purple-highlight 100%);
@@ -382,16 +376,16 @@ body {
     // box-shadow: 0 0 $card-paddings*0.5 $purple-highlight;
   }
 
-  .z-zooming-in > .z-wrapper > & {
+  .z-zooming-in > & {
     // transform: scale(0.764);
   }
 
-  .z-zooming-out > .z-wrapper > & {
+  .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
     // transform: scale(0.764);
   }
 
-  .z-loaded > .z-wrapper > & {
+  .z-loaded > & {
     border-color: transparent;
     border-width: 0;
     overflow: auto;

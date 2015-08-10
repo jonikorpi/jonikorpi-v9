@@ -8,11 +8,10 @@
 - classes += "z-active " if containsActiveArticle
 
 section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
-  .z-wrapper
-    .z-content
-      header.chunk-header
-        h1.chunk-title= tag
-      .grid
-        - articles.each do |article|
-          = partial "article", :locals => {:article => article, :size => articles.size}
+  .z-card
+    header.chunk-header
+      h1.chunk-title= tag
+    .grid
+      - articles.each do |article|
+        = partial "article", :locals => {:article => article, :size => articles.size}
     a.z-anchor href=tag_path(tag) 
