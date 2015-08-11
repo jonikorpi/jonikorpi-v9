@@ -335,6 +335,10 @@ body {
   position: relative;
   height: 100%;
   float: left;
+
+  &:hover {
+    z-index: 2;
+  }
 }
 
 .size-2 { width: 50%;   }
