@@ -508,12 +508,8 @@ $article-card-zoom: 1.056;
   transition: padding $main-time $main-easing $main-time;
   padding: $card-padding;
 
-  @media (max-width: #{$l}) {
-    padding: $card-padding;
-
-    .tag.z-active:not(.z-zooming-out) > .z-card & {
-      padding: $card-padding*2;
-    }
+  .tag.z-active:not(.z-zooming-out) > .z-card & {
+    padding: $card-padding*2;
   }
 
   .tag.z-zooming-out > .z-card & {
@@ -583,8 +579,7 @@ $article-card-zoom: 1.056;
   z-index: 2;
   visibility: visible;
   transition:
-    all $short-time $main-easing,
-    visibility 0ms linear $short-time
+    all $main-time $main-easing
   ;
   font-size: 1.382rem;
   line-height: $line*1.25;
@@ -637,12 +632,7 @@ $article-card-zoom: 1.056;
   }
 
   .tag.z-active:not(.z-zooming-out) .z & {
-    transition:
-      all $main-time $main-easing $main-time,
-      visibility 0ms linear
-    ;
     transform: none;
-    visibility: visible;
   }
 }
 
@@ -660,17 +650,29 @@ $article-card-zoom: 1.056;
 
 .article-content {
   will-change: transform;
-  transition: transform $main-time*2 $main-easing $short-time;
+  transition:
+    transform $main-time*2 $main-easing $short-time,
+    visibility 0ms linear
+  ;
   margin: 0;
   padding: $line*2 $line;
+  visibility: hidden;
 
   .z-scrollable.z-loaded & {
     transform: translateY(-38.2vh);
+    visibility: visible;
   }
 }
 
 //
 // Article content styles
+
+.subtitle {
+  word-spacing: $narrower-word-spacing;
+  color: $purple-body;
+  font-size: 1.236rem;
+  line-height: $line*1.25;
+}
 
 .article-content {
   p,

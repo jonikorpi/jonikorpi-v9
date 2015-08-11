@@ -10,4 +10,8 @@ article.z.article data-id=article.url data-title=article.data.title class=classe
         h1.article-title= article.title
       = partial "covers/#{article.slug}" if article.data.cover
     .article-content
-      = article.body if article.title == current_page.data.title 
+      - if article.data.subtitle?
+        .subtitle.mono
+          = markdown(article.data.subtitle)
+      .load-article-here
+        = article.body if article.title == current_page.data.title 
