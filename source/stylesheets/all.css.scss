@@ -78,7 +78,12 @@ $border:      hsl($hue-golden-high, 14.6%, 38.2%);
 $card-border: $border;
 
 $highlight: hsl($hue, 76.4%, 61.8%);
-$purple-highlight: hsl($hue-golden-high, 50%, 50%);
+$purple-highlight: hsl($hue-golden-high, 38.2%, 50%);
+$blue-highlight: hsl($hue-opposite, 91%, 61.8%);
+
+$card-fence: $blue-highlight;
+$card-highlight: $blue-highlight;
+$card-glow: $purple-highlight;
 
 //
 // Media queries
@@ -420,7 +425,7 @@ body {
 .z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   will-change: contents, left, top, right, bottom, transform;
   // transform: translate3d(1, 1, 1);
   transform-style: preserve-3d;
@@ -446,8 +451,7 @@ body {
 
   .z-zooming-in > &,
   .z-zooming-out > & {
-    border-width: 2px !important;
-    border-color: $highlight !important;
+    border-color: $card-fence !important;
   }
 
   .z-zooming-in > & {
@@ -476,22 +480,22 @@ $article-card-zoom: 1.056;
   &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
 }
 
-.article > .z-card {
-  background: $card-background;
-  overflow: hidden;
-  transform: scale($article-card-zoom) rotate(1.8deg);
-  border: 3px solid $purple-highlight;
-
-  &:hover {
-    border-color: $highlight !important;
-  }
-}
-
 .article.z-visited .z-card {
   // -webkit-filter: grayscale(100%) brightness(61.8%);
   //         filter: grayscale(100%) brightness(61.8%);
   border-color: $card-border;
-  border-width: 2px;
+  // border-width: 2px;
+}
+
+.article > .z-card {
+  background: $card-background;
+  overflow: hidden;
+  transform: scale($article-card-zoom) rotate(1.8deg);
+  border-color: $card-glow;
+
+  &:hover {
+    border-color: $card-highlight;
+  }
 }
 
 .article.z-active > .z-card {
@@ -513,12 +517,14 @@ $article-card-zoom: 1.056;
 // Tag cards
 
 .tag > .z-card {
-  &:hover {
-    border-color: $highlight;
-  }
+  // border-width: 0px;
 }
 
-.tag.z-active:not(.z-zooming-out) > .z-card {
+.tag:not(.z-active) > .z-card:hover {
+  .z-card { border-color: $card-highlight; }
+}
+
+.tag.z-active > .z-card {
   background: $background;
 }
 
