@@ -262,9 +262,9 @@ body {
   perspective: 1000px;
   perspective: 100vw;
   perspective-origin: 50% 50%;
-  animation: inFromTop $main-time*2 $main-easing;
-
-  .index & { animation: none; }
+  // animation: inFromBottom $main-time*2 $main-easing;
+  //
+  // .index & { animation: none; }
 }
 
 //
