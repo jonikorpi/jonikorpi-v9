@@ -51,9 +51,17 @@ helpers do
 
   def pseudo_host
     if build?
-      "http://www.kiskolabs.com"
+      "http://www.jonikorpi.com"
     else
-      "http://localhost:4567"
+      if defined?(req) && req.env["HTTP_HOST"]
+        if req.env["REQUEST_URI"] =~ /\Ahttps/i
+          "https://#{req.env["HTTP_HOST"]}"
+        else
+          "http://#{req.env["HTTP_HOST"]}"
+        end
+      else
+        "http://localhost:4567"
+      end
     end
   end
 
