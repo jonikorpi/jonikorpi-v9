@@ -336,9 +336,9 @@ body {
   height: 100%;
   float: left;
 
-  &:hover {
-    z-index: 2;
-  }
+  // &:hover {
+  //   z-index: 2;
+  // }
 }
 
 .size-2 { width: 50%;   }
@@ -601,30 +601,30 @@ $article-card-zoom: 1.056;
   line-height: $line*1.25;
   padding: $line;
 
-  .article.z-active:not(.z-zooming-out) & {
-    font-size: 3rem;
-    line-height: $line*3;
-  }
+  // .article.z-active:not(.z-zooming-out) & {
+  //   font-size: 3rem;
+  //   line-height: $line*3;
+  // }
 
   @media (max-width: #{$l}) {
     font-size: 1rem;
     line-height: $line;
     padding: $line*0.5;
 
-    .article.z-active:not(.z-zooming-out) & {
-      font-size: 2rem;
-      line-height: $line*2;
-    }
+    // .article.z-active:not(.z-zooming-out) & {
+    //   font-size: 2rem;
+    //   line-height: $line*2;
+    // }
   }
 
   @media (max-width: #{$m}) {
     font-size: 0.764rem;
     line-height: $line*0.75;
 
-    .article.z-active:not(.z-zooming-out) & {
-      font-size: 1.236rem;
-      line-height: $line*1.25;
-    }
+    // .article.z-active:not(.z-zooming-out) & {
+    //   font-size: 1.236rem;
+    //   line-height: $line*1.25;
+    // }
   }
 }
 
@@ -656,16 +656,16 @@ $article-card-zoom: 1.056;
   position: relative;
   height: 100%;
   transition: all $main-time*2 $main-easing;
-  will-change: transform;
+  // will-change: transform;
   margin: 0;
 
   .z-scrollable.z-loaded & {
-    transform: translateY(-38.2vh);
+    // transform: translateY(-38.2vh);
   }
 }
 
 .article-content {
-  will-change: transform;
+  will-change: transform, contents;
   transition:
     transform $main-time*2 $main-easing $short-time,
     visibility 0ms linear
