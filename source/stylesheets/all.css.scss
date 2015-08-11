@@ -6,7 +6,7 @@
 
 $font-size-multiplier: 16/16;
 $line: 1.382rem;
-$narrower-word-spacing: -0.236em;
+$narrower-word-spacing: -0.146em;
 $max-width: $line * 28;
 
 $masthead-height: 14.6%;
@@ -578,16 +578,14 @@ $article-card-zoom: 1.056;
   text-align: center;
   z-index: 2;
   visibility: visible;
-  transition:
-    all $main-time $main-easing
-  ;
+  transition: all $main-time $main-easing;
   font-size: 1.382rem;
   line-height: $line*1.25;
   padding: $line;
 
-  .article.z-loaded & {
-    font-size: 2rem;
-    line-height: $line*2;
+  .article.z-active:not(.z-zooming-out) & {
+    font-size: 3rem;
+    line-height: $line*3;
   }
 
   @media (max-width: #{$l}) {
@@ -595,9 +593,9 @@ $article-card-zoom: 1.056;
     line-height: $line;
     padding: $line*0.5;
 
-    .article.z-loaded & {
-      font-size: 1.618rem;
-      line-height: $line*1.5;
+    .article.z-active:not(.z-zooming-out) & {
+      font-size: 2rem;
+      line-height: $line*2;
     }
   }
 
@@ -605,9 +603,9 @@ $article-card-zoom: 1.056;
     font-size: 0.764rem;
     line-height: $line*0.75;
 
-    .article.z-loaded & {
-      font-size: 1rem;
-      line-height: $line;
+    .article.z-active:not(.z-zooming-out) & {
+      font-size: 1.236rem;
+      line-height: $line*1.25;
     }
   }
 }
