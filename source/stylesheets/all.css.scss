@@ -74,11 +74,11 @@ $green:  hsl($hue-low,      23.6%, 50%);
 $purple: hsl($hue-golden-high, 50%, 66.6%);
 
 $shadow:      hsl($hue-golden-high, 50%, 5.6%);
-$border:      hsl($hue-golden-high, 14.6%, 38.2%);
-$card-border: hsl($hue-golden-high, 14.6%, 38.2%);
+$border:      hsl($hue-golden-high, 23.6%, 38.2%);
+$card-border: $border;
 
 $highlight: hsl($hue, 76.4%, 61.8%);
-$purple-highlight: hsl($hue-golden-high, 85.4%, 76.4%);
+$purple-highlight: hsl($hue-golden-high, 38.2%, 50%);
 
 //
 // Media queries
@@ -133,7 +133,7 @@ html {
   line-height: $line;
   background: $background;
   color: $body;
-  -webkit-tap-highlight-color: hsla($hue-golden-high, 100%, 61.8%, 0.382);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 
   @media (max-width: #{$s}) {
     font-size: 100% * $font-size-multiplier * 0.91;
@@ -208,9 +208,13 @@ code {
 html,
 body {
   height: 100%;
+  overflow: hidden;
+}
+
+body {
   perspective: 1000px;
   perspective: 100vw;
-  overflow: hidden;
+  perspective-origin: 50% 50%;
 }
 
 .new,
@@ -257,11 +261,13 @@ body {
 .masthead {
   height: $masthead-height;
   position: relative;
-  color: $purple-bright;
 }
 
 .masthead-wrapper {
-  padding-left: $line*2 + $line*0.5;
+  padding-left: $line*2.5 + $line*0.5;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .avatar {
@@ -269,7 +275,7 @@ body {
   width: $line*2.5;
   border: 1px solid hsl($hue, 91%, 5.6%);
   position: absolute;
-  left: $line * -0.5; top: $line * -0.25;
+  left: 0; top: $line * -0.25;
 }
 
 .name {
@@ -277,6 +283,7 @@ body {
   font-size: 1.146rem;
   line-height: $line;
   margin-right: $line*0.25;
+  color: $bright;
 }
 
 .title {
@@ -290,12 +297,14 @@ body {
   font-style: italic;
 
   a {
+    color: $purple-bright;
+
     &:hover {
-      color: $highlight;
+      text-decoration: underline;
     }
 
     &:active {
-      color: $purple-highlight;
+      color: $highlight;
     }
   }
 
@@ -357,9 +366,9 @@ body {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   margin: 0;
-  transition: border $short-time $main-easing;
+  // transition: border $short-time $main-easing;
   z-index: 3;
-  // border: $line*0.25 solid transparent;
+  // border: 2px solid transparent;
   // animation: anchorGlow $main-time*10 $main-easing infinite;
   // background-image: linear-gradient(to bottom, rgba($purple-highlight, 0.236) 0%, rgba($purple-highlight, 0) 100%);
 
@@ -368,10 +377,10 @@ body {
   }
 
   &:hover {
-    // border-color: $orange;
+    // border-color: $highlight;
   }
 
-  .z-active > .z-card > &,
+  .z-current > .z-card > &,
   .z-zooming-in &,
   .z-zooming-out & {
     display: none;
@@ -393,11 +402,13 @@ body {
 .z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: 0 solid transparent;
+  border: 2px solid transparent;
   will-change: contents, left, top, right, bottom, transform;
-  transform: scale3d(1, 1, 1);
+  // transform: translate3d(1, 1, 1);
+  transform-style: preserve-3d;
+  border-radius: 2px;
   transition:
-    border $main-time $main-easing,
+    border $short-time*0.5 $main-easing,
     transform $main-time $main-easing,
     margin $main-time $main-easing,
     padding $main-time $main-easing
@@ -418,7 +429,7 @@ body {
   .z-zooming-in > &,
   .z-zooming-out > & {
     border-width: 2px !important;
-    border-color: $purple-highlight !important;
+    border-color: $highlight !important;
   }
 
   .z-zooming-in > & {
@@ -443,24 +454,36 @@ $article-card-zoom: 1.056;
 
 .article {
   &:nth-child(2n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
-  &:nth-child(3n) > .z-card { transform: scale($article-card-zoom) rotate(2.9deg); }
+  &:nth-child(3n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
   &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
-}
-
-.article.z-visited .z-card {
-  // -webkit-filter: blur($line*0.09);
-  // filter: blur($line*0.09);
 }
 
 .article > .z-card {
   background: $card-background;
   overflow: hidden;
-  border: 2px solid $card-border;
-  transform: scale($article-card-zoom) rotate(1.11deg);
+  transform: scale($article-card-zoom) rotate(1.8deg);
+  border: 3px solid $purple-highlight;
+
+  &:hover {
+    border-color: $highlight !important;
+  }
+}
+
+.article.z-visited .z-card {
+  // -webkit-filter: grayscale(100%) brightness(61.8%);
+  //         filter: grayscale(100%) brightness(61.8%);
+  border-color: $card-border;
+  border-width: 2px;
 }
 
 .article.z-active > .z-card {
   transform: none;
+  // -webkit-filter: none;
+  //         filter: none;
+}
+
+.article.z-loaded > .z-card {
+  border-radius: 0;
 }
 
 .z-scrollable.z-loaded > .z-card {
@@ -472,7 +495,9 @@ $article-card-zoom: 1.056;
 // Tag cards
 
 .tag > .z-card {
-
+  &:hover {
+    border-color: $highlight;
+  }
 }
 
 .tag.z-active:not(.z-zooming-out) > .z-card {
@@ -501,13 +526,15 @@ $article-card-zoom: 1.056;
 
 .tag-header {
   position: absolute;
+  text-align: center;
   left: 50%; bottom: 50%;
-  transform: translate3d(-50%, 50%, 0);
+  transform: translate(-50%, 50%);
   z-index: 2;
-  transition: none $main-time $main-easing;
+  transition: none $main-time*2 $main-easing;
   transition-property: left, bottom, transform;
   font-size: 2.618rem;
   line-height: $line*2.5;
+  color: $highlight;
 
   @media (max-width: #{$l}) {
     font-size: 2rem;
@@ -515,23 +542,27 @@ $article-card-zoom: 1.056;
   }
 
   @media (max-width: #{$m}) {
+    font-size: 1.618rem;
+    line-height: $line*1.5;
+  }
+
+  @media (max-width: #{$xs}) {
     font-size: 1rem;
     line-height: $line;
   }
 
   .tag.z-active:not(.z-zooming-out) & {
-    bottom: 0;
-    left: $line * 4;
-    transform: none;
+    bottom: $line * 2.75 * 0.5;
+    // left: $line * 4;
     line-height: $line * 2.75;
   }
 }
 
 .tag-title {
-  color: $highlight;
   font-weight: bold;
   // font-style: italic;
   transition: all $main-time $main-easing;
+  white-space: nowrap;
   // padding: 0 23.6%;
 
   .tag.z-active & {
@@ -559,26 +590,46 @@ $article-card-zoom: 1.056;
   line-height: $line*1.25;
   padding: $line;
 
+  .article.z-loaded & {
+    font-size: 2rem;
+    line-height: $line*2;
+  }
+
   @media (max-width: #{$l}) {
     font-size: 1rem;
     line-height: $line;
     padding: $line*0.5;
+
+    .article.z-loaded & {
+      font-size: 1.618rem;
+      line-height: $line*1.5;
+    }
   }
 
   @media (max-width: #{$m}) {
     font-size: 0.764rem;
     line-height: $line*0.75;
+
+    .article.z-loaded & {
+      font-size: 1rem;
+      line-height: $line;
+    }
   }
 }
 
 .article-title {
   color: $highlight;
   transition: all $main-time $main-easing;
+  white-space: nowrap;
   // padding-right: 41.4%;
 
   .article.z-active & {
     color: $bright;
     // transform: scale(1.618);
+  }
+
+  .article.z-visited & {
+    // color: $bright;
   }
 
   .z .z & {
@@ -603,7 +654,7 @@ $article-card-zoom: 1.056;
   margin: 0;
 
   .z-scrollable.z-loaded & {
-    transform: translateY(-23.6vh);
+    transform: translateY(-38.2vh);
   }
 }
 
@@ -614,7 +665,7 @@ $article-card-zoom: 1.056;
   padding: $line*2 $line;
 
   .z-scrollable.z-loaded & {
-    transform: translateY(-23.6vh);
+    transform: translateY(-38.2vh);
   }
 }
 
@@ -669,16 +720,14 @@ $article-card-zoom: 1.056;
   }
 
   a {
-    color: $bright;
-    background: linear-gradient($purple, $purple) left 87.5% repeat-x;
-    background-size: 1px;
+    color: $blue;
 
     &:hover {
-      color: $purple;
+      text-decoration: underline;
     }
 
     &:active {
-      color: $dim;
+      color: $bright;
     }
 
     &[href^="http"]:after {
