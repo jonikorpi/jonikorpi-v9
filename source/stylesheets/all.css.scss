@@ -509,7 +509,7 @@ $article-card-zoom: 1.056;
   padding: $card-padding;
 
   .tag.z-active:not(.z-zooming-out) > .z-card & {
-    padding: $card-padding*2;
+    padding: $card-padding*2 $card-padding;
   }
 
   .tag.z-zooming-out > .z-card & {
@@ -558,7 +558,7 @@ $article-card-zoom: 1.056;
   font-weight: bold;
   // font-style: italic;
   transition: all $main-time $main-easing;
-  white-space: nowrap;
+  // white-space: nowrap;
   // padding: 0 23.6%;
 
   .tag.z-active & {
@@ -613,7 +613,7 @@ $article-card-zoom: 1.056;
 .article-title {
   color: $highlight;
   transition: all $main-time $main-easing;
-  white-space: nowrap;
+  // white-space: nowrap;
   // padding-right: 41.4%;
 
   .article.z-active & {
