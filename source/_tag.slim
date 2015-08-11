@@ -5,7 +5,7 @@
   - containsActiveArticle = true if article.title == current_page.data.title
 
 - classes = "size-#{tagAmount} "
-- classes += "z-active " if containsActiveArticle
+- classes += "z-active z-loaded" if containsActiveArticle
 
 section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
   .z-card

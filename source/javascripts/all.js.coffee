@@ -71,7 +71,7 @@ zoomIn = (target) ->
 
   # Find pertinent elements
   content = target.children(".z-card")
-  loadHere = content.children(".article-content")
+  loadHere = content.children(".article-content").children(".load-article-here")
 
   # AJAX-load more content, if needed
   if loadHere.length > 0
@@ -175,7 +175,7 @@ positionsMatchZero = (content) ->
 
 loadContent = (content, id) ->
   # Load content via AJAX and notify about it
-  loadHere = content.children(".article-content")
+  loadHere = content.children(".article-content").children(".load-article-here")
   console?.log "trying to load content"
   $.ajax
     url: id
@@ -184,7 +184,7 @@ loadContent = (content, id) ->
       loadHere.trigger("contentLoaded")
       console?.log "triggering contentLoaded on failure"
     success: (data) ->
-      loadedContent = $(data).find(".article.z-current .article-content").html()
+      loadedContent = $(data).find(".article.z-current .load-article-here").html()
       loadHere.trigger("contentLoaded")
       console?.log "triggering contentLoaded"
     type: 'GET'
@@ -197,7 +197,7 @@ cancelZoomIns = (zoomingIn) ->
     target = $(@)
     parent = target.parent().closest(".z-active")
     content = target.children(".z-card")
-    loadHere = content.children(".article-content")
+    loadHere = content.children(".article-content").children(".load-article-here")
 
     # Cancel zooms stuff
     target.removeClass("z-active z-current z-zooming-in z-loaded")
@@ -286,7 +286,7 @@ endZoomOut = (currentZ, currentContent) ->
 flushContentFrom = (target) ->
   console?.log "flushing content"
   # Remove AJAX-loaded content
-  flushThis = target.find(".article-content")
+  flushThis = target.find(".load-article-here")
   if flushThis.length > 0
     flushThis.empty()
 
