@@ -158,11 +158,12 @@ positionsMatchParent = (content, target) ->
 
 positionsToZero = ->
   # Set positions to 0 (makes the zoom happen)
-  targetContent.css
-    "left": "0"
-    "top": "0"
-    "right": "0"
-    "bottom": "0"
+  targetContent.removeAttr("style")
+  # targetContent.css
+  #   "left": "0"
+  #   "top": "0"
+  #   "right": "0"
+  #   "bottom": "0"
 
 positionsMatchZero = (content) ->
   contentPositions = getContentPositions(content)
