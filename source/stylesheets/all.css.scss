@@ -770,14 +770,15 @@ $article-card-zoom: 1.056;
   z-index: 100;
   padding: $line * 0.375 $line * 0.5;
   border-radius: $line * 0.25;
-  background: $bright;
   box-shadow: 0 0 $line*0.25 $shadow;
+  background: $bright;
   color: $background;
   line-height: 1;
   margin: 0;
   transform: translateY(200%);
   transition:
-    all $short-time $main-easing,
+    background 0ms linear,
+    color 0ms linear,
     transform $main-time*1.5 $main-easing $short-time
   ;
   display: none;
@@ -794,7 +795,7 @@ $article-card-zoom: 1.056;
 
   &.hover,
   &:hover {
-    background: $purple-highlight;
+    background: $blue-highlight;
     color: $background;
   }
 }
@@ -807,4 +808,63 @@ $article-card-zoom: 1.056;
 
 .esc {
   vertical-align: middle;
+}
+
+//
+// Loading message
+
+.load-dialog {
+  z-index: 99;
+  position: absolute;
+  left: $line*4; right: 0; bottom: 0;
+  text-align: center;
+  padding: $line;
+  text-align: right;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform $main-time*2 $main-easing,
+    visibility 0ms linear $main-time*2
+  ;
+
+  .z-loading & {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform $main-time $main-easing $main-time*2,
+      visibility 0ms linear
+    ;
+  }
+}
+
+.message {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+  font-style: italic;
+}
+
+.load-message {
+  .z-loading-failed & {
+    display: none;
+  }
+}
+
+.fail-message {
+  color: $red;
+  margin-left: $line*0.5;
+  display: none;
+
+  .z-loading-failed & {
+    display: inline-block;
+  }
+}
+
+.load-button {
+  margin-left: $line*0.5;
+  color: $blue;
+  outline: none;
+
+  &:hover  { text-decoration: underline; }
+  &:active { color: $bright; }
 }
