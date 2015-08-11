@@ -475,9 +475,9 @@ body {
 $article-card-zoom: 1.056;
 
 .article {
-  &:nth-child(2n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
-  &:nth-child(3n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
-  &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotate(1.8deg); }
+  &:nth-child(2n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
+  &:nth-child(3n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
+  &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
 }
 
 .article.z-visited .z-card {
@@ -490,7 +490,7 @@ $article-card-zoom: 1.056;
 .article > .z-card {
   background: $card-background;
   overflow: hidden;
-  transform: scale($article-card-zoom) rotate(1.8deg);
+  transform: scale($article-card-zoom) rotateZ(1.8deg);
   border-color: $card-glow;
 
   &:hover {
