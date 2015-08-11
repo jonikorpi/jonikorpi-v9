@@ -212,9 +212,7 @@ body {
 }
 
 body {
-  perspective: 1000px;
-  perspective: 100vw;
-  perspective-origin: 50% 50%;
+
 }
 
 .new,
@@ -226,14 +224,28 @@ body {
   height: $new-height;
   padding: 0 $card-padding;
 
+  .index & { animation: inFromTop $main-time*2 $main-easing; }
+
   @media (max-width: #{$l}) {
     padding: 0 $card-padding*2;
   }
 }
 
+@keyframes inFromTop {
+  0%, 33% { transform: translateY(-200%); }
+  100%    { transform: none; }
+}
+
+@keyframes inFromBottom {
+  0%, 33% { transform: translateY(200%); }
+  100%    { transform: none; }
+}
+
 .tags {
   height: $tags-height;
   padding: $card-padding*0.5;
+
+  .index & { animation: inFromBottom $main-time*4 $main-easing; }
 
   @media (max-width: #{$l}) {
     padding: $card-padding;
@@ -247,12 +259,12 @@ body {
 }
 
 .home-grid {
+  perspective: 1000px;
+  perspective: 100vw;
+  perspective-origin: 50% 50%;
+  animation: inFromTop $main-time*2 $main-easing;
 
-}
-
-.tags,
-.new {
-
+  .index & { animation: none; }
 }
 
 //
@@ -261,6 +273,8 @@ body {
 .masthead {
   height: $masthead-height;
   position: relative;
+
+  .index & { animation: inFromTop $main-time*2 $main-easing; }
 }
 
 .masthead-wrapper {
