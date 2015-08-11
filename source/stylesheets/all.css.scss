@@ -53,7 +53,7 @@ $hue-xxx-low:  $hue + (360 * 0.056);
 $hue-xxxx-low:  $hue + (360 * 0.034);
 $hue-xxxxx-low:  $hue + (360 * 0.021);
 
-$background:      hsl($hue-golden-high, 38.2%, 23.6%);
+$background:      hsl($hue-golden-high, 50%, 23.6%);
 $off-background:  hsl($hue-golden-high, 23.6%, 14.6%);
 $card-background: hsl($hue-golden-high, 50%, 9%);
 
@@ -74,16 +74,16 @@ $green:  hsl($hue-low,      23.6%, 50%);
 $purple: hsl($hue-golden-high, 50%, 66.6%);
 
 $shadow:      hsl($hue-golden-high, 50%, 5.6%);
-$border:      hsl($hue-golden-high, 14.6%, 38.2%);
-$card-border: $border;
+$border:      hsl($hue-golden-high, 14.6%, 33.3%);
 
 $highlight: hsl($hue, 76.4%, 61.8%);
 $purple-highlight: hsl($hue-golden-high, 38.2%, 50%);
-$blue-highlight: hsl($hue-opposite, 91%, 61.8%);
+$blue-highlight: hsl($hue-opposite, 91%, 66.6%);
 
 $card-fence: $blue-highlight;
 $card-highlight: $blue-highlight;
 $card-glow: $purple-highlight;
+$card-border: $border;
 
 //
 // Media queries
