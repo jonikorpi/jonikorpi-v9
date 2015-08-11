@@ -3,6 +3,7 @@
 #
 # Globals
 
+ajax = null
 targetContent = null
 loadedContent = false
 $html = $("html")
@@ -105,14 +106,17 @@ zoomIn = (target) ->
           target.addClass("z-visited z-loaded")
           # Append content when it's loaded
           if loadHere.length > 0
+            $html.addClass("z-loading")
             if loadedContent
               console?.log "content already here"
               loadHere.html( loadedContent )
+              $html.removeClass("z-loading z-loading-failed")
             else
               console?.log "content coming later"
               loadHere.one "contentLoaded", ->
                 console?.log "content arrived"
                 loadHere.html( loadedContent )
+                $html.removeClass("z-loading z-loading-failed")
           target.removeClass("z-zooming-in")
           bindZoomIns()
   , 1
@@ -177,17 +181,23 @@ loadContent = (content, id) ->
   # Load content via AJAX and notify about it
   loadHere = content.children(".article-content").children(".load-article-here")
   console?.log "trying to load content"
-  $.ajax
+  ajax = $.ajax
     url: id
     error: ->
-      loadedContent = "<strong>Loading failed. Try refreshing? :(</strong>"
-      loadHere.trigger("contentLoaded")
-      console?.log "triggering contentLoaded on failure"
+      $html.addClass("z-loading-failed")
+      console?.log "loading content failed"
     success: (data) ->
       loadedContent = $(data).find(".article.z-current .load-article-here").html()
       loadHere.trigger("contentLoaded")
       console?.log "triggering contentLoaded"
     type: 'GET'
+
+reloadContent = ->
+  # Retry loading content via AJAX
+  ajax.abort()
+  currentZ = $(".z-current")
+  $html.removeClass("z-loading-failed")
+  loadContent( currentZ.children(".z-card"), currentZ.data("id") )
 
 cancelZoomIns = (zoomingIn) ->
   zoomingIn.each ->
@@ -217,6 +227,7 @@ cancelZoomIns = (zoomingIn) ->
 
     # Remove zoom ending stuff
     content.off "transitionend webkitTransitionEnd"
+    $html.removeClass("z-loading z-loading-failed")
 
     # Remove AJAX loading
     loadHere.off "contentLoaded"
@@ -256,12 +267,12 @@ zoomOut = ->
       currentZ.addClass("z-zooming-out").removeClass("z-loaded")
       flushContentFrom( currentZ )
       positionsToParent(currentZ, currentContent)
+      $html.removeClass("z-loading z-loading-failed")
 
       # If there's a zoomable parent, set it current and history to it
       if parentZ.length > 0
         parentZ.addClass("z-current")
         setHistoryToTarget(parentZ)
-
       # Else go to root
       else
         $html.removeClass("z-open")
@@ -366,3 +377,9 @@ $ ->
   zoomOutButton.on "click", (event) ->
     event.preventDefault()
     zoomOut()
+
+  #
+  # Bind retry
+
+  $(".load-button").on "click", ->
+    reloadContent()
