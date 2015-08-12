@@ -562,8 +562,8 @@ $article-card-zoom: 1.056;
 .tag-header {
   position: absolute;
   text-align: center;
-  left: 50%; bottom: 50%;
-  transform: translate(-50%, 50%);
+  left: 0; right: 0; bottom: 50%;
+  transform: translate(0, 50%);
   z-index: 2;
   transition: none $main-time*2 $main-easing;
   transition-property: left, bottom, transform;
@@ -796,9 +796,6 @@ $article-card-zoom: 1.056;
     color 0ms linear,
     transform $main-time*1.5 $main-easing $short-time
   ;
-  display: none;
-
-  .awesome & { display: block; }
 
   .z-open & {
     transform: translateY(0%);
