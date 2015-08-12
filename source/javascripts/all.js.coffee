@@ -129,23 +129,23 @@ zoomIn = (target, stateless = false) ->
           content.off "transitionend webkitTransitionEnd"
           target.addClass("z-visited z-loaded")
 
-          unless stateless
-            # Append content when it's loaded
-            if loadHere.length > 0
-              $html.addClass("z-loading")
-              if loadedContent
-                console?.log "content already here"
+          # Append content when it's loaded
+          if loadHere.length > 0
+            $html.addClass("z-loading")
+            if loadedContent
+              console?.log "content already here"
+              loadHere.html( loadedContent )
+              $html.removeClass("z-loading z-loading-failed")
+              bindZoomTos()
+            else
+              console?.log "content coming later"
+              loadHere.one "contentLoaded", ->
+                console?.log "content arrived"
                 loadHere.html( loadedContent )
                 $html.removeClass("z-loading z-loading-failed")
-              else
-                console?.log "content coming later"
-                loadHere.one "contentLoaded", ->
-                  console?.log "content arrived"
-                  loadHere.html( loadedContent )
-                  $html.removeClass("z-loading z-loading-failed")
+                bindZoomTos()
 
           target.removeClass("z-zooming-in")
-          bindZoomTos()
   , 1
 
 getParentPositions = (target) ->
