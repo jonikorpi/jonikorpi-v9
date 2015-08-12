@@ -4,7 +4,6 @@
 # Globals
 
 ajax = null
-targetContent = null
 loadedContent = false
 $html = $("html")
 
@@ -62,25 +61,50 @@ window.requestAnimFrame = do ->
 #
 # Zooming in
 
-zoomIn = (target) ->
-  console?.log "starting a zoomIn"
-
-  # Cancel ongoing zooms
-  zoomingIn = $(".z-zooming-in")
-  if zoomingIn.length > 0
-    cancelZoomIns(zoomingIn)
+zoomTo = (target, stateless = false) ->
+  console?.log "-----------------"
+  console?.log "starting a zoomTo"
 
   # Find pertinent elements
+  activeZoomables = $(".z-active")
+  parentZoomables = target.parents(".z")
+  activeNotParentZoomables = activeZoomables.not(parentZoomables).not(target)
+
+  # Statelessly zoomIn to parents that aren't zoomed in
+  parentZoomables.not(".z-active").each ->
+    zoomIn( $(@), true )
+
+  # zoomOut from non-parent active zoomables
+  activeNotParentZoomables.each ->
+    zoomOut( $(@), true )
+
+  # Statefully zoomIn to target
+  zoomIn( target, stateless )
+
+zoomToRoot = (stateless = false) ->
+  console.log "zooming to root"
+  activeZoomables = $(".z-active")
+  activeZoomables.each ->
+    zoomOut( $(@), true )
+  unless stateless
+    setHistoryToRoot()
+
+zoomIn = (target, stateless = false) ->
+  # Find pertinent elements
+  targetID = target.data("id")
   content = target.children(".z-card")
   loadHere = content.children(".article-content").children(".load-article-here")
+
+  console.log "zooming into #{targetID}"
 
   # AJAX-load more content, if needed
   if loadHere.length > 0
     loadedContent = false
     loadContent( content, target.data("id") )
 
-  # Set history
-  setHistoryToTarget(target)
+  unless stateless
+    # Set history
+    setHistoryToTarget(target)
 
   # Set positions to current location
   target.addClass("z-zooming-in")
@@ -94,31 +118,34 @@ zoomIn = (target) ->
     $html.addClass("z-open")
 
     # Set positions to 0 (zoom in)
-    targetContent = content
-    requestAnimFrame(positionsToZero)
+    positionsToZero(content)
 
     # After all positions have been transitioned, finish the zoom
     content.on "transitionend webkitTransitionEnd", (event) ->
       eName = event.originalEvent.propertyName
+
       if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
         if positionsMatchZero(content)
           content.off "transitionend webkitTransitionEnd"
           target.addClass("z-visited z-loaded")
-          # Append content when it's loaded
-          if loadHere.length > 0
-            $html.addClass("z-loading")
-            if loadedContent
-              console?.log "content already here"
-              loadHere.html( loadedContent )
-              $html.removeClass("z-loading z-loading-failed")
-            else
-              console?.log "content coming later"
-              loadHere.one "contentLoaded", ->
-                console?.log "content arrived"
+
+          unless stateless
+            # Append content when it's loaded
+            if loadHere.length > 0
+              $html.addClass("z-loading")
+              if loadedContent
+                console?.log "content already here"
                 loadHere.html( loadedContent )
                 $html.removeClass("z-loading z-loading-failed")
+              else
+                console?.log "content coming later"
+                loadHere.one "contentLoaded", ->
+                  console?.log "content arrived"
+                  loadHere.html( loadedContent )
+                  $html.removeClass("z-loading z-loading-failed")
+
           target.removeClass("z-zooming-in")
-          bindZoomIns()
+          bindZoomTos()
   , 1
 
 getParentPositions = (target) ->
@@ -160,7 +187,7 @@ positionsMatchParent = (content, target) ->
   else
     return false
 
-positionsToZero = ->
+positionsToZero = (targetContent) ->
   # Set positions to 0 (makes the zoom happen)
   targetContent.removeAttr("style")
   # targetContent.css
@@ -199,100 +226,54 @@ reloadContent = ->
   $html.removeClass("z-loading-failed")
   loadContent( currentZ.children(".z-card"), currentZ.data("id") )
 
-cancelZoomIns = (zoomingIn) ->
-  zoomingIn.each ->
-    console?.log "canceling a zoomIn"
-
-    # Find pertinent elements
-    target = $(@)
-    parent = target.parent().closest(".z-active")
-    content = target.children(".z-card")
-    loadHere = content.children(".article-content").children(".load-article-here")
-
-    # Cancel zooms stuff
-    target.removeClass("z-active z-current z-zooming-in z-loaded")
-    targetContent = content
-    requestAnimFrame(positionsToZero)
-
-    # Reverse parent-related stuff
-    if parent.length > 0
-      parent.addClass("z-current")
-      setHistoryToTarget(parent)
-    else
-      $html.removeClass("z-open")
-      setHistoryToRoot()
-
-    # Reset history to root
-    setHistoryToRoot()
-
-    # Remove zoom ending stuff
-    content.off "transitionend webkitTransitionEnd"
-    $html.removeClass("z-loading z-loading-failed")
-
-    # Remove AJAX loading
-    loadHere.off "contentLoaded"
-    endedOpeningTransitions = []
-
-bindZoomIns = ->
+bindZoomTos = ->
   links = $("a[href^='/']").not(".zoom-out")
   links.off "click"
   links.on "click", (event) ->
     event.preventDefault()
     target = $(@).attr("href")
-    zoomIn( $("[data-id='#{target}']") )
+    zoomTo( $("[data-id='#{target}']") )
 
 #
-# Zooming out
+# zooming out
 
-zoomOut = ->
-  zoomingIn = $(".z-zooming-in")
+zoomOut = (target, stateless = false) ->
+  if target.length > 0
+    # Find pertinent elements
+    targetID = target.data("id")
+    content = target.children(".z-card")
+    parents = target.parent().closest(".z-active")
 
-  # If there's a zoom going on, cancel it
-  if zoomingIn.length > 0
-    console?.log "there are zooms going on -> not zooming out"
-    cancelZoomIns(zoomingIn)
+    if parents.length > 0
+      parentZ = parents
+    else
+      parentZ = $("#root")
+      parentIsRoot = true
 
-  # Otherwise, zoom out
-  else
-    # If there's anything to zoom out from…
-    currentZ = $(".z-current")
-    if currentZ.length > 0
-      console?.log "zooming out"
-      # Find pertinent elements
-      currentContent = currentZ.children(".z-card")
-      parentZ = currentZ.parent().closest(".z-active")
+    console?.log "zooming out from #{targetID}"
 
-      # Scroll up, flush content & start zooming out
-      currentContent.scrollTop(0)
-      currentZ.addClass("z-zooming-out").removeClass("z-loaded")
-      flushContentFrom( currentZ )
-      positionsToParent(currentZ, currentContent)
-      $html.removeClass("z-loading z-loading-failed")
+    # Scroll up, flush content & start zooming out
+    content.scrollTop(0)
+    target.addClass("z-zooming-out").removeClass("z-loaded")
+    flushContentFrom( target )
+    positionsToParent(target, content)
+    $html.removeClass("z-loading z-loading-failed")
 
-      # If there's a zoomable parent, set it current and history to it
-      if parentZ.length > 0
+    unless stateless
+      if parentIsRoot
+        setHistoryToRoot()
+      else
         parentZ.addClass("z-current")
         setHistoryToTarget(parentZ)
-      # Else go to root
-      else
-        $html.removeClass("z-open")
-        setHistoryToRoot()
 
-      # After the transition ends, end zooming
-      currentContent.on "transitionend webkitTransitionEnd", (event) ->
-        eName = event.originalEvent.propertyName
-        if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
-          if positionsMatchParent(currentContent, currentZ)
-            endZoomOut(currentZ, currentContent)
-    else
-      console?.log "nothing to zoom out from"
-
-endZoomOut = (currentZ, currentContent) ->
-  console?.log "ending zoomOut"
-  targetContent = currentContent
-  positionsToZero()
-  currentZ.removeClass("z-active z-current z-zooming-out")
-  currentContent.off "transitionend webkitTransitionEnd"
+    # After the transition ends, end zooming
+    content.on "transitionend webkitTransitionEnd", (event) ->
+      eName = event.originalEvent.propertyName
+      if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
+        if positionsMatchParent(content, target)
+          positionsToZero(content)
+          target.removeClass("z-active z-current z-zooming-out")
+          content.off "transitionend webkitTransitionEnd"
 
 flushContentFrom = (target) ->
   console?.log "flushing content"
@@ -304,9 +285,9 @@ flushContentFrom = (target) ->
 #
 # Set history to target
 setHistoryToTarget = (target) ->
-  console?.log "setting history to target"
   title = target.data("title")
   targetID = target.data("id")
+  console?.log "setting history to #{targetID} and #{title}"
   history.pushState({ "targetID" : targetID }, title, targetID)
   document.title = title
 
@@ -330,20 +311,23 @@ $ ->
 
   if $(".z-current").length > 0
     activeZ = $(".z-current")
-    activeZTitle = activeZ.data("title")
-    activeZID = activeZ.data("id")
-    console?.log "setting history to #{activeZID} & #{activeZTitle}"
-    history.replaceState({ "targetID" : activeZID }, document.title, activeZID)
   else
-    activeZTitle = document.title
-    activeZID = "/"
+    activeZ = $("#root")
+
+  activeZTitle = activeZ.data("title")
+  activeZID = activeZ.data("id")
+  console?.log "setting history to #{activeZID} & #{activeZTitle}"
+  history.replaceState({ "targetID" : activeZID }, document.title, activeZID)
 
   $(window).on "popstate", (event) ->
     targetID = event.originalEvent.state.targetID
     if event.originalEvent.state && targetID
-      # unless targetID == "/"
-      console?.log "setting history to #{targetID}"
-      zoomIn( $("[data-id='#{targetID}']") )
+      target = $("[data-id='#{targetID}']")
+      console?.log "history-zooming to #{targetID}"
+      if target.attr("id") == "root"
+        zoomToRoot(true)
+      else
+        zoomTo(target, true)
 
   #
   # Fastclick
@@ -357,9 +341,9 @@ $ ->
     $(@).trigger("hover")
 
   #
-  # Bind zoomIn links
+  # Bind zoomTo links
 
-  bindZoomIns()
+  bindZoomTos()
 
   #
   # Bind zoom out
@@ -369,14 +353,14 @@ $ ->
   $(document).on "keyup", (event) ->
     if event.keyCode == 27
       zoomOutButton.addClass("hover")
-      zoomOut()
+      zoomOut( $(".z-current") )
       window.setTimeout ->
         zoomOutButton.removeClass("hover")
-      , 85
+      , 100
 
   zoomOutButton.on "click", (event) ->
     event.preventDefault()
-    zoomOut()
+    zoomOut( $(".z-current") )
 
   #
   # Bind retry
