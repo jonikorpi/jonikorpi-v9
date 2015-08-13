@@ -40,12 +40,9 @@ get = ((a) ->
 #
 # Feature tests
 
-console?.log("Viewport Units supported? " + feature.viewportUnits)
-console?.log("History API supported? " + feature.historyAPI)
-console?.log("CSS 3D transforms supported? " + feature.css3Dtransforms)
 console?.log "Motion enabled? " + get["disablemotion"]
 
-if !feature.historyAPI || get["disablemotion"]
+if !feature.historyAPI || !feature.cssTransform || !feature.cssTransition || !feature.css3Dtransform || get["disablemotion"]
   console?.log("Browser doesn't support one of the features needed, stopping…")
   return
 else
