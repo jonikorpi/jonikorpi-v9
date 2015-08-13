@@ -9,16 +9,16 @@ nav.grid.home-grid#root data-id="/" data-title=("Joni Korpi")
 
   header.masthead.no-margins
     .masthead-wrapper
-      = image_tag "avatar.png", class: "avatar"
+      / = image_tag "avatar.png", class: "avatar"
       h1.name Joni Korpi
       span.title.mono Web Designer
-      .links
-        = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
-        = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
+      / .links
+      /   = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
+      /   = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
   
   section.new
     / New posts
-    - articles = sitemap.where(:tags.include => "New Work").order_by(date: :desc).all
+    - articles = sitemap.where(:tags.include => "new").order_by(date: :desc).all
     - articles.each do |article|
       = partial "article", :locals => {:article => article, :size => articles.size}
 
