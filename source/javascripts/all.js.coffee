@@ -83,7 +83,9 @@ zoomToRoot = (stateless = false) ->
   activeZoomables = $(".z-active")
   activeZoomables.each ->
     zoomOut( $(@), true )
-  unless stateless
+  if stateless
+    document.title = $("#root").data("title")
+  else
     setHistoryToRoot()
   $html.removeClass("z-open")
 
@@ -100,7 +102,9 @@ zoomIn = (target, stateless = false) ->
     loadedContent = false
     loadContent( content, target.data("id") )
 
-  unless stateless
+  if stateless
+    document.title = target.data("title")
+  else
     # Set history
     setHistoryToTarget(target)
 
@@ -257,7 +261,9 @@ zoomOut = (target, stateless = false) ->
     positionsToParent(target, content)
     $html.removeClass("z-loading z-loading-failed")
 
-    unless stateless
+    if stateless
+      document.title = target.data("title")
+    else
       if parentIsRoot
         setHistoryToRoot()
         $html.removeClass("z-open")
@@ -298,6 +304,7 @@ setHistoryToRoot = ->
   title = $("#root").data("title")
   history.pushState({ "targetID" : "/" }, title, "/")
   document.title = title
+
 
 
 #
