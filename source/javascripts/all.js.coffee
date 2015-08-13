@@ -85,6 +85,7 @@ zoomToRoot = (stateless = false) ->
     zoomOut( $(@), true )
   unless stateless
     setHistoryToRoot()
+  $html.removeClass("z-open")
 
 zoomIn = (target, stateless = false) ->
   # Find pertinent elements
@@ -259,6 +260,7 @@ zoomOut = (target, stateless = false) ->
     unless stateless
       if parentIsRoot
         setHistoryToRoot()
+        $html.removeClass("z-open")
       else
         parentZ.addClass("z-current")
         setHistoryToTarget(parentZ)
