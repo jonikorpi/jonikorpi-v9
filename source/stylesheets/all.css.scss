@@ -16,6 +16,9 @@ $tags-height:     100% - $masthead-height - $new-height;
 $tags-height-s:   100% - $masthead-height - $new-height-s;
 
 $card-padding: 3.4%;
+$card-border-width: 3px;
+$card-border-width-visited: $card-border-width / 2;
+$card-border-radius: $card-border-width;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     cubic-bezier(0.618, 0.000, 0.236, 1.000);
@@ -391,11 +394,11 @@ body {
 .z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: 4px solid transparent;
+  border: $card-border-width solid transparent;
   will-change: contents, left, top, right, bottom, transform;
   // transform: translate3d(1, 1, 1);
   transform-style: preserve-3d;
-  border-radius: 2px;
+  border-radius: $card-border-radius;
   transition:
     border $short-time*0.5 $main-easing,
     transform $main-time $main-easing,
@@ -454,7 +457,7 @@ $article-card-zoom: 1.056;
   // -webkit-filter: grayscale(100%) brightness(61.8%);
   //         filter: grayscale(100%) brightness(61.8%);
   border-color: $card-border;
-  border-width: 2px;
+  border-width: $card-border-width-visited;
 }
 
 .article > .z-card {
