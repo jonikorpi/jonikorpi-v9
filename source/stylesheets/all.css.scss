@@ -16,7 +16,7 @@ $tags-height:     100% - $masthead-height - $new-height;
 $card-padding: 3.4%;
 
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
-$reverse-easing:     $main-easing;
+$reverse-easing:     cubic-bezier(0.618, 0.000, 0.236, 1.000);
 $loop-easing:        ease-in-out;
 $zoomEffects-easing: cubic-bezier(0.000, 0.000, 0.854, 1.000);
 
@@ -449,6 +449,11 @@ body {
 
   .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
+    transition:
+      all $main-time $main-easing,
+      top $main-time $main-easing $short-time,
+      bottom $main-time $main-easing $short-time
+    ;
   }
 
   .z-loaded > & {
