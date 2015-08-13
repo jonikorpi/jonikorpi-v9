@@ -444,12 +444,11 @@ body {
   }
 
   .z-zooming-in > & {
-    // transform: scale(0.764);
+
   }
 
   .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
-    // transform: scale(0.764);
   }
 
   .z-loaded > & {
@@ -755,7 +754,7 @@ $article-card-zoom: 1.056;
 // Zoom out
 
 .zoom-out {
-  position: fixed;
+  position: absolute;
   left: $line * 0.5; bottom: $line * 0.5;
   z-index: 100;
   padding: $line * 0.375 $line * 0.5;
