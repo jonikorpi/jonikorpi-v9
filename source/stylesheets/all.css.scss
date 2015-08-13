@@ -541,33 +541,30 @@ $article-card-zoom: 1.056;
   position: absolute;
   text-align: center;
   left: 0; right: 0; bottom: 50%;
+  will-change: bottom;
   transform: translate(0, 50%);
   z-index: 2;
-  transition: none $main-time*2 $main-easing;
-  transition-property: left, bottom, transform;
+  transition: bottom $main-time*2 $main-easing;
   font-size: 2.618rem;
-  line-height: $line*2.5;
+  line-height: $line * 2.75;
+  white-space: nowrap;
   color: $highlight;
 
   @media (max-width: #{$l}) {
     font-size: 2rem;
-    line-height: $line*2;
   }
 
   @media (max-width: #{$m}) {
     font-size: 1.618rem;
-    line-height: $line*1.5;
   }
 
   @media (max-width: #{$xs}) {
     font-size: 1rem;
-    line-height: $line;
   }
 
   .tag.z-active:not(.z-zooming-out) & {
     bottom: $line * 2.75 * 0.5;
     // left: $line * 4;
-    line-height: $line * 2.75;
   }
 }
 
