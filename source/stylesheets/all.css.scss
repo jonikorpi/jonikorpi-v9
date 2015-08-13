@@ -28,57 +28,48 @@ $loop-time: 6000ms;
 // Hues
 
 $hue: 45;
+$hue-increment: 1.618;
 
-$hue-xxxxx-high: $hue + (360 * 0.979);
-$hue-xxxx-high: $hue + (360 * 0.965);
-$hue-xxx-high: $hue + (360 * 0.944);
-$hue-xx-high: $hue + (360 * 0.91);
-$hue-x-high: $hue + (360 * 0.854);
-$hue-high:  $hue + (360 * 0.764);
+$hue-1:  $hue + (360/$hue-increment) *  1;
+$hue-2:  $hue + (360/$hue-increment) *  2;
+$hue-3:  $hue + (360/$hue-increment) *  3;
+$hue-4:  $hue + (360/$hue-increment) *  4;
+$hue-5:  $hue + (360/$hue-increment) *  5;
+$hue-6:  $hue + (360/$hue-increment) *  6;
+$hue-7:  $hue + (360/$hue-increment) *  7;
+$hue-8:  $hue + (360/$hue-increment) *  8;
+$hue-9:  $hue + (360/$hue-increment) *  9;
+$hue-10: $hue + (360/$hue-increment) * 10;
+$hue-11: $hue + (360/$hue-increment) * 11;
+$hue-12: $hue + (360/$hue-increment) * 12;
+$hue-13: $hue + (360/$hue-increment) * 13;
 
-$hue-quarter-high: $hue + (360 * 0.75);
-$hue-golden-high:  $hue + (360 * 0.618);
-$hue-sqrt-high:    $hue + (360 * 0.586);
-
-$hue-opposite:     $hue + (360 * 0.5);
-
-$hue-sqrt-low:     $hue + (360 * 0.414);
-$hue-golden-low:   $hue + (360 * 0.382);
-$hue-quarter-low:  $hue + (360 * 0.25);
-
-$hue-low:   $hue + (360 * 0.236);
-$hue-x-low:  $hue + (360 * 0.146);
-$hue-xx-low:  $hue + (360 * 0.09);
-$hue-xxx-low:  $hue + (360 * 0.056);
-$hue-xxxx-low:  $hue + (360 * 0.034);
-$hue-xxxxx-low:  $hue + (360 * 0.021);
-
-$background:      hsl($hue-golden-high, 50%, 23.6%);
-$off-background:  hsl($hue-golden-high, 23.6%, 14.6%);
-$card-background: hsl($hue-golden-high, 50%, 9%);
+$background:      hsl($hue-1, 50%, 23.6%);
+$off-background:  hsl($hue-1, 23.6%, 14.6%);
+$card-background: hsl($hue-1, 50%, 9%);
 
 $bright: hsl($hue, 23.6%, 76.4%);
 $body:   hsl($hue, 5.6%, 61.8%);
 $dim:    hsl($hue, 3.4%, 50%);
 
-$purple-bright: hsl($hue-golden-high, 23.6%, 76.4%);
-$purple-body:   hsl($hue-golden-high, 14.6%, 61.8%);
-$purple-dim:    hsl($hue-golden-high, 9%, 50%);
+$purple-bright: hsl($hue-1, 23.6%, 76.4%);
+$purple-body:   hsl($hue-1, 14.6%, 61.8%);
+$purple-dim:    hsl($hue-1, 9%, 50%);
 
-$yellow: hsl($hue,          41.4%, 50%);
-$orange: hsl($hue-xxx-high, 41.4%, 50%);
-$red:    hsl($hue-x-high,   38.2%, 50%);
-$blue:   hsl($hue-opposite, 61.8%, 61.8%);
-$cyan:   hsl($hue-sqrt-low, 38.2%, 50%);
-$green:  hsl($hue-low,      23.6%, 50%);
-$purple: hsl($hue-golden-high, 50%, 66.6%);
+$yellow: hsl($hue,   41.4%, 50%);
+$orange: hsl($hue-8, 41.4%, 50%);
+$red:    hsl($hue-3, 38.2%, 50.0%);
+$blue:   hsl($hue-4, 61.8%, 61.8%);
+$cyan:   hsl($hue-7, 38.2%, 50.0%);
+$green:  hsl($hue-2, 23.6%, 50.0%);
+$purple: hsl($hue-1, 50.0%, 66.6%);
 
-$shadow:      hsl($hue-golden-high, 50%, 5.6%);
-$border:      hsl($hue-golden-high, 14.6%, 33.3%);
+$shadow:      hsl($hue-1, 50%, 5.6%);
+$border:      hsl($hue-1, 14.6%, 33.3%);
 
 $highlight: hsl($hue, 76.4%, 61.8%);
-$purple-highlight: hsl($hue-golden-high, 38.2%, 50%);
-$blue-highlight: hsl($hue-opposite, 91%, 66.6%);
+$purple-highlight: hsl($hue-1, 38.2%, 50%);
+$blue-highlight: hsl($hue-4, 91%, 66.6%);
 
 $card-fence: $blue-highlight;
 $card-highlight: $blue-highlight;
@@ -165,11 +156,11 @@ a {
   text-decoration: none;
 
   &:hover {
-    color: hsl($hue-golden-high, 85.4%, 61.8%);
+    color: hsl($hue-1, 85.4%, 61.8%);
   }
 
   &:active {
-    color: hsl($hue-quarter-low, 85.4%, 61.8%);
+    color: hsl($hue-4, 85.4%, 61.8%);
   }
 }
 
@@ -400,18 +391,14 @@ body {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   margin: 0;
-  // transition: border $short-time $main-easing;
   z-index: 3;
-  // border: 2px solid transparent;
-  // animation: anchorGlow $main-time*10 $main-easing infinite;
-  // background-image: linear-gradient(to bottom, rgba($purple-highlight, 0.236) 0%, rgba($purple-highlight, 0) 100%);
 
   .z-visited & {
-    // background-color: hsla($hue-golden-high, 38.2%, 5.6%, 0.236);
+
   }
 
   &:hover {
-    // border-color: $highlight;
+
   }
 
   .z-current > .z-card > &,
@@ -420,15 +407,6 @@ body {
     display: none;
   }
 }
-
-// @keyframes anchorGlow {
-//   0% {
-//     background-position: left top;
-//   }
-//   100% {
-//     background-position: left 100%;
-//   }
-// }
 
 //
 // All cards
