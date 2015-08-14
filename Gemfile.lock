@@ -151,4 +151,5 @@ DEPENDENCIES
   redcarpet
   slim
   tzinfo-data
+  uglifier
   wdm (~> 0.1.0)

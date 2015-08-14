@@ -9,6 +9,7 @@ gem 'middleman-autoprefixer', '~> 2.5.0'
 gem "middleman-syntax"
 gem "redcarpet"
 gem "slim"
+gem "uglifier"
 
 # Live-reloading plugin
 gem "middleman-livereload", "~> 3.1.0"
