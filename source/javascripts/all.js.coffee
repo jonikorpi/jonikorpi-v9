@@ -272,12 +272,13 @@ zoomOut = (target, stateless = false) ->
         setHistoryToTarget(parentZ)
 
     # After the transition ends, end zooming
+    content.off "transitionend webkitTransitionEnd"
     content.on "transitionend webkitTransitionEnd", (event) ->
       eName = event.originalEvent.propertyName
       if eName == "left" || eName == "top" || eName == "right" || eName == "bottom"
         if positionsMatchParent(content, target)
           positionsToZero(content)
-          target.removeClass("z-active z-current z-zooming-out")
+          target.removeClass("z-active z-current z-zooming-out z-zooming-in")
           content.off "transitionend webkitTransitionEnd"
 
 flushContentFrom = (target) ->
