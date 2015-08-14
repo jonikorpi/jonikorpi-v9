@@ -73,7 +73,7 @@ $green:  hsl($hue-2, 23.6%, 50.0%);
 $purple: hsl($hue-1, 50.0%, 66.6%);
 
 $shadow:      hsl($hue-1, 50%, 5.6%);
-$border:      hsl($hue-1, 23.6%, 33.3%);
+$border:      hsl($hue-1, 9%, 50%);
 
 $highlight: hsl($hue, 76.4%, 61.8%);
 $purple-highlight: hsl($hue-1, 38.2%, 50%);
@@ -447,8 +447,6 @@ body {
 //
 // Article cards
 
-
-
 .article {
 
 }
@@ -462,7 +460,6 @@ body {
 
 .article > .z-card {
   background: $card-background;
-  overflow: hidden;
   transform: scale($card-zoom) rotateZ(1.8deg);
   border-color: $card-glow;
 
@@ -470,16 +467,60 @@ body {
     border-color: $card-highlight;
     transform: scale($card-zoom-more) rotateZ(1.8deg);
   }
+
+  .new &:before,
+  .new &:after {
+    display: block;
+    position: absolute;
+    left: 0; top: $line * -0.5; right: 0;
+    width: $line*1.75;
+    margin: auto;
+    transition:
+      transform $short-time $main-easing,
+      visibility 0ms linear
+    ;
+  }
+
+  .new &:before {
+    content: "";
+    border-style: solid;
+    border-color: inherit;
+    border-width: $line*0.5 0;
+    border-radius: $card-border-radius;
+  }
+
+  .new &:after {
+    content: "NEW";
+    @include mono;
+    color: $card-background;
+    text-align: center;
+    text-indent: -0.1em;
+    letter-spacing: -1px;
+    font-size: 0.91rem;
+    line-height: $line*0.91;
+  }
 }
 
 .article.z-active > .z-card {
   transform: none;
-  // -webkit-filter: none;
-  //         filter: none;
+}
+
+.article.z-zooming-in > .z-card,
+.article.z-loaded > .z-card {
+  .new &:before,
+  .new &:after {
+    transform: scaleY(0);
+  }
+}
+
+.about .z-card:before,
+.about .z-card:after {
+  display: none !important;
 }
 
 .article.z-loaded > .z-card {
   border-radius: 0;
+  overflow: hidden;
 }
 
 .z-scrollable.z-loaded > .z-card {
