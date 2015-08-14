@@ -20,6 +20,9 @@ $card-border-width: 3px;
 $card-border-width-visited: $card-border-width;
 $card-border-radius: $card-border-width;
 
+$card-zoom: 1.056;
+$card-zoom-more: 1.09;
+
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     cubic-bezier(0.618, 0.000, 0.236, 1.000);
 $loop-easing:        ease-in-out;
@@ -362,10 +365,6 @@ body {
   }
 }
 
-.z-active.z-active {
-  position: static;
-}
-
 //
 // Anchors
 
@@ -448,12 +447,10 @@ body {
 //
 // Article cards
 
-$article-card-zoom: 1.056;
+
 
 .article {
-  &:nth-child(2n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
-  &:nth-child(3n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
-  &:nth-child(5n) > .z-card { transform: scale($article-card-zoom) rotateZ(1.8deg); }
+
 }
 
 .article.z-visited .z-card {
@@ -466,11 +463,12 @@ $article-card-zoom: 1.056;
 .article > .z-card {
   background: $card-background;
   overflow: hidden;
-  transform: scale($article-card-zoom) rotateZ(1.8deg);
+  transform: scale($card-zoom) rotateZ(1.8deg);
   border-color: $card-glow;
 
   &:hover {
     border-color: $card-highlight;
+    transform: scale($card-zoom-more) rotateZ(1.8deg);
   }
 }
 
@@ -497,7 +495,10 @@ $article-card-zoom: 1.056;
 }
 
 .tag:not(.z-active) > .z-card:hover {
-  .z-card { border-color: $card-highlight; }
+  .z-card {
+    border-color: $card-highlight;
+    transform: scale($card-zoom-more) rotateZ(1.8deg);
+  }
 }
 
 .tag.z-active > .z-card {
