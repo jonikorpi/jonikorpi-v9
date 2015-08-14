@@ -14,8 +14,8 @@ html lang="en" class="#{page_classes} #{z_open_class}"
 
     = stylesheet_link_tag "all"
 
-    /![if lt IE 9]
-      = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"
+    /[if lt IE 9]
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
 
     = favicon_tag image_url("avatar.png")
     = favicon_tag image_url("avatar.png"), rel: "apple-touch-icon", type: "image/png"
