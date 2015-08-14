@@ -2,12 +2,18 @@
 - blog.articles.each do |article|
   - if article.title == current_page.data.title
     - z_open_class += " z-open"
+- if current_page.data.tagPage
+  - z_open_class = "z-open"
 
 doctype html
 html lang="en" class="#{page_classes} #{z_open_class}"
   head
     meta charset="utf-8"
-    title= data.page.title
+    
+    - if current_page.data.tagPage
+      title= yield_content(:tagName)
+    - else
+      title= data.page.title
 
     meta name='viewport' content='width=device-width, initial-scale=1.0'
     meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"

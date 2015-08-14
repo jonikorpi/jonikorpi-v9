@@ -6,6 +6,7 @@
 
 - classes = "size-#{tagAmount} "
 - classes += "z-active z-loaded " if containsActiveArticle
+- classes += "z-active z-loaded z-current" if yield_content(:tagName) == tag
 
 section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
   .z-card
