@@ -733,15 +733,16 @@ body {
   .z-open & {
     transform: translateY(0%);
     transition:
-      all $short-time*0.25 $main-easing,
-      transform $main-time*1.5 $main-easing $main-time,
+      background 0ms linear,
+      color 0ms linear,
+      transform $main-time*1.5 $main-easing $main-time*2
     ;
   }
 
   &.hover,
   &:hover {
-    background: $blue-highlight;
-    color: $background;
+    background: $purple-highlight;
+    color: $bright;
   }
 }
 
