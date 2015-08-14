@@ -15,6 +15,8 @@ $new-height-s:    20%;
 $tags-height:     100% - $masthead-height - $new-height;
 $tags-height-s:   100% - $masthead-height - $new-height-s;
 
+$edge-gap: $line * 0.5;
+
 $card-padding: 3.4%;
 $card-border-width: 3px;
 $card-border-width-visited: $card-border-width;
@@ -26,7 +28,6 @@ $card-zoom-more: 1.09;
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     cubic-bezier(0.618, 0.000, 0.236, 1.000);
 $loop-easing:        ease-in-out;
-$zoomEffects-easing: cubic-bezier(0.000, 0.000, 0.854, 1.000);
 
 $main-time: 262ms;
 $short-time: 162ms;
@@ -125,7 +126,9 @@ html {
 
 .mono,
 code, pre,
-a:after {
+a:after,
+.z-card:before,
+.z-card:after {
   @include mono;
 }
 
@@ -162,14 +165,6 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-
-  &:hover {
-    color: hsl($hue-1, 85.4%, 61.8%);
-  }
-
-  &:active {
-    color: hsl($hue-4, 85.4%, 61.8%);
-  }
 }
 
 hr {
@@ -195,14 +190,6 @@ code {
 }
 
 .centered-translate { @include centered-translate; }
-
-@mixin centered-margin {
-  position: absolute;
-  left: 0; top: 0; bottom: 0; right: 0;
-  margin: auto;
-}
-
-.centered-margin { @include centered-margin; }
 
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
@@ -234,16 +221,6 @@ body {
   }
 }
 
-@keyframes inFromTop {
-  0%, 33% { transform: translateY(-200%); }
-  100%    { transform: none; }
-}
-
-@keyframes inFromBottom {
-  0%, 33% { transform: translateY(200%); }
-  100%    { transform: none; }
-}
-
 .tags {
   height: $tags-height;
   padding: $card-padding*0.5;
@@ -256,6 +233,16 @@ body {
   }
 }
 
+@keyframes inFromTop {
+  0%, 33% { transform: translateY(-200%); }
+  100%    { transform: none; }
+}
+
+@keyframes inFromBottom {
+  0%, 33% { transform: translateY(200%); }
+  100%    { transform: none; }
+}
+
 .grid {
   margin: 0;
   position: absolute;
@@ -266,9 +253,6 @@ body {
   perspective: 1000px;
   perspective: 100vw;
   perspective-origin: 50% 50%;
-  // animation: inFromBottom $main-time*2 $main-easing;
-  //
-  // .index & { animation: none; }
 }
 
 //
@@ -309,10 +293,6 @@ body {
   position: relative;
   height: 100%;
   float: left;
-
-  // &:hover {
-  //   z-index: 2;
-  // }
 }
 
 .z-active,
@@ -338,18 +318,21 @@ body {
 .tag.size-6 { width: 16.6%; height: 100%; }
 
 @media (orientation: portrait) {
-  .size-1, .size-2 { width: 50%;   }
+  .size-1,
+  .size-2 { width: 50%;   }
   .size-3 { width: 33.3%; }
   .size-4 { width: 25%;   height: 100%; }
   .size-5 { width: 20%;   height: 100%; }
   .size-6 { width: 16.6%; height: 100%; }
 
   .tag.z-active {
-    .size-1, .size-2, .size-3, .size-4 { width: 50%;   height: 50%;}
-    .size-5, .size-6          { width: 33.3%; height: 50%; }
+    .size-1, .size-2,
+    .size-3, .size-4 { width: 50%;   height: 50%; }
+    .size-5, .size-6 { width: 33.3%; height: 50%; }
   }
 
-  .tag.size-1, .tag.size-2 { width: 100%;  height: 50%;}
+  .tag.size-1,
+  .tag.size-2 { width: 100%;  height: 50%;}
   .tag.size-3 { width: 100%;  height: 33.3%;}
   .tag.size-4 { width: 100%;  height: 25%;}
   .tag.size-5 { width: 100%;  height: 20%;}
@@ -375,14 +358,6 @@ body {
   margin: 0;
   z-index: 3;
 
-  .z-visited & {
-
-  }
-
-  &:hover {
-
-  }
-
   .z-current > .z-card > &,
   .z-zooming-in &,
   .z-zooming-out & {
@@ -398,7 +373,6 @@ body {
   left: 0; top: 0; right: 0; bottom: 0;
   border: $card-border-width solid transparent;
   will-change: contents, left, top, right, bottom, transform;
-  // transform: translate3d(1, 1, 1);
   transform-style: preserve-3d;
   border-radius: $card-border-radius;
   transition:
@@ -425,10 +399,6 @@ body {
     border-color: $card-fence !important;
   }
 
-  .z-zooming-in > & {
-
-  }
-
   .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
     transition:
@@ -452,8 +422,6 @@ body {
 }
 
 .article.z-visited .z-card {
-  // -webkit-filter: grayscale(100%) brightness(61.8%);
-  //         filter: grayscale(100%) brightness(61.8%);
   border-color: $card-border;
   border-width: $card-border-width-visited;
 }
@@ -491,7 +459,6 @@ body {
 
   .new &:after {
     content: "NEW";
-    @include mono;
     color: $card-background;
     text-align: center;
     text-indent: -0.1em;
@@ -553,10 +520,6 @@ body {
   .tag.z-active:not(.z-zooming-out) > .z-card & {
     padding: $card-padding*2 $card-padding;
   }
-
-  .tag.z-zooming-out > .z-card & {
-
-  }
 }
 
 //
@@ -589,23 +552,15 @@ body {
 
   .tag.z-active:not(.z-zooming-out) & {
     bottom: $line * 2.75 * 0.5;
-    // left: $line * 4;
   }
 }
 
 .tag-title {
   font-weight: bold;
-  // font-style: italic;
   transition: all $main-time $main-easing;
-  // white-space: nowrap;
-  // padding: 0 23.6%;
 
   .tag.z-active & {
     color: $bright;
-  }
-
-  .tag.z-active:not(.z-zooming-out) > .z-card > .tag-header & {
-    // transform: scale(2);
   }
 }
 
@@ -622,46 +577,24 @@ body {
   line-height: $line*1.25;
   padding: $line;
 
-  // .article.z-active:not(.z-zooming-out) & {
-  //   font-size: 3rem;
-  //   line-height: $line*3;
-  // }
-
   @media (max-width: #{$l}) {
     font-size: 1rem;
     line-height: $line;
     padding: $line*0.5;
-
-    // .article.z-active:not(.z-zooming-out) & {
-    //   font-size: 2rem;
-    //   line-height: $line*2;
-    // }
   }
 
   @media (max-width: #{$m}) {
     font-size: 0.91rem;
     line-height: $line;
-
-    // .article.z-active:not(.z-zooming-out) & {
-    //   font-size: 1.236rem;
-    //   line-height: $line*1.25;
-    // }
   }
 }
 
 .article-title {
   color: $highlight;
   transition: all $main-time $main-easing;
-  // white-space: nowrap;
-  // padding-right: 41.4%;
 
   .article.z-active & {
     color: $bright;
-    // transform: scale(1.618);
-  }
-
-  .article.z-visited & {
-    // color: $bright;
   }
 
   .z .z & {
@@ -676,12 +609,10 @@ body {
 .article-cover {
   position: relative;
   height: 100%;
-  transition: all $main-time*2 $main-easing;
-  // will-change: transform;
   margin: 0;
 
   .z-scrollable.z-loaded & {
-    // transform: translateY(-38.2vh);
+
   }
 }
 
@@ -781,16 +712,16 @@ body {
 
 .zoom-out {
   position: absolute;
-  left: $line * 0.5; bottom: $line * 0.5;
+  left: $edge-gap; bottom: $edge-gap;
   z-index: 100;
-  padding: $line * 0.375 $line * 0.5;
-  border-radius: $line * 0.25;
-  box-shadow: 0 0 $line*0.25 $shadow;
+  padding: $line * 0.35 $line * 0.5 $line * 0.4;
+  border-radius: $card-border-radius;
+  border: 1px solid $card-background;
   background: $bright;
   color: $background;
   line-height: 1;
-  margin: 0;
   transform: translateY(200%);
+  will-change: transform, color, background;
   transition:
     background 0ms linear,
     color 0ms linear,
@@ -828,24 +759,31 @@ body {
 .load-dialog {
   z-index: 99;
   position: absolute;
-  left: $line*4; right: 0; bottom: 0;
+  margin-left: $line*4; right: 0; bottom: 0;
+  border-radius: $card-border-radius;
   text-align: center;
-  padding: $line;
+  padding: $edge-gap $edge-gap*1.5;
   text-align: right;
-  transform: translateX(100%);
+  transform: translateX(150%);
   visibility: hidden;
   transition:
-    transform $main-time*2 $main-easing,
+    transform $main-time*2 $reverse-easing,
     visibility 0ms linear $main-time*2
   ;
+  background: $off-background;
+  border-top: 1px solid $blue;
 
   .z-loading & {
     transform: none;
     visibility: visible;
     transition:
-      transform $main-time $main-easing $main-time*2,
+      transform $main-time $main-easing $main-time*4,
       visibility 0ms linear
     ;
+  }
+
+  .z-loading-failed & {
+    border-color: $red;
   }
 }
 
@@ -854,6 +792,7 @@ body {
   vertical-align: top;
   overflow: hidden;
   font-style: italic;
+  margin-right: $line*0.375;
 }
 
 .load-message {
@@ -864,7 +803,6 @@ body {
 
 .fail-message {
   color: $red;
-  margin-left: $line*0.5;
   display: none;
 
   .z-loading-failed & {
@@ -873,7 +811,6 @@ body {
 }
 
 .load-button {
-  margin-left: $line*0.5;
   color: $blue;
   outline: none;
 
