@@ -87,7 +87,7 @@ zoomToRoot = (stateless = false) ->
     document.title = $("#root").data("title")
   else
     setHistoryToRoot()
-  $html.removeClass("z-open")
+  $html.removeClass("z-open z-loading z-loading-failed")
 
 zoomIn = (target, stateless = false) ->
   # Find pertinent elements
@@ -266,7 +266,7 @@ zoomOut = (target, stateless = false) ->
     else
       if parentIsRoot
         setHistoryToRoot()
-        $html.removeClass("z-open")
+        $html.removeClass("z-open z-loading z-loading-failed")
       else
         parentZ.addClass("z-current")
         setHistoryToTarget(parentZ)
