@@ -38,11 +38,28 @@ get = ((a) ->
 )(window.location.search.substr(1).split('&'))
 
 #
+# Bind motion disabling/enabling
+
+motionDisabled = Cookies.get("motionDisabled")
+
+if motionDisabled == "yes"
+  $html.addClass("motion-disabled")
+
+$ ->
+  $(".enable-motion").on "click", ->
+    Cookies.set("motionDisabled", "no")
+    location.reload(true)
+
+  $(".disable-motion").on "click", ->
+    Cookies.set("motionDisabled", "yes")
+    location.reload(true)
+
+#
 # Feature tests
 
-console?.log "Motion enabled? " + get["disablemotion"]
+console?.log "Motion disabled: " + motionDisabled
 
-if !feature.historyAPI || !feature.cssTransform || !feature.cssTransition || !feature.css3Dtransform || get["disablemotion"]
+if !feature.historyAPI || !feature.cssTransform || !feature.cssTransition || !feature.css3Dtransform || motionDisabled == "yes"
   console?.log("Browser doesn't support one of the features needed, stopping…")
   return
 else

@@ -820,3 +820,25 @@ body {
   &:hover  { text-decoration: underline; }
   &:active { color: $bright; }
 }
+
+//
+// Motion disabling
+
+.motion-disabled * {
+  transition: none !important;
+  animation: none !important;
+}
+
+.enable-motion {
+  display: none;
+
+  .motion-disabled & {
+    display: block;
+  }
+}
+
+.disable-motion {
+  .motion-disabled & {
+    display: none;
+  }
+}
