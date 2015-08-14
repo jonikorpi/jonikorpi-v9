@@ -4,7 +4,6 @@
 
 article.z.article data-id=article.url data-title=article.data.title class=classes 
   .z-card
-    a.z-anchor href=article.url
     header.article-cover.no-margins
       header.article-header.no-margins.centered-translate
         h1.article-title= article.title
@@ -15,3 +14,4 @@ article.z.article data-id=article.url data-title=article.data.title class=classe
           = markdown(article.data.subtitle)
       .load-article-here
         = article.body if article.title == current_page.data.title 
+    a.z-anchor href=article.url

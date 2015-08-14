@@ -9,9 +9,9 @@
 
 section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
   .z-card
-    a.z-anchor href=tag_path(tag) 
     header.tag-header.no-margins
       h1.tag-title= tag
     .grid.tag-grid
       - articles.each do |article|
         = partial "article", :locals => {:article => article, :size => articles.size}
+    a.z-anchor href=tag_path(tag) 
