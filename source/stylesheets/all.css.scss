@@ -418,12 +418,14 @@ body {
 // Article cards
 
 .article {
+  &.z-visited .z-card {
+    border-color: $card-border;
+    border-width: $card-border-width-visited;
+  }
 
-}
-
-.article.z-visited .z-card {
-  border-color: $card-border;
-  border-width: $card-border-width-visited;
+  &.unpublished .z-card {
+    border-color: $yellow;
+  }
 }
 
 .article > .z-card {

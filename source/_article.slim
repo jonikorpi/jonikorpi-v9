@@ -1,6 +1,7 @@
 - classes = "size-#{size} #{article.slug} "
 - classes += "z-current z-active z-loaded " if article.title == current_page.data.title
-- classes += "z-scrollable " if article.data.scrollable?
+- classes += "z-scrollable " if article.data.scrollable
+- classes += "unpublished" if !article.published?
 
 article.z.article data-id=article.url data-title=article.data.title class=classes 
   .z-card
