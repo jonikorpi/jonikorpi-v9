@@ -312,6 +312,11 @@ body {
   // }
 }
 
+.z-active,
+.z-zooming-in, {
+  position: static;
+}
+
 .size-1 {
   float: none;
   margin: auto;
