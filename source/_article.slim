@@ -1,5 +1,5 @@
 - classes = "size-#{size} #{article.slug} "
-- classes += "z-current z-active z-loaded " if article.title == current_page.data.title
+- classes += "z-current z-active z-loaded z-visited " if article.title == current_page.data.title
 - classes += "z-scrollable " if article.data.scrollable
 - classes += "unpublished" if !article.published?
 
