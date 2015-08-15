@@ -25,6 +25,8 @@ $card-border-radius: $card-border-width;
 $card-zoom: 1.056;
 $card-zoom-more: 1.09;
 
+$zoom-out-size: $line*2;
+
 $main-easing:        cubic-bezier(0.236, 0.000, 0.236, 1.000);
 $reverse-easing:     cubic-bezier(0.618, 0.000, 0.236, 1.000);
 $loop-easing:        ease-in-out;
@@ -82,6 +84,7 @@ $blue-highlight: hsl($hue-4, 91%, 66.6%);
 
 $card-fence: $blue-highlight;
 $card-highlight: $blue-highlight;
+$card-active: $blue;
 $card-glow: $purple-highlight;
 $card-border: $border;
 
@@ -424,7 +427,7 @@ body {
   }
 
   &.unpublished .z-card {
-    border-color: $yellow;
+    border-color: $green;
   }
 }
 
@@ -467,6 +470,25 @@ body {
     letter-spacing: -1px;
     font-size: 0.91rem;
     line-height: $line*0.91;
+  }
+
+  @media (max-width: #{$s}) {
+    .new &:before,
+    .new &:after {
+      display: block;
+      position: absolute;
+      top: $line * -0.375;
+      width: $line*1.5;
+    }
+
+    .new &:before {
+      border-width: $line*0.375 0;
+    }
+
+    .new &:after {
+      font-size: 0.764rem;
+      line-height: $line*0.764;
+    }
   }
 }
 
@@ -570,14 +592,13 @@ body {
 // Article card contents
 
 .article-header {
-  width: 91%;
-  text-align: center;
+  position: absolute;
+  left: 0; top: 0;
   z-index: 2;
   visibility: visible;
-  transition: all $main-time $main-easing;
   font-size: 1.382rem;
   line-height: $line*1.25;
-  padding: $line;
+  padding: $line*1.382;
 
   @media (max-width: #{$l}) {
     font-size: 1rem;
@@ -612,9 +633,17 @@ body {
   position: relative;
   height: 100%;
   margin: 0;
+  overflow: hidden;
 
   .z-scrollable.z-loaded & {
 
+  }
+}
+
+.cover-image {
+  img {
+    max-width: 100%;
+    margin: auto;
   }
 }
 
@@ -716,44 +745,58 @@ body {
   position: absolute;
   left: $edge-gap; bottom: $edge-gap;
   z-index: 100;
-  padding: $line * 0.35 $line * 0.5 $line * 0.4;
-  border-radius: $card-border-radius;
-  border: 1px solid $card-background;
-  background: $bright;
-  color: $background;
-  line-height: 1;
   transform: translateY(200%);
   will-change: transform, color, background;
   transition:
-    background 0ms linear,
-    color 0ms linear,
     transform $main-time*1.5 $main-easing $short-time
   ;
+  text-align: center;
 
   .z-open & {
     transform: translateY(0%);
     transition:
-      background 0ms linear,
-      color 0ms linear,
       transform $main-time*1.5 $main-easing $main-time*2
     ;
   }
 
   &.hover,
   &:hover {
-    background: $purple-highlight;
-    color: $bright;
+    .arrow {
+      background: $purple-highlight;
+      color: $bright;
+    }
+
+    .esc {
+      transform: translateX( $zoom-out-size )
+    }
+  }
+
+  &:active {
+    .arrow {
+      background: $purple;
+    }
   }
 }
 
 .arrow {
-  font-size: 1.414rem;
-  vertical-align: middle;
-  margin-right: 0.236rem;
+  display: block;
+  position: relative;
+  font-size: 2.236rem;
+  line-height: $zoom-out-size;
+  width: $zoom-out-size;
+  border: 1px solid $card-background;
+  background: $bright;
+  color: $background;
+  border-radius: $card-border-radius;
 }
 
 .esc {
-  vertical-align: middle;
+  position: absolute;
+  left: 0; top: 0;
+  width: $zoom-out-size;
+  color: $highlight;
+  line-height: $zoom-out-size;
+  transition: transform $short-time $main-easing;
 }
 
 //
