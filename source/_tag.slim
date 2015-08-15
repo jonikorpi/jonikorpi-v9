@@ -11,7 +11,8 @@
 section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
   .z-card
     header.tag-header.no-margins
-      h1.tag-title= tag
+      h1.tag-title
+        span.title-spanner= tag
     .grid.tag-grid
       - articles.each do |article|
         = partial "article", :locals => {:article => article, :size => articles.size}

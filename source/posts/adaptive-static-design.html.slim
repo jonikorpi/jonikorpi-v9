@@ -36,5 +36,3 @@ markdown:
   Implementation is simple. First, pick a default layout. This will be served to all browsers that are incompatible with media queries. I use the 768px one, but 984px is a safe bet. Write the CSS for this layout normally, with no media queries applied. Then write the other layouts inside an inline media query. They’ll be used by all modern desktop and mobile browsers and inherit styles from the default layout, so you won’t have to write too much extra CSS; you’ll just be overwriting as necessary.
 
   Browsers that are incompatible with media queries – most notably Internet Explorers 6-8 – will ignore every style declaration inside an inline media query, using the default layout. However, you can use JavaScript to add support here. At the time of writing, **css3-mediaqueries.js** seems best.
-
-  _Joni Korpi is a Finnish web designer and the author of Less Framework. Find out more about him by visiting [jonikorpi.com](http://jonikorpi.com) or following [@jonikorpi](http://twitter.com/jonikorpi/) on Twitter._

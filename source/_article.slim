@@ -7,7 +7,8 @@ article.z.article data-id=article.url data-title=article.data.title class=classe
   .z-card
     header.article-cover.no-margins
       header.article-header.no-margins
-        h1.article-title= article.title
+        h1.article-title
+          span.title-spanner= article.title
       = partial "covers/#{article.slug}" if article.data.cover
     .article-content
       - if article.data.subtitle?
