@@ -36,7 +36,7 @@ $short-time: 162ms;
 $loop-time: 6000ms;
 
 //
-// Hues
+// Colors
 
 $hue: 45;
 $hue-increment: 1.618;
@@ -76,7 +76,7 @@ $green:  hsl($hue-2, 23.6%, 50.0%);
 $purple: hsl($hue-1, 50.0%, 66.6%);
 
 $shadow:      hsl($hue-1, 50%, 5.6%);
-$border:      hsl($hue-1, 9%, 50%);
+$border:      hsl($hue-1, 9%, 41.4%);
 
 $highlight: hsl($hue, 76.4%, 61.8%);
 $purple-highlight: hsl($hue-1, 38.2%, 50%);
@@ -170,6 +170,8 @@ a {
   text-decoration: none;
 }
 
+em, i { font-style: italic; }
+
 hr {
   border-color: $border;
 }
@@ -193,6 +195,12 @@ code {
 }
 
 .centered-translate { @include centered-translate; }
+
+.title-spanner {
+  background: $card-background;
+  padding: 0 0.25em;
+  margin-right: 0.25em;
+}
 
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
@@ -374,12 +382,10 @@ body {
 .z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  border: $card-border-width solid transparent;
   will-change: contents, left, top, right, bottom, transform;
   transform-style: preserve-3d;
-  border-radius: $card-border-radius;
+  background: $background;
   transition:
-    border $short-time*0.5 $main-easing,
     transform $main-time $main-easing,
     margin $main-time $main-easing,
     padding $main-time $main-easing
@@ -397,11 +403,6 @@ body {
     ;
   }
 
-  .z-zooming-in > &,
-  .z-zooming-out > & {
-    border-color: $card-fence !important;
-  }
-
   .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
     transition:
@@ -412,8 +413,7 @@ body {
   }
 
   .z-loaded > & {
-    border-color: transparent !important;
-    border-width: 0 !important;
+
   }
 }
 
@@ -421,74 +421,17 @@ body {
 // Article cards
 
 .article {
-  &.z-visited .z-card {
-    border-color: $card-border;
-    border-width: $card-border-width-visited;
-  }
-
-  &.unpublished .z-card {
-    border-color: $green;
+  &.z-visited .z-card .article-cover {
+    -webkit-filter: grayscale(91%);
+    filter: grayscale(91%);
   }
 }
 
 .article > .z-card {
-  background: $card-background;
   transform: scale($card-zoom) rotateZ(1.8deg);
-  border-color: $card-glow;
 
   &:hover {
-    border-color: $card-highlight;
     transform: scale($card-zoom-more) rotateZ(1.8deg);
-  }
-
-  .new &:before,
-  .new &:after {
-    display: block;
-    position: absolute;
-    left: 0; top: $line * -0.5; right: 0;
-    width: $line*1.75;
-    margin: auto;
-    transition:
-      transform $short-time $main-easing,
-      visibility 0ms linear
-    ;
-  }
-
-  .new &:before {
-    content: "";
-    border-style: solid;
-    border-color: inherit;
-    border-width: $line*0.5 0;
-    border-radius: $card-border-radius;
-  }
-
-  .new &:after {
-    content: "NEW";
-    color: $card-background;
-    text-align: center;
-    text-indent: -0.1em;
-    letter-spacing: -1px;
-    font-size: 0.91rem;
-    line-height: $line*0.91;
-  }
-
-  @media (max-width: #{$s}) {
-    .new &:before,
-    .new &:after {
-      display: block;
-      position: absolute;
-      top: $line * -0.375;
-      width: $line*1.5;
-    }
-
-    .new &:before {
-      border-width: $line*0.375 0;
-    }
-
-    .new &:after {
-      font-size: 0.764rem;
-      line-height: $line*0.764;
-    }
   }
 }
 
@@ -496,21 +439,7 @@ body {
   transform: none;
 }
 
-.article.z-zooming-in > .z-card,
 .article.z-loaded > .z-card {
-  .new &:before,
-  .new &:after {
-    transform: scaleY(0);
-  }
-}
-
-.about .z-card:before,
-.about .z-card:after {
-  display: none !important;
-}
-
-.article.z-loaded > .z-card {
-  border-radius: 0;
   overflow: hidden;
 }
 
@@ -522,19 +451,8 @@ body {
 //
 // Tag cards
 
-.tag > .z-card {
-  border-width: 0px;
-}
-
 .tag:not(.z-active) > .z-card:hover {
-  .z-card {
-    border-color: $card-highlight;
-    transform: scale($card-zoom-more) rotateZ(1.8deg);
-  }
-}
-
-.tag.z-active > .z-card {
-  background: $background;
+  transform: scale($card-zoom-more);
 }
 
 .tag-grid {
@@ -554,28 +472,32 @@ body {
   text-align: center;
   left: 0; right: 0; bottom: 50%;
   will-change: bottom;
-  transform: translate(0, 50%);
+  transform: translate(0%, 50%);
   z-index: 2;
   transition: bottom $main-time*2 $main-easing;
   font-size: 2.618rem;
-  line-height: $line * 2.75;
+  line-height: $line*2.5;
   white-space: nowrap;
   color: $highlight;
 
   @media (max-width: #{$l}) {
     font-size: 2rem;
+    line-height: $line*2;
   }
 
   @media (max-width: #{$m}) {
     font-size: 1.618rem;
+    line-height: $line*1.5;
   }
 
   @media (max-width: #{$xs}) {
     font-size: 1rem;
+    line-height: $line;
   }
 
   .tag.z-active:not(.z-zooming-out) & {
-    bottom: $line * 2.75 * 0.5;
+    bottom: $edge-gap + $zoom-out-size * 0.5;
+    padding: 0 $edge-gap + $zoom-out-size;
   }
 }
 
@@ -593,28 +515,30 @@ body {
 
 .article-header {
   position: absolute;
-  left: 0; top: 0;
+  left: 0; top: 0; right: 0;
   z-index: 2;
   visibility: visible;
   font-size: 1.382rem;
   line-height: $line*1.25;
-  padding: $line*1.382;
+  padding: $line*2;
 
   @media (max-width: #{$l}) {
     font-size: 1rem;
     line-height: $line;
-    padding: $line*0.5;
+    padding: $line;
   }
 
   @media (max-width: #{$m}) {
     font-size: 0.91rem;
-    line-height: $line;
+    padding: $line*0.5;
   }
 }
 
 .article-title {
   color: $highlight;
   transition: all $main-time $main-easing;
+  transform-origin: left top;
+  will-change: transform;
 
   .article.z-active & {
     color: $bright;
@@ -627,6 +551,37 @@ body {
   .tag.z-active:not(.z-zooming-out) .z & {
     transform: none;
   }
+
+  .z.article.z-loaded:not(.z-zooming-out) & {
+    transform: scale(2);
+    max-width: 50%;
+    transition-delay: $main-time;
+  }
+
+  &:after {
+    content: "";
+    display: none;
+    font-size: 0.854em;
+    @include mono;
+    color: $blue-highlight;
+    background: $card-background;
+    padding: 0 0.275em 0 0.25em;
+    vertical-align: top;
+  }
+
+  .new &:after {
+    content: "NEW";
+    display: inline-block;
+  }
+
+  .new .about &:after { display: none; }
+
+  .unpublished &:after {
+    content: "UNPUBLISHED";
+    display: inline-block;
+    color: $purple-highlight;
+    background: $card-background;
+  }
 }
 
 .article-cover {
@@ -634,9 +589,13 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  transition: height $main-time $main-easing;
+  max-height: 61.8vh;
+  will-change: height;
+  color: $bright;
 
   .z-scrollable.z-loaded & {
-
+    max-height: 61.8%;
   }
 }
 
@@ -656,9 +615,12 @@ body {
   margin: 0;
   padding: $line*2 $line;
   visibility: hidden;
+  transform: translateY(38.2vh);
+  min-height: 61.8%;
+  background: $card-background;
 
   .z-scrollable.z-loaded & {
-    transform: translateY(-38.2vh);
+    transform: translateY(0);
     visibility: visible;
   }
 }
@@ -884,4 +846,81 @@ body {
   .motion-disabled & {
     display: none;
   }
+}
+
+//
+// Cover classes
+
+.article-cover > * {
+  position: absolute;
+  margin: auto;
+  will-change: height, width, transform;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.w-1  { max-width:  5.6% }
+.w-2  { max-width:  9%   }
+.w-3  { max-width: 14.6% }
+.w-4  { max-width: 23.6% }
+.w-5  { max-width: 38.2% }
+.w-6  { max-width: 50%   }
+.w-7  { max-width: 61.8% }
+.w-8  { max-width: 76.4% }
+.w-9  { max-width: 85.4% }
+.w-10 { max-width: 91%   }
+
+.h-1  { max-height:  5.6% }
+.h-2  { max-height:  9%   }
+.h-3  { max-height: 14.6% }
+.h-4  { max-height: 23.6% }
+.h-5  { max-height: 38.2% }
+.h-6  { max-height: 50%   }
+.h-7  { max-height: 61.8% }
+.h-8  { max-height: 76.4% }
+.h-9  { max-height: 85.4% }
+.h-10 { max-height: 91%   }
+
+.hook-left   { left:  0; top:   0; bottom: 0; }
+.hook-top    { left:  0; top:   0; right:  0; }
+.hook-right  { right: 0; top:   0; bottom: 0; }
+.hook-bottom { left:  0; right: 0; bottom: 0; }
+
+.off-left-1  { left:  5.6% }
+.off-left-2  { left:  9%   }
+.off-left-3  { left: 14.6% }
+.off-left-4  { left: 23.6% }
+.off-left-5  { left: 38.2% }
+.off-left-6  { left: 50.6% }
+.off-left-7  { left: 61.8% }
+.off-left-8  { left: 76.4% }
+.off-left-9  { left: 85.4% }
+.off-left-10 { left: 91%   }
+
+.off-right-1  { right:  5.6% }
+.off-right-2  { right:  9%   }
+.off-right-3  { right: 14.6% }
+.off-right-4  { right: 23.6% }
+.off-right-5  { right: 38.2% }
+.off-right-6  { right: 50.6% }
+.off-right-7  { right: 61.8% }
+.off-right-8  { right: 76.4% }
+.off-right-9  { right: 85.4% }
+.off-right-10 { right: 91%   }
+
+.padded { padding: $line }
+
+.center-v {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.center-h {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.center-hv {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
 }
