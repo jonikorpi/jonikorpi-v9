@@ -421,10 +421,7 @@ body {
 // Article cards
 
 .article {
-  &.z-visited .z-card .article-cover {
-    -webkit-filter: grayscale(91%);
-    filter: grayscale(91%);
-  }
+
 }
 
 .article > .z-card {
@@ -594,8 +591,14 @@ body {
   will-change: height;
   color: $bright;
 
-  .z-scrollable.z-loaded & {
-    max-height: 61.8%;
+  .article.z-visited & {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+
+  .z-scrollable.z-active & {
+    -webkit-filter: none;
+    filter: none;
   }
 }
 
