@@ -22,8 +22,8 @@ $card-border-width: 3px;
 $card-border-width-visited: $card-border-width;
 $card-border-radius: $card-border-width;
 
-$card-zoom: 1.056;
-$card-zoom-more: 1.09;
+$card-zoom: 1.0;
+$card-zoom-more: 1.056;
 
 $zoom-out-size: $line*2;
 
@@ -112,8 +112,6 @@ $retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 @import "reset";
 @import "fonts";
 @import "syntax";
-@import "covers-shared";
-@import "covers/*";
 
 //
 // Font families
@@ -384,7 +382,6 @@ body {
   left: 0; top: 0; right: 0; bottom: 0;
   will-change: contents, left, top, right, bottom, transform;
   transform-style: preserve-3d;
-  background: $background;
   transition:
     transform $main-time $main-easing,
     margin $main-time $main-easing,
@@ -392,8 +389,7 @@ body {
   ;
 
   .z-active > & {
-    // -webkit-filter: none;
-    // filter: none;
+    background: $background;
     margin: 0;
     z-index: 10;
     transition:
@@ -552,7 +548,7 @@ body {
   .z.article.z-loaded:not(.z-zooming-out) & {
     transform: scale(2);
     max-width: 50%;
-    transition-delay: $main-time;
+    transition-delay: $short-time;
   }
 
   &:after {
@@ -590,16 +586,17 @@ body {
   max-height: 61.8vh;
   will-change: height;
   color: $bright;
+  transform: translate3d(0,0,0)
 
-  .article.z-visited & {
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-  }
-
-  .z-scrollable.z-active & {
-    -webkit-filter: none;
-    filter: none;
-  }
+  // .article.z-visited & {
+  //   -webkit-filter: grayscale(100%);
+  //   filter: grayscale(100%);
+  // }
+  //
+  // .z-scrollable.z-active & {
+  //   -webkit-filter: none;
+  //   filter: none;
+  // }
 }
 
 .cover-image {
@@ -612,7 +609,7 @@ body {
 .article-content {
   will-change: transform, contents;
   transition:
-    transform $main-time*2 $main-easing $short-time,
+    transform $main-time*2 $main-easing,
     visibility 0ms linear
   ;
   margin: 0;
@@ -854,14 +851,20 @@ body {
 //
 // Cover classes
 
-.article-cover > * {
+.article-cover * {
   position: absolute;
   margin: auto;
-  will-change: height, width, transform;
-  max-width: 100%;
-  max-height: 100%;
+  will-change: height, width;
+  width: 100%;
+  height: 100%;
 }
 
+.article-cover img {
+  width: auto;
+  height: auto;
+}
+
+.w-05 { max-width:  3.4% }
 .w-1  { max-width:  5.6% }
 .w-2  { max-width:  9%   }
 .w-3  { max-width: 14.6% }
@@ -873,6 +876,7 @@ body {
 .w-9  { max-width: 85.4% }
 .w-10 { max-width: 91%   }
 
+.h-05 { max-height:  3.4% }
 .h-1  { max-height:  5.6% }
 .h-2  { max-height:  9%   }
 .h-3  { max-height: 14.6% }
@@ -893,6 +897,7 @@ body {
 .off-left-2  { left:  9%   }
 .off-left-3  { left: 14.6% }
 .off-left-4  { left: 23.6% }
+.off-left-45 { left: 32.6% }
 .off-left-5  { left: 38.2% }
 .off-left-6  { left: 50.6% }
 .off-left-7  { left: 61.8% }
@@ -904,6 +909,7 @@ body {
 .off-right-2  { right:  9%   }
 .off-right-3  { right: 14.6% }
 .off-right-4  { right: 23.6% }
+.off-right-45 { right: 32.6% }
 .off-right-5  { right: 38.2% }
 .off-right-6  { right: 50.6% }
 .off-right-7  { right: 61.8% }
@@ -916,14 +922,36 @@ body {
 .center-v {
   top: 50%;
   transform: translateY(-50%);
+  margin: 0;
 }
 
 .center-h {
   left: 50%;
   transform: translateX(-50%);
+  margin: 0;
 }
 
 .center-hv {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
+  margin: 0;
 }
+
+.yellow { background: $yellow; }
+.orange { background: $orange; }
+.red { background: $red; }
+.blue { background: $blue; }
+.cyan { background: $cyan; }
+.green { background: $green; }
+.purple { background: $purple; }
+
+.bright { background: $bright; }
+.dim { background: $dim; }
+.purple-bright { background: $purple-bright; }
+.purple-dim { background: $purple-dim; }
+
+.background { background: $background; }
+.dark { background: $card-background; }
+.highlight { background: $highlight; }
+.purple-highlight { background: $purple-highlight; }
+.blue-highlight { background: $blue-highlight; }
