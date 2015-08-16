@@ -439,7 +439,7 @@ body {
 }
 
 .article.z-active > .z-card {
-  transform: none;
+  transform: none !important;
 }
 
 .article.z-loaded > .z-card {
