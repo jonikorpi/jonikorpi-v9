@@ -22,8 +22,8 @@ $card-border-width: 3px;
 $card-border-width-visited: $card-border-width;
 $card-border-radius: $card-border-width;
 
-$card-zoom: 1.0;
-$card-zoom-more: 1.056;
+$card-zoom: 0.944;
+$card-zoom-more: 1.0;
 
 $zoom-out-size: $line*2;
 
@@ -56,7 +56,7 @@ $hue-12: $hue + (360/$hue-increment) * 12;
 $hue-13: $hue + (360/$hue-increment) * 13;
 
 $background:      hsl($hue-1, 50%, 23.6%);
-$off-background:  hsl($hue-1, 23.6%, 14.6%);
+$off-background:  hsl($hue-1, 50%, 14.6%);
 $card-background: hsl($hue-1, 50%, 9%);
 
 $bright: hsl($hue, 23.6%, 76.4%);
@@ -380,7 +380,7 @@ body {
 .z-card {
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  will-change: contents, left, top, right, bottom, transform;
+  will-change: contents, left, top, right, bottom, transform, background-color;
   transform-style: preserve-3d;
   transition:
     transform $main-time $main-easing,
@@ -395,7 +395,8 @@ body {
     transition:
       all $main-time $main-easing,
       left $main-time $main-easing $short-time,
-      right $main-time $main-easing $short-time
+      right $main-time $main-easing $short-time,
+      background-color 0ms linear
     ;
   }
 
@@ -404,7 +405,8 @@ body {
     transition:
       all $main-time $main-easing,
       top $main-time $main-easing $short-time,
-      bottom $main-time $main-easing $short-time
+      bottom $main-time $main-easing $short-time,
+      background-color 0ms linear
     ;
   }
 
@@ -444,8 +446,12 @@ body {
 //
 // Tag cards
 
+.tag:not(.z-active) > .z-card {
+  // transform: scale($card-zoom);
+}
+
 .tag:not(.z-active) > .z-card:hover {
-  transform: scale($card-zoom-more);
+  // transform: scale($card-zoom-more);
 }
 
 .tag-grid {
@@ -584,7 +590,7 @@ body {
   overflow: hidden;
   transition: height $main-time $main-easing;
   max-height: 61.8vh;
-  will-change: height;
+  will-change: height transform;
   color: $bright;
   transform: translate3d(0,0,0)
 
@@ -597,13 +603,6 @@ body {
   //   -webkit-filter: none;
   //   filter: none;
   // }
-}
-
-.cover-image {
-  img {
-    max-width: 100%;
-    margin: auto;
-  }
 }
 
 .article-content {
@@ -768,9 +767,8 @@ body {
   z-index: 99;
   position: absolute;
   margin-left: $line*4; right: 0; bottom: 0;
-  border-radius: $card-border-radius;
   text-align: center;
-  padding: $edge-gap $edge-gap*1.5;
+  padding: $edge-gap*2 $edge-gap*1.5;
   text-align: right;
   transform: translateX(150%);
   visibility: hidden;
@@ -857,11 +855,7 @@ body {
   will-change: height, width;
   width: 100%;
   height: 100%;
-}
-
-.article-cover img {
-  width: auto;
-  height: auto;
+  // transform: translate3d(0,0,0);
 }
 
 .w-05 { max-width:  3.4% }
@@ -888,10 +882,29 @@ body {
 .h-9  { max-height: 85.4% }
 .h-10 { max-height: 91%   }
 
+.circle { height: 0; border-radius: 50%; }
+.circle-05 { padding-top:  3.4% ; width:  3.4% }
+.circle-1  { padding-top:  5.6% ; width:  5.6% }
+.circle-2  { padding-top:  9%   ; width:  9%   }
+.circle-3  { padding-top: 14.6% ; width: 14.6% }
+.circle-4  { padding-top: 23.6% ; width: 23.6% }
+.circle-5  { padding-top: 38.2% ; width: 38.2% }
+.circle-6  { padding-top: 50%   ; width: 50%   }
+.circle-7  { padding-top: 61.8% ; width: 61.8% }
+.circle-8  { padding-top: 76.4% ; width: 76.4% }
+.circle-9  { padding-top: 85.4% ; width: 85.4% }
+.circle-10 { padding-top: 91%   ; width: 91%   }
+
 .hook-left   { left:  0; top:   0; bottom: 0; }
 .hook-top    { left:  0; top:   0; right:  0; }
 .hook-right  { right: 0; top:   0; bottom: 0; }
 .hook-bottom { left:  0; right: 0; bottom: 0; }
+
+.hook-top-left  { top: 0; left:  0; }
+.hook-top-right { top: 0; right: 0; }
+
+.hook-bottom-left  { left:  0; bottom: 0; }
+.hook-bottom-right { right: 0; bottom: 0; }
 
 .off-left-1  { left:  5.6% }
 .off-left-2  { left:  9%   }
@@ -904,6 +917,30 @@ body {
 .off-left-8  { left: 76.4% }
 .off-left-9  { left: 85.4% }
 .off-left-10 { left: 91%   }
+
+.off-top-1  { top:  5.6% }
+.off-top-2  { top:  9%   }
+.off-top-3  { top: 14.6% }
+.off-top-4  { top: 23.6% }
+.off-top-45 { top: 32.6% }
+.off-top-5  { top: 38.2% }
+.off-top-6  { top: 50.6% }
+.off-top-7  { top: 61.8% }
+.off-top-8  { top: 76.4% }
+.off-top-9  { top: 85.4% }
+.off-top-10 { top: 91%   }
+
+.off-bottom-1  { bottom:  5.6% }
+.off-bottom-2  { bottom:  9%   }
+.off-bottom-3  { bottom: 14.6% }
+.off-bottom-4  { bottom: 23.6% }
+.off-bottom-45 { bottom: 32.6% }
+.off-bottom-5  { bottom: 38.2% }
+.off-bottom-6  { bottom: 50.6% }
+.off-bottom-7  { bottom: 61.8% }
+.off-bottom-8  { bottom: 76.4% }
+.off-bottom-9  { bottom: 85.4% }
+.off-bottom-10 { bottom: 91%   }
 
 .off-right-1  { right:  5.6% }
 .off-right-2  { right:  9%   }
@@ -937,6 +974,16 @@ body {
   margin: 0;
 }
 
+.center {
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.rotate-45 { transform: rotate(45deg) }
+.rotate-90 { transform: rotate(90deg) }
+.rotate-618 { transform: rotate(222.5deg) }
+.rotate-382 { transform: rotate(137.5deg) }
+.rotate-382-2 { transform: rotate(137.5deg*2) }
+
 .yellow { background: $yellow; }
 .orange { background: $orange; }
 .red { background: $red; }
@@ -951,6 +998,7 @@ body {
 .purple-dim { background: $purple-dim; }
 
 .background { background: $background; }
+.off-background { background: $off-background; }
 .dark { background: $card-background; }
 .highlight { background: $highlight; }
 .purple-highlight { background: $purple-highlight; }
