@@ -138,20 +138,18 @@ a:after,
 
 html {
   font-size: 100% * $font-size-multiplier;
-  line-height: $line;
+  line-height: $line / 1rem;
   background: $background;
   color: $body;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 
-  @media (max-width: #{$s}) {
-    font-size: 100% * $font-size-multiplier * 0.91;
-    line-height: $line * 0.91;
-  }
+  @media (min-width: #{$xl3}) { font-size: 100% * $font-size-multiplier * 1.09;  }
+  @media (min-width: #{$xl5}) { font-size: 100% * $font-size-multiplier * 1.146; }
+  @media (min-width: #{$xl6}) { font-size: 100% * $font-size-multiplier * 1.236; }
+  @media (min-width: #{$xl7}) { font-size: 100% * $font-size-multiplier * 1.382; }
 
-  @media (max-width: #{$xs2}) {
-    font-size: 100% * $font-size-multiplier * 0.764;
-    line-height: $line * 0.764;
-  }
+  @media (max-width: #{$s})   { font-size: 100% * $font-size-multiplier * 0.91;  }
+  @media (max-width: #{$xs2}) { font-size: 100% * $font-size-multiplier * 0.764; }
 }
 
 body {
@@ -196,8 +194,6 @@ code {
 
 .title-spanner {
   background: $card-background;
-  padding: 0 0.25em;
-  margin-right: 0.25em;
 }
 
 /////////////////////////////////////////////////////////
@@ -282,17 +278,20 @@ body {
   margin: 0 $card-padding;
 }
 
+.avatar {
+  width: auto;
+  height: $line;
+  height: 5.6vmin;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.375em;
+  border: 1px solid $off-background;
+}
+
 .name {
   display: inline;
   margin-right: 0.5em;
   color: $bright;
-}
-
-.title {
-  font-size: 0.854em;
-  text-transform: uppercase;
-  word-spacing: $narrower-word-spacing;
-  color: $purple-body;
 }
 
 .motion-toggle {
@@ -486,23 +485,19 @@ body {
   z-index: 2;
   transition: bottom $main-time*2 $main-easing;
   font-size: 2.618rem;
-  line-height: $line*2.5;
   white-space: nowrap;
   color: $highlight;
 
   @media (max-width: #{$l}) {
     font-size: 2rem;
-    line-height: $line*2;
   }
 
   @media (max-width: #{$m}) {
     font-size: 1.618rem;
-    line-height: $line*1.5;
   }
 
   @media (max-width: #{$xs}) {
     font-size: 1rem;
-    line-height: $line;
   }
 
   .tag.z-active:not(.z-zooming-out) & {
@@ -529,18 +524,15 @@ body {
   z-index: 2;
   visibility: visible;
   font-size: 1.382rem;
-  line-height: $line*1.25;
   padding: $line*2;
 
   @media (max-width: #{$l}) {
     font-size: 1rem;
-    line-height: $line;
     padding: $line;
   }
 
   @media (max-width: #{$m}) {
     font-size: 0.91rem;
-    padding: $line*0.5;
   }
 }
 
@@ -568,30 +560,23 @@ body {
     transition-delay: $short-time;
   }
 
-  &:after {
+  .title-spanner:after {
     content: "";
     display: none;
     font-size: 0.854em;
     @include mono;
+    padding: 0 0.375em;
+  }
+
+  .new & .title-spanner:after {
+    content: "(NEW)";
+    display: inline;
     color: $blue-highlight;
-    background: $card-background;
-    padding: 0 0.275em 0 0.25em;
-    vertical-align: top;
+    position: relative;
+    top: -0.125em;
   }
 
-  .new &:after {
-    content: "NEW";
-    display: inline-block;
-  }
-
-  .new .about &:after { display: none; }
-
-  .unpublished &:after {
-    content: "UNPUBLISHED";
-    display: inline-block;
-    color: $purple-highlight;
-    background: $card-background;
-  }
+  .new .about & .title-spanner:after { display: none; }
 }
 
 .article-cover {
@@ -640,7 +625,7 @@ body {
 
 .subtitle {
   word-spacing: $narrower-word-spacing;
-  color: $purple-body;
+  color: $purple-bright;
   font-size: 1.236rem;
   line-height: $line*1.25;
 }
@@ -656,16 +641,21 @@ body {
     margin-right: auto;
   }
 
+  ul, ol {
+    padding-left: $line;
+  }
+
+  .abc li { list-style: upper-alpha; }
+
   hr,
   figure {
     margin: $line*2 auto;
   }
 
   h1, h2, h3, h4, h5, h6 { color: $bright; }
-  h1, h4 { font-weight: bold; }
-  h3, h6 { font-style: italic; }
-  h1, h2, h3 { font-size: 1.618rem; line-height: $line*1.5; }
-  h4, h5, h6 { font-size: 1.236rem; line-height: $line*1.25; }
+  h2, h5 { font-style: italic; }
+  h1, h2 { font-size: 1.382rem; line-height: $line*1.25; }
+  h6 { @include mono; }
 
   pre {
     background: $off-background;
@@ -689,7 +679,7 @@ body {
   }
 
   strong {
-    color: $bright;
+    color: $purple;
   }
 
   a {
@@ -703,10 +693,10 @@ body {
       color: $bright;
     }
 
-    &[href^="http"]:after {
-      content: " ↗";
-      word-spacing: -0.475em;
-    }
+    // &[href^="http"]:after {
+    //   content: " ↗";
+    //   word-spacing: -0.475em;
+    // }
   }
 }
 
@@ -890,6 +880,26 @@ body {
   width: 100%;
   height: 100%;
   // transform: translate3d(0,0,0);
+}
+
+.article-cover img {
+  transition:
+    transform $short-time $main-easing
+    visibility 0ms linear $short-time
+  ;
+  visibility: hidden;
+  transform: rotateX(90deg);
+  width: auto;
+  height: auto;
+
+  .z-loaded > .z-card > & {
+    transition:
+      transform $main-time*2 $main-easing $main-time*2,
+      visibility 0ms linear
+    ;
+    transform: none;
+    visibility: visible;
+  }
 }
 
 .w-05 { max-width:  3.4% }
