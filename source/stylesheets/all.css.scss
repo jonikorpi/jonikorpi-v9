@@ -6,7 +6,7 @@
 
 $font-size-multiplier: 16/16;
 $line: 1.382rem;
-$narrower-word-spacing: -0.146em;
+$narrower-word-spacing: -0.236em;
 $max-width: $line * 28;
 
 $masthead-height: 14.6%;
@@ -68,7 +68,7 @@ $purple-body:   hsl($hue-1, 14.6%, 61.8%);
 $purple-dim:    hsl($hue-1, 9%, 50%);
 
 $yellow: hsl($hue,   41.4%, 50%);
-$orange: hsl($hue-8, 41.4%, 50%);
+$orange: hsl($hue-8, 50%, 50%);
 $red:    hsl($hue-3, 38.2%, 50.0%);
 $blue:   hsl($hue-4, 61.8%, 61.8%);
 $cyan:   hsl($hue-7, 38.2%, 50.0%);
@@ -122,7 +122,7 @@ html {
 
 @mixin mono {
   font-family: "Nitti Light", Menlo, Consolas, monospace, monospace;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.03125em;
 }
 
 .mono,
@@ -288,22 +288,17 @@ body {
   color: $bright;
 }
 
+.title {
+  font-size: 0.854em;
+  text-transform: uppercase;
+  word-spacing: $narrower-word-spacing;
+  color: $purple-body;
+}
+
 .motion-toggle {
   position: absolute;
-  right: 0; top: 0;
-  font-size: 0.5em;
-
-  button {
-    color: $purple-dim;
-
-    &:hover {
-      color: $highlight;
-    }
-
-    &:active {
-      color: $bright;
-    }
-  }
+  right: 0; top: 50%;
+  transform: translate(0, -50%);
 }
 
 //
@@ -395,30 +390,30 @@ body {
   will-change: contents, left, top, right, bottom, transform, background-color;
   transform-style: preserve-3d;
   transition:
-    transform $main-time $main-easing,
-    margin $main-time $main-easing,
-    padding $main-time $main-easing
+    transform $short-time $main-easing
   ;
 
   .z-active > & {
-    background: $background;
+    background-color: $background;
     margin: 0;
     z-index: 10;
     transition:
-      all $main-time $main-easing,
+      transform $short-time $main-easing,
+      top $main-time $main-easing,
+      bottom $main-time $main-easing,
       left $main-time $main-easing $short-time,
       right $main-time $main-easing $short-time,
-      background-color 0ms linear
     ;
   }
 
   .z-zooming-out > & {
     transition-timing-function: $reverse-easing;
     transition:
-      all $main-time $main-easing,
+      transform $short-time $main-easing,
       top $main-time $main-easing $short-time,
       bottom $main-time $main-easing $short-time,
-      background-color 0ms linear
+      left $main-time $main-easing,
+      right $main-time $main-easing,
     ;
   }
 
@@ -850,11 +845,32 @@ body {
   animation: none !important;
 }
 
+.motion-toggle button {
+  color: $purple-dim;
+  outline: none;
+  font-size: 0.5em;
+  line-height: 1;
+
+  &:hover {
+    color: $highlight;
+  }
+
+  &:hover,
+  &:focus {
+    background: $off-background;
+  }
+
+  &:active {
+    color: $bright;
+  }
+}
+
 .enable-motion {
   display: none;
 
   .motion-disabled & {
     display: block;
+    color: $blue-highlight;
   }
 }
 
