@@ -451,7 +451,9 @@ body {
 }
 
 .tag:not(.z-active) > .z-card:hover {
-  // transform: scale($card-zoom-more);
+  .z-card {
+    transform: scale($card-zoom-more) rotateZ(1.8deg);
+  }
 }
 
 .tag-grid {
