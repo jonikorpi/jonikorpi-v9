@@ -276,22 +276,34 @@ body {
 
 .masthead-wrapper {
   position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3.4vh;
+  left: 0; top: 50%; right: 0;
+  transform: translate(0%, -50%);
+  font-size: 5.6vmin;
+  margin: 0 $card-padding;
 }
 
 .name {
   display: inline;
-  margin-right: $line*0.5;
+  margin-right: 0.5em;
   color: $bright;
 }
 
-.title {
-  font-size: 0.854em;
-  text-transform: uppercase;
-  word-spacing: $narrower-word-spacing;
-  color: $purple-body;
+.motion-toggle {
+  position: absolute;
+  right: 0; top: 0;
+  font-size: 0.5em;
+
+  button {
+    color: $purple-dim;
+
+    &:hover {
+      color: $highlight;
+    }
+
+    &:active {
+      color: $bright;
+    }
+  }
 }
 
 //
@@ -422,12 +434,14 @@ body {
 
 }
 
-.article > .z-card {
+.article > .z-card,
+.motion-disabled .article > .z-card:hover,
+.motion-disabled .tag.tag > .z-card:hover .z-card {
   transform: scale($card-zoom) rotateZ(1.8deg);
+}
 
-  &:hover {
-    transform: scale($card-zoom-more) rotateZ(1.8deg);
-  }
+.article > .z-card:hover {
+  transform: scale($card-zoom-more) rotateZ(1.8deg);
 }
 
 .article.z-active > .z-card {
@@ -447,7 +461,7 @@ body {
 // Tag cards
 
 .tag:not(.z-active) > .z-card {
-  // transform: scale($card-zoom);
+
 }
 
 .tag:not(.z-active) > .z-card:hover {
@@ -759,7 +773,9 @@ body {
   width: $zoom-out-size;
   color: $highlight;
   line-height: $zoom-out-size;
-  transition: transform $short-time $main-easing;
+  transition: transform $short-time $main-easing $short-time;
+
+  .motion-disabled & { display: none; }
 }
 
 //

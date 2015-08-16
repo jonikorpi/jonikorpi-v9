@@ -11,12 +11,12 @@ nav.grid.home-grid#root data-id="/" data-title=("Joni Korpi")
     .masthead-wrapper
       / = image_tag "avatar.png", class: "avatar"
       h1.name Joni Korpi
-      span.title.mono Web Designer
       / .links
       /   = link_to "me@jonikorpi.com", "mailto:me@jonikorpi.com"
       /   = link_to "@jonikorpi", "https://twitter.com/jonikorpi"
-      button.enable-motion type="button" [ ] Animations
-      button.disable-motion type="button" [X] Animations
+      .motion-toggle
+        button.enable-motion type="button" Enable animation
+        button.disable-motion type="button" Disable animation
   
   section.new
     / New posts
