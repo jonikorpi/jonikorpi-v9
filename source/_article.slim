@@ -12,7 +12,7 @@ article.z.article data-id=article.url data-title=article.data.title class=classe
         span.title-spanner= article.title
     .article-content
       - if article.data.subtitle?
-        .subtitle.mono
+        .subtitle
           = markdown(article.data.subtitle)
       .load-article-here
         = article.body if article.title == current_page.data.title 

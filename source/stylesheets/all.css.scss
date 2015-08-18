@@ -67,10 +67,10 @@ $purple-bright: hsl($hue-1, 23.6%, 76.4%);
 $purple-body:   hsl($hue-1, 14.6%, 61.8%);
 $purple-dim:    hsl($hue-1, 9%, 50%);
 
-$yellow: hsl($hue,   41.4%, 50%);
+$yellow: hsl($hue,   50%, 61.8%);
 $orange: hsl($hue-8, 50%, 50%);
 $red:    hsl($hue-3, 38.2%, 50.0%);
-$blue:   hsl($hue-4, 61.8%, 61.8%);
+$blue:   hsl($hue-4, 50%, 60%);
 $cyan:   hsl($hue-7, 38.2%, 50.0%);
 $green:  hsl($hue-2, 23.6%, 50.0%);
 $purple: hsl($hue-1, 50.0%, 66.6%);
@@ -123,6 +123,7 @@ html {
 @mixin mono {
   font-family: "Nitti Light", Menlo, Consolas, monospace, monospace;
   letter-spacing: -0.03125em;
+  word-spacing: $narrower-word-spacing;
 }
 
 .mono,
@@ -174,6 +175,7 @@ hr {
 
 code {
   color: $purple-body;
+  word-spacing: normal;
 }
 
 ::selection {
@@ -625,10 +627,10 @@ body {
 // Article content styles
 
 .subtitle {
-  word-spacing: $narrower-word-spacing;
   color: $purple-bright;
   font-size: 1.236rem;
   line-height: $line*1.25;
+  @include mono;
 }
 
 .article-content {
@@ -653,9 +655,9 @@ body {
     margin: $line*2 auto;
   }
 
-  h1, h2, h3, h4, h5, h6 { color: $bright; }
+  h1, h2, h3, h4, h5, h6 { color: $yellow; font-weight: normal; }
   h2, h5 { font-style: italic; }
-  h1, h2 { font-size: 1.382rem; line-height: $line*1.25; }
+  h1, h2 { font-size: 1.236rem; line-height: $line; }
   h6 { @include mono; }
 
   pre {
@@ -680,14 +682,33 @@ body {
   }
 
   strong {
-    color: $purple;
+    font-weight: normal;
+    font-style: italic;
+    color: $bright;
   }
 
   a {
-    color: $blue;
+    position: relative;
+    text-shadow:
+      1px 1px 0 $card-background,
+      -1px -1px 0 $card-background,
+      1px -1px 0 $card-background,
+      -1px 1px 0 $card-background,
+      0 1px 0 $card-background,
+      1px 0 0 $card-background
+    ;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0; bottom: 0.1em; right: 0;
+      border-bottom: 1px solid currentcolor;
+      z-index: -1;
+    }
 
     &:hover {
-      text-decoration: underline;
+      color: $blue;
     }
 
     &:active {
