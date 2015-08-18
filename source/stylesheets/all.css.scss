@@ -194,6 +194,7 @@ code {
 
 .title-spanner {
   background: $card-background;
+  padding: 0 0.25em;
 }
 
 /////////////////////////////////////////////////////////
@@ -565,15 +566,15 @@ body {
     display: none;
     font-size: 0.854em;
     @include mono;
-    padding: 0 0.375em;
+    padding-left: 0.375em;
+    position: relative;
+    top: -0.125em;
   }
 
   .new & .title-spanner:after {
     content: "(NEW)";
     display: inline;
     color: $blue-highlight;
-    position: relative;
-    top: -0.125em;
   }
 
   .new .about & .title-spanner:after { display: none; }
