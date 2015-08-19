@@ -11,22 +11,22 @@ markdown:
 
   I’m afraid to click things on websites. Often the result is either:
 
-  1. A jarring full-page reload. Even though browsers try to avoid the “flash to white” effect now, an entire page’s worth of elements blinking out of existence and another bunch blinking back in is difficult to follow. It feels like teleporting from one room into another. Makes me lose my train of thought, and even though it isn't actually that slow, it _feels_ slow.
+  1. A jarring full-page reload. Even though browsers try to avoid the “flash to white” effect now, an entire page’s worth of elements blinking out of existence and another bunch blinking back in is difficult to follow. It feels like teleporting from one room into another. It makes me lose my train of thought. And even though the transition isn't actually that slow, it _feels_ slow.
   2. An arbitrary animation. One that either brings in new content from a random direction, transforms the entire page into another, or causes an element to morph into something else. Many well designed sites found in galleries like [siteInspire](http://www.siteinspire.com/) do these things, which even lead me into writing [this dumb tweet](https://twitter.com/jonikorpi/status/616553119586066432) a while ago.
 
-  I’ve been searching for ways to improve on this issue for a long while now. After making some detours with concepts like _[the Infinite Canvas](http://scottmccloud.com/4-inventions/canvas/)_ and _[bi-directional scrolling](/bi-directional-scrolling/)_, I landed on _zoomable user interfaces_. 
+  I’ve been searching for ways to improve on this issue for a long while now. After making some detours with concepts like _[the Infinite Canvas](http://scottmccloud.com/4-inventions/canvas/)_ and _[bi-directional scrolling](/bi-directional-layout/)_, I landed on _zoomable user interfaces_. 
 
-  Jef Raskin’s [ZoomWorld](https://en.wikipedia.org/wiki/Archy#Zoomworld), described in his book [The Humane Interface](http://www.amazon.com/The-Humane-Interface-Directions-Interactive/dp/0201379376), is just about the only serious ZUI design outside map browsers that I’ve stumbled into. For some reason ZUIs never really made it out of the early 2000s. Maybe it was the technical issues related to building them (I’ve certainly run into a pile of them so far), the lack of input devices designed for them, or maybe it was just pure chance. Either way, I’m giving them a go!
+  Jef Raskin’s [ZoomWorld](https://en.wikipedia.org/wiki/Archy#Zoomworld), described in his book [The Humane Interface](http://www.amazon.com/The-Humane-Interface-Directions-Interactive/dp/0201379376), is just about the only serious ZUI design outside map browsers that I’ve stumbled into. For some reason ZUIs never really made it out of the early 2000s. Maybe it was the technical issues related to building them (I’ve certainly run into a pile of them so far), the lack of input devices designed for them, or just pure chance. Either way, I’m giving them a go!
 
   ***
   
   This site is the first working zoomable UI design I’ve produced. Here’s a list of things I think are cool about it:
 
   **Navigating through posts and categories feels like I’m still in the same “system”.** The site feels less like a collection of separate documents, and more like an app where each URL points to a different state of it. Traveling between states feels like a fast continuum of actions, unlike browsing separate documents. It helps me keep my train of thought.
+  
+  **There is no home page or navigation menu.** These two elements are usually among the hardest to design, so I'm glad to be rid of them. In this design, they're both replaced by the same thing: a zoomable view of the site's contents. The content itself is the navigation.
 
   **Every article feels like it has a spatial location on the site.** The zooming animation helps me understand where elements come from and where they’re going. I’m trying to aim for a system that makes me think “the article with yellow bars somewhere in the bottom left” instead of “the article named _Golden Grid System_”. This effect was stronger in some of my previous prototypes, which used a “dive in closer to the canvas” type of system instead of the current “bring that object closer to me”, but this one is more suited to the web’s technical constraints and seems less likely to cause issues with motion sickness.
-  
-  **There is no home page or navigation menu.** These two elements are usually among the hardest to design, so I'm glad to be rid of them. In this design, they're both replaced by the same thing: a zoomable view of the site's contents.
 
   **Permalinks, browser history, animation-free browsing, and JS-free browsing are supported.** The different between a zoomed-in post and a non-zoomed-in one is a couple of classes and some AJAX-loaded markup. It's easy to render on the server-side when visiting a permalink. This also means the site is browsable with traditional full-page reloads, for people with motion sickness and for times when JS isn’t available.
 
@@ -34,15 +34,15 @@ markdown:
 
   **You either zoom or scroll. Never both at the same time.** The home view, the “map”, the “bird’s eye view” or whatever you want to call it always adjusts to the viewport’s shape and size. It never overflow-scrolls. The idea is that zooming is the way to handle its overflow. As more articles get added, they get grouped into more zoomable categories.
 
-  **The “covers” for each article are built entirely with CSS.** Since I’m actually resizing articles instead of using scale transforms on them, using bitmap images was a no go: resizing them is too laggy. After trying out a pure HTML/CSS illustration for one cover, I quickly fell in the love with the constraint of using only box elements. Obviously far from ideal for general usage, but it works for this site. And it's fun.
+  **The fluid “covers” for each article are pure HTML/CSS.** Since I’m actually resizing articles instead of using scale transforms — proved troublesome in a previous prototype, which I'll write about in another post — I can't show their actual textual content before they're zoomed in. I added the "covers" to still have something recognizable there when navigating the site. I started off with bitmap images, but found that they too are a no go: too laggy to resize. Eventually I tried a pure HTML/CSS illustration for one cover, and found that they're really cheap to resize. The constraint of illustrating with nothing but box elements turned out to be fun, and here we are.
   
   ***
 
-  Recently I’ve noticed other people working on the issues that I’m trying to address with ZUIs. [Some sites](http://work.co/grid/) have begun using zoomable UIs as parts of their designs, and there’s a lot of talk about making UIs more “spatial”. [@pasql’s “Spatial Interfaces”](https://medium.com/elepath-exports/spatial-interfaces-886bccc5d1e9) is required reading on the subject. Maybe more spatially consistent designs are becoming a trend?
+  I'm not the only one currently thinking about UIs like this. [Some sites](http://work.co/grid/) have begun using zooming as part of their designs, and there’s a lot of talk about making UIs more “spatial”: (_[Spatial Interfaces](https://medium.com/elepath-exports/spatial-interfaces-886bccc5d1e9)_ is required reading on the subject). I think this is a good trend.
 
-  Either way, making this site has been a blast, and I’m going to continue designing ZUIs. Let me know what you think about it [on Twitter](http://twitter.com/jonikorpi) and if you’ve seen any other ZUIs around the web.
+  Either way, making this site has been a blast. Let me know what you think about it [on Twitter](http://twitter.com/jonikorpi).
 
-  Finally, I’d like to thank the following awesome people for their feedback on and help with various prototypes of this design.
+  Before I go, I’d like to thank the following awesome people for their feedback on and help with various prototypes of this design.
 
   - [@viljamis](https://twitter.com/viljamis)
   - [@benbrignell](https://twitter.com/benbrignell)
@@ -51,4 +51,4 @@ markdown:
   - [@rachelnabors](https://twitter.com/rachelnabors)
   - [@todayilearnedto](https://twitter.com/todayilearnedto)
 
-  P.S. The resizing technique, rem-units, and some of the history-related JS I’m using causes issues in some older browsers. I’m working on it!
+  P.S. The resizing technique, rem-units, and some of the history-related JS I’m using cause issues in some older browsers. I'm also a little worried about SEO and accessibility, since the nested DOM structure is weird. I’m working on it!
