@@ -947,6 +947,7 @@ body {
 .w-2  { max-width:  9%   }
 .w-3  { max-width: 14.6% }
 .w-4  { max-width: 23.6% }
+.w-45 { max-width: 32.6% }
 .w-5  { max-width: 38.2% }
 .w-6  { max-width: 50%   }
 .w-7  { max-width: 61.8% }
@@ -959,6 +960,7 @@ body {
 .h-2  { max-height:  9%   }
 .h-3  { max-height: 14.6% }
 .h-4  { max-height: 23.6% }
+.h-45 { max-height: 32.6% }
 .h-5  { max-height: 38.2% }
 .h-6  { max-height: 50%   }
 .h-7  { max-height: 61.8% }
@@ -990,6 +992,7 @@ body {
 .hook-bottom-left  { left:  0; bottom: 0; }
 .hook-bottom-right { right: 0; bottom: 0; }
 
+.off-left-05 { left:  3.4% }
 .off-left-1  { left:  5.6% }
 .off-left-2  { left:  9%   }
 .off-left-3  { left: 14.6% }
@@ -1001,7 +1004,9 @@ body {
 .off-left-8  { left: 76.4% }
 .off-left-9  { left: 85.4% }
 .off-left-10 { left: 91%   }
+.off-left-100 { left: 100%   }
 
+.off-top-05 { top:  3.4% }
 .off-top-1  { top:  5.6% }
 .off-top-2  { top:  9%   }
 .off-top-3  { top: 14.6% }
@@ -1013,7 +1018,9 @@ body {
 .off-top-8  { top: 76.4% }
 .off-top-9  { top: 85.4% }
 .off-top-10 { top: 91%   }
+.off-top-100 { top: 100%   }
 
+.off-bottom-05 { bottom:  3.4% }
 .off-bottom-1  { bottom:  5.6% }
 .off-bottom-2  { bottom:  9%   }
 .off-bottom-3  { bottom: 14.6% }
@@ -1025,7 +1032,9 @@ body {
 .off-bottom-8  { bottom: 76.4% }
 .off-bottom-9  { bottom: 85.4% }
 .off-bottom-10 { bottom: 91%   }
+.off-bottom-100 { bottom: 100%   }
 
+.off-right-05 { right:  3.4% }
 .off-right-1  { right:  5.6% }
 .off-right-2  { right:  9%   }
 .off-right-3  { right: 14.6% }
@@ -1037,6 +1046,7 @@ body {
 .off-right-8  { right: 76.4% }
 .off-right-9  { right: 85.4% }
 .off-right-10 { right: 91%   }
+.off-right-100 { right: 100%   }
 
 .padded { padding: $line }
 
