@@ -1,9 +1,9 @@
 # Put this at the root of your project as 'Upstatic'
 # e.g. ~/Coding/my_project/Upstatic
 
-Bucket = "zui-prototype"
+Bucket = "jonikorpi.com"
 Region = "eu-west-1"
-Account = "zui-prototype"
+Account = "jonikorpi"
 GzipExtensions = [".html", ".js", ".json", ".css", ".svg", ".xml"]
 DefaultCacheControl = "public, max-age=691200"
 UploadDir = "./build"
