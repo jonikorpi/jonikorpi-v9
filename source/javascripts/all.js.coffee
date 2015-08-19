@@ -79,21 +79,22 @@ zoomTo = (target, stateless = false) ->
   console?.log "-----------------"
   console?.log "starting a zoomTo"
 
-  # Find pertinent elements
-  activeZoomables = $(".z-active")
-  parentZoomables = target.parents(".z")
-  activeNotParentZoomables = activeZoomables.not(parentZoomables).not(target)
+  if target.length > 0
+    # Find pertinent elements
+    activeZoomables = $(".z-active")
+    parentZoomables = target.parents(".z")
+    activeNotParentZoomables = activeZoomables.not(parentZoomables).not(target)
 
-  # Statelessly zoomIn to parents that aren't zoomed in
-  parentZoomables.not(".z-active").each ->
-    zoomIn( $(@), true )
+    # Statelessly zoomIn to parents that aren't zoomed in
+    parentZoomables.not(".z-active").each ->
+      zoomIn( $(@), true )
 
-  # zoomOut from non-parent active zoomables
-  activeNotParentZoomables.each ->
-    zoomOut( $(@), true )
+    # zoomOut from non-parent active zoomables
+    activeNotParentZoomables.each ->
+      zoomOut( $(@), true )
 
-  # Statefully zoomIn to target
-  zoomIn( target, stateless )
+    # Statefully zoomIn to target
+    zoomIn( target, stateless )
 
 zoomToRoot = (stateless = false) ->
   console.log "zooming to root"
