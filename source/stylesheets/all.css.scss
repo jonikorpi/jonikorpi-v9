@@ -227,6 +227,10 @@ body {
     padding: 0 $card-padding*2;
     height: $new-height-s;
   }
+
+  @media (max-width: #{$s}) {
+    padding: 0 $card-padding*0.5;
+  }
 }
 
 .tags {
@@ -238,6 +242,10 @@ body {
   @media (max-width: #{$l}) {
     padding: $card-padding;
     height: $tags-height-s;
+  }
+
+  @media (max-width: #{$s}) {
+    padding: $card-padding $card-padding*0.25;
   }
 }
 
