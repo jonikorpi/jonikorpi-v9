@@ -57,10 +57,10 @@ $ ->
 #
 # Feature tests
 
-console?.log "Motion disabled: " + motionDisabled
+console.log "Motion disabled: " + motionDisabled
 
 if !feature.historyAPI || !feature.cssTransform || !feature.cssTransition || !feature.css3Dtransform || motionDisabled == "yes"
-  console?.log("Browser doesn't support one of the features needed, stopping…")
+  console.log("Browser doesn't support one of the features needed, stopping…")
   return
 else
   $html.addClass("awesome")
@@ -76,8 +76,8 @@ window.requestAnimFrame = do ->
 # Zooming in
 
 zoomTo = (target, stateless = false) ->
-  console?.log "-----------------"
-  console?.log "starting a zoomTo"
+  console.log "-----------------"
+  console.log "starting a zoomTo"
 
   if target.length > 0
     # Find pertinent elements
@@ -153,14 +153,14 @@ zoomIn = (target, stateless = false) ->
           if loadHere.length > 0
             $html.addClass("z-loading")
             if loadedContent
-              console?.log "content already here"
+              console.log "content already here"
               loadHere.html( loadedContent )
               $html.removeClass("z-loading z-loading-failed")
               bindZoomTos()
             else
-              console?.log "content coming later"
+              console.log "content coming later"
               loadHere.one "contentLoaded", ->
-                console?.log "content arrived"
+                console.log "content arrived"
                 loadHere.html( loadedContent )
                 $html.removeClass("z-loading z-loading-failed")
                 bindZoomTos()
@@ -201,7 +201,7 @@ positionsToParent = (target, content) ->
 positionsMatchParent = (content, target) ->
   parentPositions = getParentPositions(target)
   contentPositions = getContentPositions(content)
-  console?.log "do positions match parent?"
+  console.log "do positions match parent?"
   if arraysEqual(parentPositions, contentPositions)
     return true
   else
@@ -218,7 +218,7 @@ positionsToZero = (targetContent) ->
 
 positionsMatchZero = (content) ->
   contentPositions = getContentPositions(content)
-  console?.log "do positions match zero?"
+  console.log "do positions match zero?"
   if arraysEqual([0,0,0,0], contentPositions)
     return true
   else
@@ -227,16 +227,16 @@ positionsMatchZero = (content) ->
 loadContent = (content, id) ->
   # Load content via AJAX and notify about it
   loadHere = content.children(".article-content").children(".load-article-here")
-  console?.log "trying to load content"
+  console.log "trying to load content"
   ajax = $.ajax
     url: id
     error: ->
       $html.addClass("z-loading-failed")
-      console?.log "loading content failed"
+      console.log "loading content failed"
     success: (data) ->
       loadedContent = $(data).find(".article.z-current .load-article-here").html()
       loadHere.trigger("contentLoaded")
-      console?.log "triggering contentLoaded"
+      console.log "triggering contentLoaded"
     type: 'GET'
 
 reloadContent = ->
@@ -270,7 +270,7 @@ zoomOut = (target, stateless = false) ->
       parentZ = $("#root")
       parentIsRoot = true
 
-    console?.log "zooming out from #{targetID}"
+    console.log "zooming out from #{targetID}"
 
     # Scroll up, flush content & start zooming out
     content.scrollTop(0)
@@ -300,7 +300,7 @@ zoomOut = (target, stateless = false) ->
           content.off "transitionend webkitTransitionEnd"
 
 flushContentFrom = (target) ->
-  console?.log "flushing content"
+  console.log "flushing content"
   # Remove AJAX-loaded content
   flushThis = target.find(".load-article-here")
   if flushThis.length > 0
@@ -311,7 +311,7 @@ flushContentFrom = (target) ->
 setHistoryToTarget = (target) ->
   title = target.data("title")
   targetID = target.data("id")
-  console?.log "setting history to #{targetID} and #{title}"
+  console.log "setting history to #{targetID} and #{title}"
   history.pushState({ "targetID" : targetID }, title, targetID)
   document.title = title
 
@@ -319,7 +319,7 @@ setHistoryToTarget = (target) ->
 # Set history to root
 
 setHistoryToRoot = ->
-  console?.log "setting history to root"
+  console.log "setting history to root"
   title = $("#root").data("title")
   history.pushState({ "targetID" : "/" }, title, "/")
   document.title = title
@@ -341,14 +341,14 @@ $ ->
 
   activeZTitle = activeZ.data("title")
   activeZID = activeZ.data("id")
-  console?.log "setting history to #{activeZID} & #{activeZTitle}"
+  console.log "setting history to #{activeZID} & #{activeZTitle}"
   history.replaceState({ "targetID" : activeZID }, document.title, activeZID)
 
   $(window).on "popstate", (event) ->
     targetID = event.originalEvent.state.targetID
     if event.originalEvent.state && targetID
       target = $("[data-id='#{targetID}']")
-      console?.log "history-zooming to #{targetID}"
+      console.log "history-zooming to #{targetID}"
       if target.attr("id") == "root"
         zoomToRoot(true)
       else
