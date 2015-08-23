@@ -693,23 +693,20 @@ body {
 
   a {
     position: relative;
+    background-image: linear-gradient(currentcolor, currentcolor);
+    background-size: 1px 1px;
+    background-position: 0 1.0625em;
+    background-repeat: repeat-x;
     text-shadow:
       1px 1px 0 $card-background,
       -1px -1px 0 $card-background,
       1px -1px 0 $card-background,
       -1px 1px 0 $card-background,
       0 1px 0 $card-background,
-      1px 0 0 $card-background
+      1px 0 0 $card-background,
+      0 -1px 0 $card-background,
+      -1px 0 0 $card-background
     ;
-
-    &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      left: 0; bottom: 0.1em; right: 0;
-      border-bottom: 1px solid currentcolor;
-      z-index: -1;
-    }
 
     &:hover {
       color: $blue;
