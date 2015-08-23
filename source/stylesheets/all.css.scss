@@ -716,10 +716,11 @@ body {
       color: $bright;
     }
 
-    // &[href^="http"]:after {
-    //   content: " ↗";
-    //   word-spacing: -0.475em;
-    // }
+    &[href^="/"]:after {
+      @include mono;
+      content: " ↗";
+      word-spacing: -0.475em;
+    }
   }
 }
 
