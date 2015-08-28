@@ -195,8 +195,20 @@ code {
 
 .centered-translate { @include centered-translate; }
 
-.title-spanner {
+.line {
+  display: block;
+  float: left;
+  clear: left;
   background: $card-background;
+  padding: 0 0.25em;
+
+  .tag-title & {
+    float: none;
+    clear: none;
+    display: inline-block;
+  }
+
+  & + .line { margin-top: 2px; }
 }
 
 /////////////////////////////////////////////////////////
@@ -567,23 +579,23 @@ body {
     transition-delay: $short-time;
   }
 
-  .title-spanner:after {
-    content: "";
-    display: none;
-    font-size: 0.854em;
-    @include mono;
-    padding-left: 0.25em;
-    position: relative;
-    top: -0.125em;
-  }
-
-  .new & .title-spanner:after {
-    content: "(NEW)";
-    display: inline;
-    color: $blue-highlight;
-  }
-
-  .new .about & .title-spanner:after { display: none; }
+  // .title-spanner:after {
+  //   content: "";
+  //   display: none;
+  //   font-size: 0.854em;
+  //   @include mono;
+  //   padding-left: 0.25em;
+  //   position: relative;
+  //   top: -0.125em;
+  // }
+  //
+  // .new & .title-spanner:after {
+  //   content: "(NEW)";
+  //   display: inline;
+  //   color: $blue-highlight;
+  // }
+  //
+  // .new .about & .title-spanner:after { display: none; }
 }
 
 .article-cover {

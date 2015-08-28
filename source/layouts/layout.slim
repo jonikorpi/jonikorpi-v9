@@ -11,9 +11,9 @@ html lang="en" class="#{page_classes} #{z_open_class}"
     meta charset="utf-8"
     
     - if current_page.data.tagPage
-      title= yield_content(:tagName)
+      title= sanitize ( yield_content(:tagName) )
     - else
-      title= data.page.title
+      title= sanitize ( data.page.title )
 
     meta name='viewport' content='width=device-width, initial-scale=1.0'
     meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"

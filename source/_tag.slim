@@ -8,11 +8,11 @@
 - classes += "z-active z-loaded " if containsActiveArticle
 - classes += "z-active z-loaded z-current" if yield_content(:tagName) == tag
 
-section.z.tag class=classes data-title=tag data-id=tag_path(tag) 
+section.z.tag class=classes data-title=sanitize(tag) data-id=tag_path(tag) 
   .z-card
     header.tag-header.no-margins
       h1.tag-title
-        span.title-spanner= tag
+        span.line= tag
     .grid.tag-grid
       - articles.each do |article|
         = partial "article", :locals => {:article => article, :size => articles.size}
