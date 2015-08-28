@@ -5,12 +5,12 @@ Bucket = "jonikorpi.com"
 Region = "eu-west-1"
 Account = "jonikorpi"
 GzipExtensions = [".html", ".js", ".json", ".css", ".svg", ".xml"]
-DefaultCacheControl = "public, max-age=691200"
+DefaultCacheControl = "public, max-age=31536000"
 UploadDir = "./build"
 
 # Specify cache control headers for specific file extensions
 [Extension.html]
-CacheControl = "public, s-maxage=300, max-age=30"
+CacheControl = "public, s-maxage=30, max-age=30"
 
 [Extension.xml]
 CacheControl = "public, s-maxage=300, max-age=300"
