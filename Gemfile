@@ -10,6 +10,7 @@ gem "middleman-syntax"
 gem "redcarpet"
 gem "slim"
 gem "uglifier"
+gem "sanitize"
 
 # Live-reloading plugin
 gem "middleman-livereload", "~> 3.1.0"

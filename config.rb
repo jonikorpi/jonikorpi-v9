@@ -42,6 +42,10 @@
 
 # Methods defined in the helpers block are available in templates
 helpers do
+  def sanitize(text)
+    return Sanitize.fragment(text)
+  end
+
   def markdown(source)
     renderer = Redcarpet::Render::HTML.new({})
     markdown = Redcarpet::Markdown.new(renderer, {})
