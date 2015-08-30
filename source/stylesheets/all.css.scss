@@ -627,7 +627,7 @@ body {
     visibility 0ms linear
   ;
   margin: 0;
-  padding: $line*2 $line;
+  padding: $line*2 $line $line*5;
   visibility: hidden;
   transform: translateY(38.2vh);
   min-height: 61.8%;
