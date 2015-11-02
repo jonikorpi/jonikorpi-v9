@@ -14,44 +14,44 @@ markdown:
   1. Making the UI less _modal_.
   2. Showing more of the document's actual content before it's zoomed in.
   3. Focusing the UI on navigating vertical documents.
-  
+
   Here's a [CodePen prototype](http://codepen.io/jonikorpi/full/dYdxrg/) of what I have right now:
 
   <iframe height='480' scrolling='no' src='//codepen.io/jonikorpi/embed/dYdxrg/?height=480&theme-id=20602&default-tab=result' frameborder='no' allowtransparency='true' allowfullscreen='true'>See the Pen <a href='http://codepen.io/jonikorpi/pen/dYdxrg/'>Modeless responsive bi-directional scrolling ZUI for vertical documents</a> by Joni Korpi (<a href='http://codepen.io/jonikorpi'>@jonikorpi</a>) on <a href='http://codepen.io'>CodePen</a>.
   </iframe>
-  
-  In the [first iteration](/zoomable-ui-for-the-web/) you: 
-  
+
+  In the [first iteration](/zoomable-ui-for-the-web/) you:
+
   1. Looked for an interesting article or category.
-  2. Clicked on it to zoom in.
-  3. (Clicked on an article, if you just zoomed into a category.)
+  2. Clicked it to zoom in.
+  3. (Clicked an article, if you only zoomed into a category.)
   4. Scrolled vertically to navigate the article.
   5. Clicked a button or hit ESC to zoom out.
-  
+
   In this new iteration you:
-  
+
   1. Scroll horizontally through categories and center on an interesting article.
-  2. Scroll vertically to zoom in and keep doing so to navigate it.
+  2. Scroll vertically to zoom in and keep scrolling to navigate the article.
   3. Scroll back up ("scroll to top" shortcuts should work) to zoom out.
-  
-  I find this new model much more pleasant to use. I think it's because clicking feels like an inherently _modal_ action, taking you out of the context you were just in. Much like walking to another room and closing the door. Clicking on something feels like a commitment. A stark contrast to scrolling: an action so lightweight it actually feels fun to throw a page up and down and catch it mid-movement.
-  
-  Of course, there are still many problems with this new iteration.
-  
-  I'm relying heavily on [CSS Scroll Snapping](https://www.webkit.org/blog/4017/scroll-snapping-with-css-snap-points/), which doesn't even exist in Chrome yet. I "polyfilled" it with a manual snap that happens 100ms after the last scroll event fires, but it feels like crap compared to the native snapping in Safari and Firefox.
 
-  Horizontal scrolling is really annoying with bad trackpads and almost all mice.
+  I find this new model much more pleasant to use. I think it's because clicking feels like an inherently _modal_ action, taking you out of the context you were just in. Much like walking to another room and closing the door. Clicking on something feels like a commitment. Compare it to scrolling. It's so effortless that throwing a page up and down and catching it mid-movement actually <span title="Like Bob Ross painting a tree.">feels fun</span>.
 
-  I'm 3D-transforming a super-massive wrapper to move massive articles around, so performance can be poor. Some weaker devices don't even seem to render anything. This would be an issue even if I moved each article individually, since it's is a core problem with ZUIs on the web: displaying lots of zoomed-out versions of large elements isn't what browser engines were designed for. 
-  
-  There are possible workarounds, each with their own problems: 
+  Of course, there are still many issues with this new iteration.
+
+  1. I'm relying heavily on [CSS Scroll Snapping](https://www.webkit.org/blog/4017/scroll-snapping-with-css-snap-points/), which doesn't even exist in Chrome yet. I "polyfilled" it with a manual snap that happens 100ms after the last scroll event fires, but it feels like crap compared to the native snapping in Safari and Firefox.
+
+  2. Horizontal scrolling is really annoying with bad trackpads and almost all mice.
+
+  3. I'm 3D-transforming a super-massive wrapper to move massive articles around, so performance can be poor. This would be an issue even if I moved each article individually, since performance is a core problem with ZUIs on the web. Browser engines were not designed for displaying lots of zoomed-out versions of large elements.
+
+  There are a few possible workarounds to issue #3, each with their own problems:
 
   - Making the elements tiny and zooming them in instead of the opposite: ruined by browser min-font-size settings.
-  - Just resizing elements instead of transforming them (what I did in the [first iteration](/zoomable-ui-for-the-web/)): min-font-size settings again, image resizing causes lag, text reflows cause massive lag.
-  - Creating thumbnails and replacing them with real content just in time: animation timing issues, thumbnail creation is a deep pit. 
-  - [Rendering everything in WebGL](https://github.com/PixelsCommander/HTML-GL): promising, but not ready for wide use.
+  - Just resizing elements instead of transforming them (which I did in the [first iteration](/zoomable-ui-for-the-web/)): min-font-size settings again, image resizing causes lag, text reflows cause massive lag.
+  - Creating thumbnails and replacing them with real content just in time: animation timing issues, thumbnail creation is a deep pit.
+  - [Rendering everything in WebGL](https://github.com/PixelsCommander/HTML-GL): promising, but not ready for general use.
   - And so on.
-  
-  If you have a really good idea for how to solve this, [let me know on Twitter](https://twitter.com/jonikorpi).
-  
-  P.S. For more on designing less modal UIs, check out [Jef Raskin's _The Humane Interface_](https://en.wikipedia.org/wiki/The_Humane_Interface). Wikipedia has [a good summary](https://en.wikipedia.org/wiki/The_Humane_Interface#Design_rules) of some of the most important lessons in it.
+
+  If you have a really good idea how to solve this, [let me know on Twitter](https://twitter.com/jonikorpi).
+
+  P.S. For more on designing less modal UIs, check out [Jef Raskin's _The Humane Interface_](https://en.wikipedia.org/wiki/The_Humane_Interface). Wikipedia has [a good summary](https://en.wikipedia.org/wiki/The_Humane_Interface#Design_rules) of some of its most important lessons.
