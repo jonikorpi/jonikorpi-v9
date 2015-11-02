@@ -63,9 +63,9 @@ $bright: hsl($hue, 23.6%, 76.4%);
 $body:   hsl($hue, 5.6%, 61.8%);
 $dim:    hsl($hue, 3.4%, 50%);
 
-$purple-bright: hsl($hue-1, 23.6%, 76.4%);
-$purple-body:   hsl($hue-1, 14.6%, 61.8%);
-$purple-dim:    hsl($hue-1, 9%, 50%);
+$purple-bright: hsl($hue-1, 38.2%, 76.4%);
+$purple-body:   hsl($hue-1, 38.2%, 61.8%);
+$purple-dim:    hsl($hue-1, 23.6%, 50%);
 
 $yellow: hsl($hue,   50%, 61.8%);
 $orange: hsl($hue-8, 50%, 50%);
@@ -654,7 +654,8 @@ body {
   h1, h2, h3, h4, h5, h6,
   pre,
   ul, ol,
-  hr {
+  hr,
+  iframe {
     max-width: $max-width;
     margin-left: auto;
     margin-right: auto;
@@ -685,11 +686,17 @@ body {
 
   figure {
     text-align: center;
+  }
 
-    img {
-      max-width: 100%;
-      margin: 0 auto;
-    }
+  iframe {
+    width: 100%;
+    display: block;
+  }
+
+  figure img {
+    max-width: 100%;
+    max-height: 91vh;
+    margin: 0 auto;
   }
 
   figcaption {
