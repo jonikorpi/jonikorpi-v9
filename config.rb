@@ -55,7 +55,7 @@ helpers do
 
   def pseudo_host
     if build?
-      "http://www.jonikorpi.com"
+      "https://jonikorpi.com"
     else
       if defined?(req) && req.env["HTTP_HOST"]
         if req.env["REQUEST_URI"] =~ /\Ahttps/i
